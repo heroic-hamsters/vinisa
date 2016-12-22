@@ -1,12 +1,12 @@
-# Project Name
+# Translate Hamsters (in progress)
 
-> Pithy project description
+> Language learning app that incorporates image recognition and user generated content.
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Nicholas Wang
+  - __Scrum Master__: Vivian Zhang
+  - __Development Team Members__: Samuel He, Nick Tang, Vivian Zhang, Nicholas Wang
 
 ## Table of Contents
 
@@ -25,10 +25,7 @@
 ## Requirements
 
 - Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- mySQL
 
 ## Development
 
