@@ -1,8 +1,27 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import { browserHistory } from 'react-router';
 
+@observer
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
+    this.store = this.props.route.store;
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    this.store.username = e.target.username.value;
+
+    let languages = {
+      nativeLanguage: e.target.nativeLanguage.value,
+      learnLanguage: e.target.learnLanguage.value
+    };
+
+    this.store.languages = languages;
+
+    browserHistory.push('/home');
   }
 
   render() {
@@ -10,13 +29,13 @@ export default class Signup extends React.Component {
       <div>
         <h1>Signup</h1>
 
-        <form className="signupForm">
-          <div>Username: <input type="text" /></div>
-          <div>Password: <input type="password" /></div>
+        <form className="signupForm" onSubmit={ this.handleSubmit.bind(this) } >
+          <div>Username: <input type="text" name="username" /></div>
+          <div>Password: <input type="password" name="password" /></div>
 
           <div>
             Your language: 
-            <select>
+            <select name="nativeLanguage">
               <option>English</option>
               <option>Chinese</option>
             </select>
@@ -24,9 +43,9 @@ export default class Signup extends React.Component {
 
           <div>
             Language you want to learn:
-            <select>
+            <select name="learnLanguage">
               <option>English</option>
-              <option>Chinese</option>
+              <option selected>Chinese</option>
             </select>
           </div>
 

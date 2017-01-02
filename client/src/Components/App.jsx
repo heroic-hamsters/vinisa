@@ -6,11 +6,11 @@ import { observer } from 'mobx-react';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    this.store = this.props.route.store;
   }
 
   render() {
-    const store = this.props.route.store;
-    return(
+    return (
       <div>
         <Link to='/'>{store.sitename}</Link>
         {this.props.children}
