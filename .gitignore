@@ -29,3 +29,4 @@ bower_components/
 
 ## API keys
 client/env/config.js
+.DS_Store
