@@ -9,11 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bookshelf": "^0.10.2",
+    "knex": "^0.12.6",
     "mobx": "^2.7.0",
     "mobx-react": "^4.0.4",
+    "mysql": "^2.12.0",
     "react": "^15.2.1",
-    "react-router": "^2.8.1",
-    "react-dom": "^15.3.0"
+    "react-dom": "^15.3.0",
+    "react-router": "^2.8.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
