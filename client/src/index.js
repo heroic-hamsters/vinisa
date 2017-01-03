@@ -10,7 +10,6 @@ import Signup from './Components/Signup.jsx';
 import Home from './Components/Home.jsx';
 import Library from './Components/Library.jsx';
 import SearchResults from './Components/SearchResults.jsx';
-import NewWord from './Components/NewWord.jsx';
 import WordDetails from './Components/WordDetails.jsx';
 
 
@@ -22,7 +21,6 @@ ReactDOM.render((
       <Route path="/home" component={ Home } />
       <Route path="/library" component={ Library } />
       <Route path="/searchresults" component={ SearchResults } />
-      <Route path="/newword" component={ NewWord } />
       <Route path="/worddetails" component={ WordDetails } />
     </Route>
   </Router>
