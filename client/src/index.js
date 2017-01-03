@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-import $ from 'jquery';
 
 import App from './Components/App.jsx';
+
 import AppStore from './Components/AppStore.jsx';
 import About from './Components/About.jsx';
 import Signup from './Components/Signup.jsx';
@@ -12,6 +12,7 @@ import Home from './Components/Home.jsx';
 import Library from './Components/Library.jsx';
 import SearchResults from './Components/SearchResults.jsx';
 import WordDetails from './Components/WordDetails.jsx';
+import data from '../../data.js';
 
 ReactDOM.render((
   <Router history={browserHistory}>
