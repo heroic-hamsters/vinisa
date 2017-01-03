@@ -23,7 +23,6 @@ export default class WordDetails extends React.Component {
         <div>可以递给我那个水瓶吗？</div>
         <button onClick={this.onAudioPlay}>Play</button>
         <br/>
-        <button onClick={this.onAudioUpload}>Upload sentence here</button>
         <Dropzone onDrop={this.onDrop}>
           <div>Upload or drag an audio file here</div>
         </Dropzone>
