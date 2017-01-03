@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-import $ from 'jquery';
 
 import App from './Components/App.jsx';
+
 import AppStore from './Components/AppStore.jsx';
 import About from './Components/About.jsx';
 import Signup from './Components/Signup.jsx';

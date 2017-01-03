@@ -12,7 +12,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Link to='/'>{store.sitename}</Link>
+        <Link to='/'>{this.store.sitename}</Link>
         {this.props.children}
       </div>
     );
