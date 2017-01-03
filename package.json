@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.4.7",
     "bookshelf": "^0.10.2",
     "knex": "^0.12.6",
     "mobx": "^2.7.0",
