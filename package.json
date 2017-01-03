@@ -4,7 +4,9 @@
   "description": "",
   "main": "client/src/index.js",
   "scripts": {
-    "start": "nodemon server/server.js"
+    "start": "nodemon server/server.js",
+    "preinstall": "mysql -u root -e 'CREATE DATABASE IF NOT EXISTS translate; use translate;'",
+    "postinstall": "node server/db/dbconfig.js"
   },
   "author": "",
   "license": "ISC",
