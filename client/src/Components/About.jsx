@@ -17,6 +17,7 @@ export default class About extends React.Component {
         </div>
 
         <div className="signup-button">
+          <button><Link to="/library">Library</Link></button>
           <button><Link to="/login">Login</Link></button>
           <button><Link to="/logout">Logout</Link></button>
           <button><Link to="/signup">Signup</Link></button>
