@@ -56,7 +56,6 @@ export default class WordDetails extends React.Component {
 
         <button onClick={this.onAudioPlay}>Play</button>
         <br/>
-        <button onClick={this.onAudioUpload}>Upload sentence here</button>
         <Dropzone onDrop={this.onDrop}>
           <div>Upload or drag an audio file here</div>
         </Dropzone>
