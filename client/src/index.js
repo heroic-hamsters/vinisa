@@ -18,12 +18,12 @@ ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={ App } store={ AppStore } >
       <IndexRoute component={ About } />
-      <Route path="/library" component={ Library } data={window.data}/>
+      <Route path="/library" component={ Library } data={window.data} store={ AppStore } />
+      <Route path="/library/:word" component={ WordDetails }/>
       <Route path="/signup" store = { AppStore } component={ Signup } />
       <Route path="/login" store = { AppStore } component={ Login } />
       <Route path="/home" store={ AppStore } component={ Home } />
       <Route path="/searchresults" component={ SearchResults } />
-      <Route path="/worddetails" component={ WordDetails } />
     </Route>
   </Router>
 ), document.getElementById('app'));

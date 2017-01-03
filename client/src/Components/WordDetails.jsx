@@ -4,7 +4,7 @@ export default class WordDetails extends React.Component {
   render() {
     return (
       <div>
-        <h1>Bottle</h1>
+        <h1>this.props.params.word</h1>
         <div>水瓶</div>
         <div>shui ping</div>
         <br/>
