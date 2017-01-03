@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { browserHistory } from 'react-router';
 
-@observer
+ @observer
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
