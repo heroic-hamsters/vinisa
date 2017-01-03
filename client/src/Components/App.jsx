@@ -11,7 +11,7 @@ export default class App extends React.Component {
     const store = this.props.route.store;
     return(
       <div>
-        <h1>{store.sitename}</h1>
+        <a href='/'>{store.sitename}</a>
         {this.props.children}
       </div>
     );
