@@ -1,4 +1,7 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 
 export default class Library extends React.Component {
   constructor(props) {
@@ -6,8 +9,9 @@ export default class Library extends React.Component {
   }
 
   onWordSelect(event) {
-    event.persist()
+    event.persist();
     event.preventDefault();
+    browserHistory.push('/library/'+event.target.innerText);
     $.ajax({
       url: "/singleword",
       context: event.target.innerText
@@ -26,6 +30,7 @@ export default class Library extends React.Component {
             <div>{sample.sentence}</div>
           </ul>
         ))}
+        {this.props.children}
       </div>
     )
   }
