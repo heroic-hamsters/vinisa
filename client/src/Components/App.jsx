@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { observer } from 'mobx-react';
 
 @observer
@@ -11,7 +12,7 @@ export default class App extends React.Component {
     const store = this.props.route.store;
     return(
       <div>
-        <h1>{store.sitename}</h1>
+        <Link to='/'>{store.sitename}</Link>
         {this.props.children}
       </div>
     );
