@@ -12,7 +12,7 @@ import Home from './Components/Home.jsx';
 import Library from './Components/Library.jsx';
 import SearchResults from './Components/SearchResults.jsx';
 import WordDetails from './Components/WordDetails.jsx';
-import data from '../../data.js';
+import data from '../../data/sentences.js';
 
 ReactDOM.render((
   <Router history={browserHistory}>
