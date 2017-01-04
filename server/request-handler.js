@@ -22,23 +22,35 @@ exports.userHandler = function(req, res) {
   })
 }
 
-exports.wordHandler = function(req, res) {
+exports.getWords = function(req, res) {
   // console.log(req.body);
-  let word = req.body.word;
+  // let word = req.body.word;
 
-  new Word({text: word}).fetch().then(function(found) {
+  new Word.fetchAll({withRelated: ['user_words']}).then(function(found) {
     if (found) {
       console.log('found');
       res.send(found);
-    } else {
-      Words.create({
-        text: word
-      }).then(function(newWord) {
-        res.send(newWord);
-      })
-    }
+    } 
   })
 }
+
+// exports.wordHandler = function(req, res) {
+//   // console.log(req.body);
+//   let word = req.body.word;
+//
+//   new Word({text: word}).fetch().then(function(found) {
+//     if (found) {
+//       console.log('found');
+//       res.send(found);
+//     } else {
+//       Words.create({
+//         text: word
+//       }).then(function(newWord) {
+//         res.send(newWord);
+//       })
+//     }
+//   })
+// }
 
 exports.listSentences = function(req, res) {
   let sentence = req.body.sentence;
@@ -68,6 +80,6 @@ exports.createSentences = function(req, res) {
       creator_id: creator_id
     }).then(function(newSentence) {
       res.send(newSentence);
-    })    
+    })
   })
 }

@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const handler = require('./request-handler');
 
-router.route('/word')
-  .post(handler.wordHandler);
+router.route('/words')
+  .get(handler.getWords);
+  // .post(handler.wordHandler);
 
-router.route('/sentence')
+router.route('/sentences')
   .post(handler.listSentences);
-
+//
 router.route('/user')
   .post(handler.userHandler);
 
