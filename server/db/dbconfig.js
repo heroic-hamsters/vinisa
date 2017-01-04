@@ -21,7 +21,7 @@ Promise.all([
   db.knex.schema.hasTable('users').then(function(exists) {
     if (!exists) {
       db.knex.schema.createTable('users', function(user) {
-        user.increments('userId').primary();
+        user.increments('id').primary();
         user.string('username', 255);
       }).then(function(table) {
         console.log('Created table', table);
@@ -31,7 +31,7 @@ Promise.all([
   db.knex.schema.hasTable('words').then(function(exists) {
     if (!exists) {
       db.knex.schema.createTable('words', function(table) {
-        table.increments('wordId').primary();
+        table.increments('id').primary();
         table.string('text', 255);
       }).then(function(table) {
         console.log('Created table', table);
@@ -47,8 +47,8 @@ Promise.all([
           table.increments('sentenceId').primary();
           table.string('text', 255);
           table.string('url', 255);
-          table.integer('word_id').references('wordId').inTable('words').unsigned();
-          table.integer('creator_id').references('userId').inTable('users').unsigned();
+          table.integer('word_id').references('id').inTable('words').unsigned();
+          table.integer('creator_id').references('id').inTable('users').unsigned();
         }).then(function (table) {
           console.log('Created table', table);
         });
@@ -63,7 +63,7 @@ Promise.all([
       if (!exists) {
         db.knex.schema.createTable('user_sentences', function(table) {
           table.increments('id').primary();
-          table.integer('user_id').references('userId').inTable('users').unsigned();
+          table.integer('user_id').references('id').inTable('users').unsigned();
           table.integer('sentence_id').references('sentenceId').inTable('sentences').unsigned();
         }).then(function(table) {
           console.log('Created table', table);
@@ -74,8 +74,8 @@ Promise.all([
       if (!exists) {
         db.knex.schema.createTable('user_words', function(table) {
           table.increments('id').primary();
-          table.integer('user_id').references('userId').inTable('users').unsigned();
-          table.integer('word_id').references('wordId').inTable('words').unsigned();
+          table.integer('user_id').references('id').inTable('users').unsigned();
+          table.integer('word_id').references('id').inTable('words').unsigned();
         }).then(function(table) {
           console.log('Created table', table);
         });
@@ -83,10 +83,5 @@ Promise.all([
     })
   ]);
 });
-
-
-
-
-
 
 module.exports = db;
