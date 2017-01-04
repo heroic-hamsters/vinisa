@@ -3,6 +3,24 @@ const Words = require('./db/collections/words');
 const Word = require('./db/models/word');
 const Sentences = require('./db/collections/sentences');
 const Sentence = require('./db/models/sentence');
+const Users = require('./db/collections/users');
+const User = require('./db/models/user');
+
+exports.userHandler = function(req, res) {
+  let username = req.body.username;
+  new User({username: username}).fetch().then(function(found) {
+    if (found) {
+      console.log('found');
+      res.send(found);
+    } else {
+      Users.create({
+        username: username
+      }).then(function(newUser) {
+        res.send(newUser);
+      })
+    }
+  })
+}
 
 exports.wordHandler = function(req, res) {
   // console.log(req.body);
@@ -22,26 +40,34 @@ exports.wordHandler = function(req, res) {
   })
 }
 
-exports.sentenceHandler = function(req, res) {
+exports.listSentences = function(req, res) {
   let sentence = req.body.sentence;
   let url = req.body.url;
   let word_id = req.body.word_id;
   let creator_id = req.body.creator_id;
 
-  new Sentence({text: sentence}).fetch().then(function(found) {
+  new Sentence({word_id: word_id}).fetch().then(function(found) {
     if (found) {
       console.log('found');
       res.send(found);
-    } else {
-      Sentences.create({
-        text: sentence,
-        url: url,
-        word_id: word_id,
-        creator_id: creator_id
-      }).then(function(newSentence) {
-        res.send(newSentence);
-      })
     }
   })
+}
 
+exports.createSentences = function(req, res) {
+  let sentence = req.body.sentence;
+  let url = req.body.url;
+  let word_id = req.body.word_id;
+  let creator_id = req.body.creator_id;
+
+  new Sentence({word_id: word_id}).fetch().then(function(found) {
+     Sentences.create({
+      text: sentence,
+      url: url,
+      word_id: word_id,
+      creator_id: creator_id
+    }).then(function(newSentence) {
+      res.send(newSentence);
+    })    
+  })
 }
