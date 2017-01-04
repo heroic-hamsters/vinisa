@@ -1,17 +1,18 @@
 const request = require('request');
-const bodyParser = require('body-parser');
 const Words = require('./db/collections/words');
 const Word = require('./db/models/word');
 
-exports.what = function(req, res) {
-  // console.log(req);
-  new Word({text: 'pizza'}).fetch().then(function(found) {
+exports.wordHandler = function(req, res) {
+  // console.log(req.body);
+  let word = req.body.word;
+
+  new Word({text: word}).fetch().then(function(found) {
     if (found) {
       console.log('found');
-      // res.send('found')
+      res.send(found);
     } else {
       Words.create({
-        text: "pizza"
+        text: word
       }).then(function(newWord) {
         res.send(newWord);
       })

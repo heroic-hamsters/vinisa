@@ -1,13 +1,18 @@
 const express = require('express');
 const path = require('path');
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const db = require('./db/dbconfig');
-const Word = require('./db/models/word');
+// const Word = require('./db/models/word');
 const router = require('./router');
+
 
 const app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, '../client')));
+
 
 // router.route('/api/')
 app.use('/api', router);
@@ -20,3 +25,5 @@ app.get('*', function (req, res) {
 app.listen(3000, function() {
   console.log('App is now listening on port 3000');
 });
+
+module.exports = app;
