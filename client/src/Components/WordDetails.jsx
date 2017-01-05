@@ -63,3 +63,4 @@ export default class WordDetails extends React.Component {
     );
   }
 }
+
