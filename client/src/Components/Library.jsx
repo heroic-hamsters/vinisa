@@ -3,20 +3,23 @@ import { observer } from 'mobx-react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
+@observer
 export default class Library extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.store = this.props.route.store;
   }
 
   onWordSelect(event) {
     event.persist();
     event.preventDefault();
-    browserHistory.push('/library/'+event.target.innerText);
+    this.store.word = event.target.innerText;
+    browserHistory.push('/library/' + event.target.innerText);
     $.ajax({
-      url: "/singleword",
+      url: '/singleword',
       context: event.target.innerText
     }).done(()=>{
-      console.log('seleted word:', event.target.innerText)
+      console.log('seleted word:', event.target.innerText);
     });
   }
 
@@ -32,6 +35,6 @@ export default class Library extends React.Component {
         ))}
         {this.props.children}
       </div>
-    )
+    );
   }
 }
