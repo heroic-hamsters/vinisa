@@ -1,7 +1,9 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
+import CLOUD_API from '../../env/config.js';
 
 @observer
 export default class Home extends React.Component {
@@ -12,6 +14,7 @@ export default class Home extends React.Component {
     this.state = {
       imgsrc: ''
     };
+
   }
 
   onDrop(acceptedFiles, rejectedFiles) {
@@ -43,7 +46,7 @@ export default class Home extends React.Component {
     };
 
     $.post({
-      url: 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyApUQ_2lRHs5z1DYV0skVnNgY_FXVVH6bI',
+      url: 'https://vision.googleapis.com/v1/images:annotate?key=' + CLOUD_API,
       data: JSON.stringify(request),
       contentType: 'application/json'
     }).done(function(data) {
@@ -58,11 +61,12 @@ export default class Home extends React.Component {
     });
   }
 
+  // set word in the mobx store, redirect to word details page
   handleClick(e) {
     e.preventDefault();
     var chosenWord = e.target.innerHTML;
-    console.log(chosenWord);
-    // set word in the mobx store, redirect to word details page
+    this.store.word = chosenWord;
+    browserHistory.push('/library/' + chosenWord);
   }
 
   render() {
