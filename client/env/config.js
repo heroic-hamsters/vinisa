@@ -1,0 +1,3 @@
+var CLOUD_API_KEY = 'AIzaSyDtQTbG3mUFexA1DHRidUbMH5BJcP4NR7Y';
+
+export default CLOUD_API_KEY;

@@ -5,6 +5,7 @@ export class AppStore {
   @observable username = "";
   @observable languages = {};
   @observable word = "";
+  @observable translatedWord = "test";
 }
 
 export default new AppStore;
