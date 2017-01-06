@@ -34,17 +34,48 @@ export default class WordDetails extends React.Component {
     e.preventDefault();
     // responsiveVoice is from the cdn in index.html
     responsiveVoice.speak(this.store.translatedWord, 'Chinese Female');
+  }
 
-export default class WordDetails extends React.Component {
   // play an audio clip
   onAudioPlay() {
     var audio = new Audio('https://s3.amazonaws.com/translate-hamster/audio/bottle1.m4a');
     audio.play();
   }
-  // upload an audio clip
+
   onDrop(acceptedFiles, rejectedFiles) {
     console.log('acceptedFiles', acceptedFiles);
     console.log('rejectedFiles', rejectedFiles);
+    // convert file to base64 encoded
+    var file = acceptedFiles[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = this.onSpeechTranlate;
+    reader.onerror = function (error) {
+      console.log('Base64 encoded error: ', error);
+    };
+  }
+
+  // translate audio with google speech
+  onSpeechTranlate(e) {
+    e.preventDefault();
+    var body = {
+      "config": {
+          "encoding":"linear16",
+          "sampleRate": 16000,
+          "languageCode": "cmn-Hans-CN"
+      },
+      "audio": {
+        "content": e.target.result.replace('data:audio/wav;base64,', '')
+      }
+    };
+    console.log(e.target.result);
+    $.post({
+      url: 'https://speech.googleapis.com/v1beta1/speech:syncrecognize?key=' + CLOUD_API,
+      data: JSON.stringify(body),
+      contentType: 'application/json',
+    }).done(function(data) {
+      console.log('data', data)
+    })
   }
 
   render() {
@@ -53,10 +84,11 @@ export default class WordDetails extends React.Component {
         <h1>{this.store.word}</h1>
         <h2>{this.store.translatedWord}</h2>
         <button onClick={this.handleClick.bind(this)}>Listen</button>
-
-        <button onClick={this.onAudioPlay}>Play</button>
         <br/>
-        <Dropzone onDrop={this.onDrop}>
+        <button onClick={this.onAudioPlay.bind(this)}>Play</button>
+        <br/>
+        <br/>
+        <Dropzone onDrop={this.onDrop.bind(this)}>
           <div>Upload or drag an audio file here</div>
         </Dropzone>
       </div>
