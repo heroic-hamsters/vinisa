@@ -4,6 +4,8 @@ const path = require('path');
 module.exports = {
   entry: './client/src/index.js',
 
+  devtool: 'inline-source-map',
+
   output: {
     path: path.join(__dirname, 'client', 'compiled'),
     filename: 'bundle.js'
@@ -21,7 +23,12 @@ module.exports = {
         test: /\.jsx?/,
         exclude: /node_modules/,
         loader: 'babel-loader'
+      },
+      {
+        test: /\.json$/, 
+        loader: 'json-loader'
       }
     ]
   }
 };
+
