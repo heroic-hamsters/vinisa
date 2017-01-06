@@ -28,10 +28,7 @@ module.exports = {
         test: /\.json$/, 
         loader: 'json-loader'
       }
-    ],
-    node: {
-      fs: 'empty'
-    }
+    ]
   }
 };
 
