@@ -24,8 +24,7 @@ exports.addWord = function(req, res) {
     if (!found) {
       word.save();
     }
-    return word;
-  }).then(function(word) {
+  }).then(function() {
     new User().where({username: username}).fetch()
     .then(function(user) {
       user.words().attach(word);
