@@ -1,8 +1,9 @@
 import React from 'react';
 import $ from 'jquery';
-import CLOUD_API from '../../env/config.js';
+import Config from '../../env/config.js';
 import Dropzone from 'react-dropzone';
 import ajax from '../lib/ajax.js';
+import MediaStreamRecorder from 'msr';
 
 export default class WordDetails extends React.Component {
   constructor(props) {
@@ -10,9 +11,13 @@ export default class WordDetails extends React.Component {
     this.store = this.props.route.store;
   }
 
+  componentWillMount() {
+    window.mediaRecorder = {};
+  }
+
   componentDidMount() {
     var getUrl = 'https://www.googleapis.com/language/translate/v2?key=' +
-                  CLOUD_API +
+                  Config['CLOUD_API'] +
                   '&q=' + this.store.word +
                   '&target=zh';
     $.ajax({
@@ -69,7 +74,7 @@ export default class WordDetails extends React.Component {
       }
     };
     $.post({
-      url: 'https://speech.googleapis.com/v1beta1/speech:syncrecognize?key=' + CLOUD_API,
+      url: 'https://speech.googleapis.com/v1beta1/speech:syncrecognize?key=' + Config['CLOUD_API'],
       data: JSON.stringify(body),
       contentType: 'application/json',
       success: function(data) {
@@ -83,7 +88,7 @@ export default class WordDetails extends React.Component {
 
   translateAudioSentence() {
     console.log('this', this.store.languages.learnLanguage);
-    var url = `https://translation.googleapis.com/language/translate/v2?key=${CLOUD_API}&q=${this.store.audioSentence}&target=${this.store.languages.learnLanguage}`;
+    var url = `https://translation.googleapis.com/language/translate/v2?key=${Config['CLOUD_API']}&q=${this.store.audioSentence}&target=${this.store.languages.learnLanguage}`;
     $.post ({
       url: url,
       contentType: 'application/json',
@@ -93,6 +98,78 @@ export default class WordDetails extends React.Component {
         this.forceUpdate();
       }.bind(this)
     });
+  }
+
+  captureUserMedia(mediaConstraints, successCallback, errorCallback) {
+    navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
+    console.log('In captureUserMedia');
+  }
+
+  mediaConstraints = {
+    audio: true
+  };
+
+  startRecording() {
+    // $('#start-recording').disabled = true;
+    // audiosContainer = document.getElementById('audios-container');
+    console.log('startRecording()');
+    this.captureUserMedia(this.mediaConstraints, this.onMediaSuccess, this.onMediaError);
+  };
+
+  stopRecording() {
+    // this.store.mediaRecorder = new MediaStreamRecorder(stream);
+    // window.mediaRecorder = this.store.mediaRecorder;
+    var mediaRecorder = window.mediaRecorder;
+    // $('#stop-recording').disabled = true;
+    mediaRecorder.stop();
+    mediaRecorder.stream.stop();
+    // $('.start-recording').disabled = false;
+  };
+
+  // mediaRecorder = this.store.mediaRecorder;
+
+  onMediaSuccess(stream) {
+    // console.log(this);
+    window.mediaRecorder = new MediaStreamRecorder(stream);
+    var mediaRecorder = window.mediaRecorder;
+    // mediaRecorder = new MediaStreamRecorder(stream);
+    mediaRecorder.stream = stream;
+    mediaRecorder.mimeType = 'audio/wav';
+    mediaRecorder.audioChannels = 1;
+    mediaRecorder.ondataavailable = function(blob) {
+      $('#record-audio').html("<audio controls=''><source src=" + URL.createObjectURL(blob) + "></source></audio>");
+
+      var url = (window.URL || window.webkitURL).createObjectURL(blob);
+      var link = document.getElementById("save");
+      link.href = url;
+      link.download = 'output.wav';
+      // link.download = filename || 'output.wav';
+
+      console.log(blob);
+    };
+
+    var timeInterval = 360 * 1000;
+
+    mediaRecorder.start(timeInterval);
+
+    // $('#stop-recording').disabled = false;
+  }
+
+  onMediaError(e) {
+    console.error('media error', e);
+  }
+
+  bytesToSize(bytes) {
+    var k = 1000;
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Bytes';
+    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
+    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+  }
+
+  getTimeLength(milliseconds) {
+    var data = new Date(milliseconds);
+    return data.getUTCHours() + " hours, " + data.getUTCMinutes() + " minutes and " + data.getUTCSeconds() + " second(s)";
   }
 
   render() {
@@ -106,7 +183,10 @@ export default class WordDetails extends React.Component {
         <br/>
         <button onClick={this.translateAudioSentence.bind(this)}>translate test</button>
         <br/>
-        <button>Record</button>
+        <button onClick={this.startRecording.bind(this)}>Record</button>
+        <button onClick={this.stopRecording.bind(this)}>STOP</button>
+        <a href="#" id="save">save</a>
+        <div id="record-audio"></div>
         <br/>
         <br/>
         <Dropzone onDrop={this.onDrop.bind(this)}>
