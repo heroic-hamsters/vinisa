@@ -131,11 +131,9 @@ export default class WordDetails extends React.Component {
   // mediaRecorder = this.store.mediaRecorder;
 
   onMediaSuccess(stream) {
-    console.log('S3KEY:', Config['S3KEY']);
-    // console.log(this);
+    // console.log('S3KEY:', Config['S3KEY']);
     window.mediaRecorder = new MediaStreamRecorder(stream);
     var mediaRecorder = window.mediaRecorder;
-    // mediaRecorder = new MediaStreamRecorder(stream);
     mediaRecorder.stream = stream;
     mediaRecorder.mimeType = 'audio/wav';
     mediaRecorder.audioChannels = 1;
