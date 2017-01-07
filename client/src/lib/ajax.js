@@ -12,7 +12,7 @@ var getWords = function(username, cb) {
 
 var addWord = function(username, text) {
   $.ajax({
-    url: '/api/users/words',
+    url: '/api/words',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({username: username, text: text}),
