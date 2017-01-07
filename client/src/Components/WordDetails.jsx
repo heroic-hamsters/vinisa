@@ -145,8 +145,7 @@ export default class WordDetails extends React.Component {
       link.href = url;
       link.download = 'output.wav';
       // link.download = filename || 'output.wav';
-
-      console.log(blob);
+      // this.onDrop(blob);
     };
 
     var timeInterval = 360 * 1000;
