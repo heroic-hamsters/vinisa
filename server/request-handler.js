@@ -19,15 +19,18 @@ exports.addWord = function(req, res) {
   var username = req.body.username;
   var text = req.body.text;
   var word = new Word({text: text});
+
   word.fetch()
   .then(function(found) {
     if (!found) {
-      word.save();
+      return word.save();
     }
-  }).then(function() {
+    return word;
+  }).then(function(foundWord) {
+    console.log(foundWord);
     new User().where({username: username}).fetch()
     .then(function(user) {
-      user.words().attach(word);
+      user.words().attach(foundWord);
       res.send('Added word');
     });
 
