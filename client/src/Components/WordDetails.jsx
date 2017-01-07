@@ -6,8 +6,7 @@ import Dropzone from 'react-dropzone';
 export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store;
-
+    this.store = this.props.route.store
   }
 
   componentDidMount() {
@@ -15,7 +14,6 @@ export default class WordDetails extends React.Component {
                   CLOUD_API + 
                   '&q=' + this.store.word +
                   '&target=zh';
-
     $.ajax({
       url: getUrl,
       method: 'GET',
@@ -83,7 +81,8 @@ export default class WordDetails extends React.Component {
   }
 
   translateAudioSentence() {
-    var url = `https://translation.googleapis.com/language/translate/v2?key=${CLOUD_API}&q=${this.store.audioSentence}&target=zh-TW`;
+    console.log('this', this.store.languages.learnLanguage);
+    var url = `https://translation.googleapis.com/language/translate/v2?key=${CLOUD_API}&q=${this.store.audioSentence}&target=${this.store.languages.learnLanguage}`;
     $.post ({
       url: url,
       contentType: 'application/json',
@@ -91,6 +90,7 @@ export default class WordDetails extends React.Component {
         this.store.audioSentenceTranslation = data.data.translations[0].translatedText;
         console.log('translate', this.store.audioSentenceTranslation);
         this.forceUpdate();
+        this.store.audioSentenceTranslation = '';
       }.bind(this)
     })
   }

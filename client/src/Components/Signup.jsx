@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { browserHistory } from 'react-router';
 
- @observer
+@observer
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
@@ -44,8 +44,8 @@ export default class Signup extends React.Component {
           <div>
             Language you want to learn:
             <select name="learnLanguage">
-              <option>English</option>
-              <option selected>Chinese</option>
+              <option value="en">English</option>
+              <option value="zh-TW" selected>Chinese</option>
             </select>
           </div>
 
