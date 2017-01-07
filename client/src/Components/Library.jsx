@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 import ajax from '../lib/ajax';
 
-// @observer
+@observer
 export default class Library extends React.Component {
   constructor(props) {
     super(props);
