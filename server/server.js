@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 
 app.post('/api/signup', handler.createUser);
 app.post('/api/login', handler.verifyUser);
+app.post('/api/sentences', handler.createSentence);
 // router.route('/api/')
 // app.use('/api', router);
 // app.get('/api/words', handler.what);

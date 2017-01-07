@@ -13,10 +13,21 @@ import Library from './Components/Library.jsx';
 import SearchResults from './Components/SearchResults.jsx';
 import WordDetails from './Components/WordDetails.jsx';
 import data from '../../data/sentences.js';
+import auth from './auth.js';
+
+var requireAuth = function(nextState, replace) {
+  if (!auth.isLoggedIn()) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    });
+  }
+};
 
 ReactDOM.render((
   <Router history={browserHistory}>
-    <Route path="/" component={ App } store={ AppStore } >
+    <Route path="/" component={ App } store={ AppStore } onEnter={requireAuth}>
+
       <IndexRoute component={ About } />
       <Route path="/library" component={ Library } data={window.data} store={ AppStore } />
       <Route path="/library/:word" store = { AppStore } component={ WordDetails }/>

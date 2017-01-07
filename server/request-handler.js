@@ -5,41 +5,44 @@ const Sentences = require('./db/collections/sentences');
 const Sentence = require('./db/models/sentence');
 const Users = require('./db/collections/users');
 const User = require('./db/models/user');
-
+const Promise = require('bluebird');
 
 
 
 exports.listSentences = function(req, res) {
-  let sentence = req.body.sentence;
-  let url = req.body.url;
-  let word_id = req.body.word_id;
-  let creator_id = req.body.creator_id;
+  var word = req.params.word;
 
-  new Sentence({word_id: word_id}).fetch().then(function(found) {
-    if (found) {
-      console.log('found');
-      res.send(found);
-    }
-  })
-}
+  new Word({text: word}).fetchAll({withRelated: 'sentences'})
+  .then(function(results) {
+    res.json(results);
+  });
+};
 
-exports.createSentences = function(req, res) {
-  let sentence = req.body.sentence;
-  let url = req.body.url;
-  let word_id = req.body.word_id;
-  let creator_id = req.body.creator_id;
+exports.createSentence = function(req, res) {
+  var creator = req.session.username;
+  var word = req.body.word;
+  var text = req.body.sentence;
+  var url = req.body.url;
+  var wordId;
+  var creatorId;
 
-  new Sentence({word_id: word_id}).fetch().then(function(found) {
-     Sentences.create({
-      text: sentence,
-      url: url,
-      word_id: word_id,
-      creator_id: creator_id
-    }).then(function(newSentence) {
-      res.send(newSentence);
-    })
-  })
-}
+  console.log(creator);
+  console.log(word);
+  console.log(text);
+  console.log(url);
+
+  new Word({text: word}).fetch()
+  .then(function(word) {
+    console.log(word.id);
+    wordId = word.id;
+    return new User({username: creator}).fetch();
+  }).then(function(user) {
+    // console.log(user);
+    creatorId = user.id;
+    new Sentence({text: text, url: url, word_id: wordId, creator_id: creatorId}).save();
+    res.send('done');
+  });
+};
 
 exports.createUser = (req, res) => {
   console.log('Creating user');
@@ -62,11 +65,13 @@ exports.createUser = (req, res) => {
 };
 
 exports.verifyUser = (req, res) => {
-  new User({username: req.body.username}).fetch().then((user) => {
+  var username = req.body.username;
+  var password = req.body.password;
+  new User({username: username}).fetch().then((user) => {
     if (!user) {
       res.sendStatus(403);
     } else {
-      if (user.attributes.password === req.body.password) {
+      if (user.attributes.password === password) {
         req.session.regenerate(() => {
           req.session.user = user;
           res.json({authenticated: true});
@@ -78,5 +83,6 @@ exports.verifyUser = (req, res) => {
     }
   });
 };
+
 
 
