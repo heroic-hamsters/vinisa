@@ -1,11 +1,18 @@
 const db = require('../dbconfig.js');
+// var Word = require('./word');
 
-const User = db.Model.extend({
+require('./word');
+
+var User = db.model('User', {
   tableName: 'users',
-  //Explicitly stating what
-  sentences: () => this.belongsToMany(Sentence, 'user_sentences', 'sentence_id', 'user_id'),
-  words: () => this.belongsToMany(Word, 'user_words', 'word_id', 'user_id'),
-  createdSentence: () => this.hasOne(Sentence),
+  hidden: ['password'],
+  sentences: function() {
+    return this.belongsToMany('Sentence', 'user_sentences');
+  },
+  words: function() {
+    return this.belongsToMany('Word', 'user_words');
+  },
+  createdSentence: () => this.hasOne('Sentence'),
 
 });
 

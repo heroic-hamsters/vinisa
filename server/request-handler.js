@@ -6,51 +6,8 @@ const Sentence = require('./db/models/sentence');
 const Users = require('./db/collections/users');
 const User = require('./db/models/user');
 
-exports.userHandler = function(req, res) {
-  let username = req.body.username;
-  new User({username: username}).fetch().then(function(found) {
-    if (found) {
-      console.log('found');
-      res.send(found);
-    } else {
-      Users.create({
-        username: username
-      }).then(function(newUser) {
-        res.send(newUser);
-      })
-    }
-  })
-}
 
-exports.getWords = function(req, res) {
-  // console.log(req.body);
-  // let word = req.body.word;
 
-  new Word.fetchAll({withRelated: ['user_words']}).then(function(found) {
-    if (found) {
-      console.log('found');
-      res.send(found);
-    } 
-  })
-}
-
-// exports.wordHandler = function(req, res) {
-//   // console.log(req.body);
-//   let word = req.body.word;
-//
-//   new Word({text: word}).fetch().then(function(found) {
-//     if (found) {
-//       console.log('found');
-//       res.send(found);
-//     } else {
-//       Words.create({
-//         text: word
-//       }).then(function(newWord) {
-//         res.send(newWord);
-//       })
-//     }
-//   })
-// }
 
 exports.listSentences = function(req, res) {
   let sentence = req.body.sentence;
@@ -83,3 +40,43 @@ exports.createSentences = function(req, res) {
     })
   })
 }
+
+exports.createUser = (req, res) => {
+  console.log('Creating user');
+  new User({username: req.body.username}).fetch().then((found) => {
+    if (found) {
+      res.status(403).send('Username already exists');
+    } else {
+      Users.create({
+        username: req.body.username,
+        password: req.body.password
+      }).then((newUser) => {
+        req.session.regenerate(() => {
+          req.session.user = newUser;
+          res.end();
+
+        });
+      });
+    }
+  });
+};
+
+exports.verifyUser = (req, res) => {
+  new User({username: req.body.username}).fetch().then((user) => {
+    if (!user) {
+      res.sendStatus(403);
+    } else {
+      if (user.attributes.password === req.body.password) {
+        req.session.regenerate(() => {
+          req.session.user = user;
+          res.json({authenticated: true});
+        });
+
+      } else {
+        res.status(403).send('Invalid username or password');
+      }
+    }
+  });
+};
+
+
