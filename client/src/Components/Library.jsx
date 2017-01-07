@@ -4,20 +4,24 @@ import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 import ajax from '../lib/ajax';
 
-@observer
+// @observer
 export default class Library extends React.Component {
   constructor(props) {
     super(props);
     this.store = this.props.route.store;
     this.state = {
       words: []
-    }
+    };
   }
 
   componentDidMount() {
     ajax.getWords(this.store.username, function(data) {
-      console.log(data);
-    });
+      var arr = [];
+      data[0].words.forEach( word => arr.push(word.text) );
+      this.setState({
+        words: arr
+      });
+    }.bind(this));
   }
 
   onWordSelect(event) {
@@ -37,13 +41,9 @@ export default class Library extends React.Component {
     return (
       <div>
         <h1>My Library</h1>
-        {this.props.route.data.map((sample)=>(
-          <ul key={sample.id}>
-            <li onClick={this.onWordSelect.bind(this)}>{sample.word.split(' ')[0]}</li>
-            <div>{sample.sentence}</div>
-          </ul>
-        ))}
-        {this.props.children}
+        <ul>
+          {this.state.words.map( word => <li onClick={this.onWordSelect.bind(this)}>{word}</li>)}
+        </ul>
       </div>
     );
   }
