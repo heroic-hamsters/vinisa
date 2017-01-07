@@ -21,12 +21,10 @@ export default class Signup extends React.Component {
       nativeLanguage: e.target.nativeLanguage.value,
       learnLanguage: e.target.learnLanguage.value
     };
-    console.log('signup ajax', ajax.signupAjax)
     ajax.signupAjax(this.store.username, this.store.password);
     this.store.languages = languages;
     browserHistory.push('/home');
   }
-
 
   render() {
     return (
@@ -38,18 +36,20 @@ export default class Signup extends React.Component {
           <div>Password: <input type="password" name="password" /></div>
 
           <div>
-            Your language:
+            Your Native Language:
             <select name="nativeLanguage">
+              <option></option>
               <option value='en-US'>English</option>
               <option value='cmn-Hans-CN'>Chinese</option>
             </select>
           </div>
 
           <div>
-            Language you want to learn:
+            Language You'd Like to Learn:
             <select name="learnLanguage">
+              <option></option>
               <option value="en">English</option>
-              <option value="zh-TW" selected>Chinese</option>
+              <option value="zh-TW">Chinese</option>
             </select>
           </div>
 
