@@ -8,6 +8,7 @@ export class AppStore {
   @observable translatedWord = "test";
   @observable showUpload = '';
   @observable audioSentence = '';
+  @observable audioSentenceTranslation = '';
 }
 
 export default new AppStore;

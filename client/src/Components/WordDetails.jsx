@@ -77,6 +77,19 @@ export default class WordDetails extends React.Component {
         console.log('data', data);
         this.store.showUpload = 'Uploaded Sentence:'
         this.store.audioSentence = data.results[0].alternatives[0].transcript;
+        this.translateAudioSentence();
+      }.bind(this)
+    })
+  }
+
+  translateAudioSentence() {
+    var url = `https://translation.googleapis.com/language/translate/v2?key=${CLOUD_API}&q=${this.store.audioSentence}&target=zh-TW`;
+    $.post ({
+      url: url,
+      contentType: 'application/json',
+      success: function(data) {
+        this.store.audioSentenceTranslation = data.data.translations[0].translatedText;
+        console.log('translate', this.store.audioSentenceTranslation);
         this.forceUpdate();
       }.bind(this)
     })
@@ -91,12 +104,14 @@ export default class WordDetails extends React.Component {
         <br/>
         <button onClick={this.onAudioPlay.bind(this)}>Play</button>
         <br/>
+        <button onClick={this.translateAudioSentence.bind(this)}>translate test</button>
         <br/>
         <Dropzone onDrop={this.onDrop.bind(this)}>
           <div>Upload or drag an audio file here</div>
         </Dropzone>
         <div>{this.store.showUpload}</div>
         <div>{this.store.audioSentence}</div>
+        <div>{this.store.audioSentenceTranslation}</div>
       </div>
     );
   }
