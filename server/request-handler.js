@@ -7,14 +7,42 @@ const Users = require('./db/collections/users');
 const User = require('./db/models/user');
 const Promise = require('bluebird');
 
+exports.getWords = function(req, res) {
+  var username = req.params.username;
+  new User().where({username: username}).fetchAll({withRelated: 'words'})
+  .then(function(results) {
+    res.send(JSON.stringify(results.models));
+  });
+};
 
+exports.addWord = function(req, res) {
+  var username = req.body.username;
+  var text = req.body.text;
+  var word = new Word({text: text});
+  word.fetch()
+  .then(function(found) {
+    if (!found) {
+      word.save();
+    }
+    return word;
+  }).then(function(word) {
+    new User().where({username: username}).fetch()
+    .then(function(user) {
+      user.words().attach(word);
+      res.send('Added word');
+    });
+
+  });
+};
 
 exports.listSentences = function(req, res) {
   var word = req.params.word;
-
+  // var params = {};
   new Word({text: word}).fetchAll({withRelated: 'sentences'})
   .then(function(results) {
-    res.json(results);
+
+    // params.sentences = results.models;
+    res.send(JSON.stringify(results.models));
   });
 };
 
@@ -40,7 +68,7 @@ exports.createSentence = function(req, res) {
     // console.log(user);
     creatorId = user.id;
     new Sentence({text: text, url: url, word_id: wordId, creator_id: creatorId}).save();
-    res.send('done');
+    res.send('Created sentence');
   });
 };
 
