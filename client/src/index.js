@@ -29,7 +29,7 @@ ReactDOM.render((
     <Route path="/" component={ App } store={ AppStore } >
       <IndexRoute component={ About } />
       <Route path="/library" component={ Library } data={window.data} store={ AppStore } />
-      <Route path="/library/:word" store = { AppStore } component={ WordDetails }/>
+      <Route path="/word" store = { AppStore } component={ WordDetails }/>
       <Route path="/signup" store = { AppStore } component={ Signup } />
       <Route path="/login" store = { AppStore } component={ Login } />
       <Route path="/home" store={ AppStore } component={ Home } />
