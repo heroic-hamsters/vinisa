@@ -66,6 +66,9 @@ export default class Home extends React.Component {
     e.preventDefault();
     var chosenWord = e.target.innerHTML;
     this.store.word = chosenWord;
+
+    ajax.addWord(this.store.username, chosenWord);
+    
     browserHistory.push('/library/' + chosenWord);
   }
 
