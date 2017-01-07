@@ -11,8 +11,8 @@ export default class WordDetails extends React.Component {
   }
 
   componentDidMount() {
-    var getUrl = 'https://www.googleapis.com/language/translate/v2?key=' + 
-                  CLOUD_API + 
+    var getUrl = 'https://www.googleapis.com/language/translate/v2?key=' +
+                  CLOUD_API +
                   '&q=' + this.store.word +
                   '&target=zh';
     $.ajax({
@@ -61,7 +61,7 @@ export default class WordDetails extends React.Component {
     var body = {
       "config": {
           "encoding":"linear16",
-          "sampleRate": 16000,
+          "sampleRate": 44100,
           "languageCode": this.store.languages.nativeLanguage
       },
       "audio": {
@@ -102,6 +102,13 @@ export default class WordDetails extends React.Component {
         <h2>{this.store.translatedWord}</h2>
         <button onClick={this.handleClick.bind(this)}>Listen</button>
         <br/>
+        <button onClick={this.onAudioPlay.bind(this)}>Play</button>
+        <br/>
+        <button onClick={this.translateAudioSentence.bind(this)}>translate test</button>
+        <br/>
+        <button>Record</button>
+        <br/>
+        <br/>
         <Dropzone onDrop={this.onDrop.bind(this)}>
           <div>Upload or drag an audio file here</div>
         </Dropzone>
@@ -112,4 +119,3 @@ export default class WordDetails extends React.Component {
     );
   }
 }
-
