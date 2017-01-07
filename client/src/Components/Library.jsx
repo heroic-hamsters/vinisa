@@ -28,13 +28,7 @@ export default class Library extends React.Component {
     event.persist();
     event.preventDefault();
     this.store.word = event.target.innerText;
-    browserHistory.push('/library/' + event.target.innerText);
-    $.ajax({
-      url: '/singleword',
-      context: event.target.innerText
-    }).done(()=>{
-      console.log('seleted word:', event.target.innerText);
-    });
+    browserHistory.push('/word');
   }
 
   render() {
