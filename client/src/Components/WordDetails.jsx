@@ -37,10 +37,10 @@ export default class WordDetails extends React.Component {
   }
 
   // play an audio clip
-  onAudioPlay() {
-    var audio = new Audio('https://s3.amazonaws.com/translate-hamster/audio/bottle1.m4a');
-    audio.play();
-  }
+  // onAudioPlay() {
+  //   var audio = new Audio('https://s3.amazonaws.com/translate-hamster/audio/bottle1.m4a');
+  //   audio.play();
+  // }
 
   onDrop(acceptedFiles, rejectedFiles) {
     console.log('acceptedFiles', acceptedFiles);
@@ -91,7 +91,6 @@ export default class WordDetails extends React.Component {
         this.store.audioSentenceTranslation = data.data.translations[0].translatedText;
         console.log('translate', this.store.audioSentenceTranslation);
         this.forceUpdate();
-        this.store.audioSentenceTranslation = '';
       }.bind(this)
     });
   }
@@ -102,10 +101,6 @@ export default class WordDetails extends React.Component {
         <h1>{this.store.word}</h1>
         <h2>{this.store.translatedWord}</h2>
         <button onClick={this.handleClick.bind(this)}>Listen</button>
-        <br/>
-        <button onClick={this.onAudioPlay.bind(this)}>Play</button>
-        <br/>
-        <button onClick={this.translateAudioSentence.bind(this)}>translate test</button>
         <br/>
         <Dropzone onDrop={this.onDrop.bind(this)}>
           <div>Upload or drag an audio file here</div>
