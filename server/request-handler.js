@@ -5,81 +5,84 @@ const Sentences = require('./db/collections/sentences');
 const Sentence = require('./db/models/sentence');
 const Users = require('./db/collections/users');
 const User = require('./db/models/user');
+const Promise = require('bluebird');
 
-exports.userHandler = function(req, res) {
-  let username = req.body.username;
-  new User({username: username}).fetch().then(function(found) {
-    if (found) {
-      console.log('found');
-      res.send(found);
-    } else {
-      Users.create({
-        username: username
-      }).then(function(newUser) {
-        res.send(newUser);
-      })
-    }
-  })
-}
 
-exports.getWords = function(req, res) {
-  // console.log(req.body);
-  // let word = req.body.word;
-
-  new Word.fetchAll({withRelated: ['user_words']}).then(function(found) {
-    if (found) {
-      console.log('found');
-      res.send(found);
-    } 
-  })
-}
-
-// exports.wordHandler = function(req, res) {
-//   // console.log(req.body);
-//   let word = req.body.word;
-//
-//   new Word({text: word}).fetch().then(function(found) {
-//     if (found) {
-//       console.log('found');
-//       res.send(found);
-//     } else {
-//       Words.create({
-//         text: word
-//       }).then(function(newWord) {
-//         res.send(newWord);
-//       })
-//     }
-//   })
-// }
 
 exports.listSentences = function(req, res) {
-  let sentence = req.body.sentence;
-  let url = req.body.url;
-  let word_id = req.body.word_id;
-  let creator_id = req.body.creator_id;
+  var word = req.params.word;
 
-  new Sentence({word_id: word_id}).fetch().then(function(found) {
+  new Word({text: word}).fetchAll({withRelated: 'sentences'})
+  .then(function(results) {
+    res.json(results);
+  });
+};
+
+exports.createSentence = function(req, res) {
+  var creator = req.session.username;
+  var word = req.body.word;
+  var text = req.body.sentence;
+  var url = req.body.url;
+  var wordId;
+  var creatorId;
+
+  console.log(creator);
+  console.log(word);
+  console.log(text);
+  console.log(url);
+
+  new Word({text: word}).fetch()
+  .then(function(word) {
+    console.log(word.id);
+    wordId = word.id;
+    return new User({username: creator}).fetch();
+  }).then(function(user) {
+    // console.log(user);
+    creatorId = user.id;
+    new Sentence({text: text, url: url, word_id: wordId, creator_id: creatorId}).save();
+    res.send('done');
+  });
+};
+
+exports.createUser = (req, res) => {
+  console.log('Creating user');
+  new User({username: req.body.username}).fetch().then((found) => {
     if (found) {
-      console.log('found');
-      res.send(found);
+      res.status(403).send('Username already exists');
+    } else {
+      Users.create({
+        username: req.body.username,
+        password: req.body.password
+      }).then((newUser) => {
+        req.session.regenerate(() => {
+          req.session.user = newUser;
+          res.end();
+
+        });
+      });
     }
-  })
-}
+  });
+};
 
-exports.createSentences = function(req, res) {
-  let sentence = req.body.sentence;
-  let url = req.body.url;
-  let word_id = req.body.word_id;
-  let creator_id = req.body.creator_id;
+exports.verifyUser = (req, res) => {
+  var username = req.body.username;
+  var password = req.body.password;
+  new User({username: username}).fetch().then((user) => {
+    if (!user) {
+      res.sendStatus(403);
+    } else {
+      if (user.attributes.password === password) {
+        req.session.regenerate(() => {
+          req.session.user = user;
+          res.json({authenticated: true});
+        });
 
-  new Sentence({word_id: word_id}).fetch().then(function(found) {
-     Sentences.create({
-      text: sentence,
-      url: url,
-      word_id: word_id,
-      creator_id: creator_id
-    }).then(function(newSentence) {
-      res.send(newSentence);
-    })
-  })
-}
+      } else {
+        res.status(403).send('Invalid username or password');
+      }
+    }
+  });
+};
+
+
+

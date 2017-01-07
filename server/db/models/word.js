@@ -1,9 +1,16 @@
 const db = require('../dbconfig.js');
 
-const Word = db.Model.extend({
+require('./sentence.js');
+require('./user.js');
+var Word = db.model('Word', {
   tableName: 'words',
-  sentence: () => this.hasOne(Sentence),
-  users: () => this.belongsToMany(User, 'user_words', 'user_id', 'word_id')
+  sentences: function() {
+    return this.hasMany('Sentence');
+  },
+  users: function() {
+    return this.belongsToMany('User', 'user_words');
+  }
 });
+
 
 module.exports = Word;

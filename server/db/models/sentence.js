@@ -1,10 +1,18 @@
 const db = require('../dbconfig.js');
 
-const Sentence = db.Model.extend({
+require('./word.js');
+require('./user.js');
+const Sentence = db.model('Sentence', {
   tableName: 'sentences',
-  creator: () => this.belongsTo(User),
-  word: () => this.belongsTo(Word),
-  users: () => this.belongsToMany(User, 'user_sentences', 'user_id', 'sentence_id')
+  creator: function() {
+    return this.belongsTo('User');
+  },
+  word: function() {
+    return this.belongsTo('Word');
+  },
+  users: function() {
+    return this.belongsToMany('User', 'user_sentences');
+  }
 
 });
 
