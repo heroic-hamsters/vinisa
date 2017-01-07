@@ -50,7 +50,10 @@ var signupAjax = function(username, password) {
     contentType: 'application/json',
     data: JSON.stringify({username: username, password: password}),
     success: (data) => console.log(data),
-    error: (err) => console.log('Error signing up', err)
+    error: (err) => {
+      console.log('Error signing up', err);
+      alert(err.responseText)
+    }
   });
 };
 
