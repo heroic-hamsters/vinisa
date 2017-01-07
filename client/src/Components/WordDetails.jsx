@@ -7,6 +7,7 @@ export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
     this.store = this.props.route.store;
+
   }
 
   componentDidMount() {
@@ -49,7 +50,7 @@ export default class WordDetails extends React.Component {
     var file = acceptedFiles[0];
     var reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = this.onSpeechTranlate;
+    reader.onloadend = this.onSpeechTranlate.bind(this);
     reader.onerror = function (error) {
       console.log('Base64 encoded error: ', error);
     };
@@ -62,19 +63,22 @@ export default class WordDetails extends React.Component {
       "config": {
           "encoding":"linear16",
           "sampleRate": 16000,
-          "languageCode": "cmn-Hans-CN"
+          "languageCode": this.store.languages.nativeLanguage
       },
       "audio": {
         "content": e.target.result.replace('data:audio/wav;base64,', '')
       }
     };
-    console.log(e.target.result);
     $.post({
       url: 'https://speech.googleapis.com/v1beta1/speech:syncrecognize?key=' + CLOUD_API,
       data: JSON.stringify(body),
       contentType: 'application/json',
-    }).done(function(data) {
-      console.log('data', data)
+      success: function(data) {
+        console.log('data', data);
+        this.store.showUpload = 'Uploaded Sentence:'
+        this.store.audioSentence = data.results[0].alternatives[0].transcript;
+        this.forceUpdate();
+      }.bind(this)
     })
   }
 
@@ -91,6 +95,8 @@ export default class WordDetails extends React.Component {
         <Dropzone onDrop={this.onDrop.bind(this)}>
           <div>Upload or drag an audio file here</div>
         </Dropzone>
+        <div>{this.store.showUpload}</div>
+        <div>{this.store.audioSentence}</div>
       </div>
     );
   }

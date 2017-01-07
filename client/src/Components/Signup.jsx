@@ -36,8 +36,8 @@ export default class Signup extends React.Component {
           <div>
             Your language: 
             <select name="nativeLanguage">
-              <option>English</option>
-              <option>Chinese</option>
+              <option value='en-US'>English</option>
+              <option value='cmn-Hans-CN'>Chinese</option>
             </select>
           </div>
 
