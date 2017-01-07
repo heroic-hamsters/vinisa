@@ -2,12 +2,22 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
+import ajax from '../lib/ajax';
 
 @observer
 export default class Library extends React.Component {
   constructor(props) {
     super(props);
     this.store = this.props.route.store;
+    this.state = {
+      words: []
+    }
+  }
+
+  componentDidMount() {
+    ajax.getWords(this.store.username, function(data) {
+      console.log(data);
+    });
   }
 
   onWordSelect(event) {

@@ -11,7 +11,7 @@ exports.getWords = function(req, res) {
   var username = req.params.username;
   new User().where({username: username}).fetchAll({withRelated: 'words'})
   .then(function(results) {
-    res.send(JSON.stringify(results.models));
+    res.send(results.models);
   });
 };
 
