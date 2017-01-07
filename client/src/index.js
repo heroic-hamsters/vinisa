@@ -27,7 +27,6 @@ var requireAuth = function(nextState, replace) {
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={ App } store={ AppStore } >
-
       <IndexRoute component={ About } />
       <Route path="/library" component={ Library } data={window.data} store={ AppStore } />
       <Route path="/library/:word" store = { AppStore } component={ WordDetails }/>

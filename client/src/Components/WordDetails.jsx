@@ -2,11 +2,12 @@ import React from 'react';
 import $ from 'jquery';
 import CLOUD_API from '../../env/config.js';
 import Dropzone from 'react-dropzone';
+import ajax from '../lib/ajax.js';
 
 export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store
+    this.store = this.props.route.store;
   }
 
   componentDidMount() {
@@ -73,11 +74,11 @@ export default class WordDetails extends React.Component {
       contentType: 'application/json',
       success: function(data) {
         console.log('data', data);
-        this.store.showUpload = 'Uploaded Sentence:'
+        this.store.showUpload = 'Uploaded Sentence:';
         this.store.audioSentence = data.results[0].alternatives[0].transcript;
         this.translateAudioSentence();
       }.bind(this)
-    })
+    });
   }
 
   translateAudioSentence() {
@@ -92,7 +93,7 @@ export default class WordDetails extends React.Component {
         this.forceUpdate();
         this.store.audioSentenceTranslation = '';
       }.bind(this)
-    })
+    });
   }
 
   render() {

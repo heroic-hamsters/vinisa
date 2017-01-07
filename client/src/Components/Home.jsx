@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
 import CLOUD_API from '../../env/config.js';
+import ajax from '../lib/ajax';
 
 @observer
 export default class Home extends React.Component {
@@ -44,7 +45,6 @@ export default class Home extends React.Component {
         }]
       }]
     };
-
     $.post({
       url: 'https://vision.googleapis.com/v1/images:annotate?key=' + CLOUD_API,
       data: JSON.stringify(request),
@@ -66,6 +66,9 @@ export default class Home extends React.Component {
     e.preventDefault();
     var chosenWord = e.target.innerHTML;
     this.store.word = chosenWord;
+
+    ajax.addWord(this.store.username, chosenWord);
+    
     browserHistory.push('/library/' + chosenWord);
   }
 

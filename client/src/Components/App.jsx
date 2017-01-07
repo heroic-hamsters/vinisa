@@ -9,7 +9,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.store = this.props.route.store;
-    this.loggedIn = auth.isLoggedIn()
+    this.loggedIn = auth.isLoggedIn();
   }
 
   render() {
