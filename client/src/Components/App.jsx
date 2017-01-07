@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, IndexLink } from 'react-router';
 import { observer } from 'mobx-react';
 import auth from '../auth';
+import NavLink from './NavLink.jsx';
 
 @observer
 export default class App extends React.Component {
@@ -14,8 +15,16 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Link to='/'>{this.store.sitename}</Link>
+        <IndexLink to='/'>{this.store.sitename}</IndexLink>
+        <br/>
+        <NavLink to='/library'>Library</NavLink>
+        <NavLink to='/login'>Login</NavLink>
+        <NavLink to='/help'>Help</NavLink>
+        <NavLink to='/settings'>Settings</NavLink>
+        <NavLink to='/logout'>Logout</NavLink>
+        <NavLink to='/signup'>signup</NavLink>
         {this.props.children}
+
       </div>
     );
   }
