@@ -1,6 +1,8 @@
 import React from 'react';
 import $ from 'jquery';
 import Config from '../../env/config.js';
+// import S3KEY from '../../env/s3config.js';
+// import S3SECRET from '../../env/s3config_secret.js';
 import Dropzone from 'react-dropzone';
 import ajax from '../lib/ajax.js';
 import MediaStreamRecorder from 'msr';
@@ -129,6 +131,7 @@ export default class WordDetails extends React.Component {
   // mediaRecorder = this.store.mediaRecorder;
 
   onMediaSuccess(stream) {
+    console.log('S3KEY:', Config['S3KEY']);
     // console.log(this);
     window.mediaRecorder = new MediaStreamRecorder(stream);
     var mediaRecorder = window.mediaRecorder;
