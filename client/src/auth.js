@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 var loginAjax = (username, password, cb) => {
   $.ajax({
-    url: 'api/signin',
+    url: 'api/login',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({username: username, password: password}),
@@ -18,10 +18,10 @@ var loginAjax = (username, password, cb) => {
 var login = (username, password, authCB) => {
   loginAjax(username, password, (res) => {
     if (res.authenticated) {
-      localStorage.setItem({authenticated: true});
+      localStorage.setItem('authenticated', true);
       authCB(true);
     } else {
-      localStorage.setItem({authenticated: false});
+      localStorage.setItem('authenticated', false);
       authCB(false);
     }
   });
