@@ -2,13 +2,13 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
+import ajax from '../lib/ajax';
 
 @observer
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store;
-    this.signupAjax = this.signupAjax.bind(this);
+    this.store = this.props.route.store
   }
 
   handleSubmit(e) {
@@ -21,23 +21,9 @@ export default class Signup extends React.Component {
       nativeLanguage: e.target.nativeLanguage.value,
       learnLanguage: e.target.learnLanguage.value
     };
-    this.signupAjax();
+    ajax.signupAjax(this.store.username, this.store.password);
     this.store.languages = languages;
-
     browserHistory.push('/home');
-  }
-
-  signupAjax() {
-    console.log(this.store.username);
-    console.log(this.store.password);
-    $.ajax({
-      url: '/api/signup',
-      method: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify({username:this.store.username, password: this.store.password}),
-      success: (data) => { console.log(data); },
-      error: (err) => {console.log(err);}
-    });
   }
 
   render() {
@@ -50,18 +36,20 @@ export default class Signup extends React.Component {
           <div>Password: <input type="password" name="password" /></div>
 
           <div>
-            Your language:
+            Your Native Language:
             <select name="nativeLanguage">
+              <option></option>
               <option value='en-US'>English</option>
               <option value='cmn-Hans-CN'>Chinese</option>
             </select>
           </div>
 
           <div>
-            Language you want to learn:
+            Language You'd Like to Learn:
             <select name="learnLanguage">
+              <option></option>
               <option value="en">English</option>
-              <option value="zh-TW" selected>Chinese</option>
+              <option value="zh-TW">Chinese</option>
             </select>
           </div>
 

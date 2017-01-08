@@ -15,15 +15,7 @@ export default class About extends React.Component {
           <p>Take a photo, and it will identify what objects are in that photo and translate it for you into your language of choice.</p>
           <p>More details here</p>
         </div>
-
-        <div className="signup-button">
-          <button><Link to ="/home">Home</Link></button>
-          <button><Link to="/library">Library</Link></button>
-          <button><Link to="/login">Login</Link></button>
-          <button><Link to="/logout">Logout</Link></button>
-          <button><Link to="/signup">Signup</Link></button>
-        </div>
-
+        
       </div>
     );
   }

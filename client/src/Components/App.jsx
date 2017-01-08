@@ -23,8 +23,8 @@ export default class App extends React.Component {
           <li><NavLink to='/help'>Help</NavLink></li>
           <li><NavLink to='/settings'>Settings</NavLink></li>
           <li><NavLink to='/login'>Login</NavLink></li>
+          <li><NavLink to='/signup'>Signup</NavLink></li>
           <li><NavLink to='/logout'>Logout</NavLink></li>
-          <li><NavLink to='/signup'>signup</NavLink></li>
         </ul>
         {this.props.children}
 
