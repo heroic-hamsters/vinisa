@@ -1,8 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 import Config from '../../env/config.js';
-// import S3KEY from '../../env/s3config.js';
-// import S3SECRET from '../../env/s3config_secret.js';
 import Dropzone from 'react-dropzone';
 import ajax from '../lib/ajax.js';
 import MediaStreamRecorder from 'msr';
@@ -121,8 +119,6 @@ export default class WordDetails extends React.Component {
   };
 
   stopRecording() {
-    // this.store.mediaRecorder = new MediaStreamRecorder(stream);
-    // window.mediaRecorder = this.store.mediaRecorder;
     var mediaRecorder = window.mediaRecorder;
     // $('#stop-recording').disabled = true;
     mediaRecorder.stop();
@@ -133,7 +129,6 @@ export default class WordDetails extends React.Component {
   // mediaRecorder = this.store.mediaRecorder;
 
   onMediaSuccess(stream) {
-    // console.log('S3KEY:', Config['S3KEY']);
     window.mediaRecorder = new MediaStreamRecorder(stream);
     var mediaRecorder = window.mediaRecorder;
     mediaRecorder.stream = stream;
@@ -182,11 +177,7 @@ export default class WordDetails extends React.Component {
       <div>
         <h1>{this.store.word}</h1>
         <h2>{this.store.translatedWord}</h2>
-        <button onClick={this.handleClick.bind(this)}>Listen</button>
-        <br/>
-
-        <br/>
-        <button onClick={this.translateAudioSentence.bind(this)}>translate test</button>
+        <button onClick={this.handleClick.bind(this)}>Hear translated audio</button>
         <br/>
         <button onClick={this.startRecording.bind(this)}>Record</button>
         <button onClick={this.stopRecording.bind(this)}>STOP</button>
