@@ -53,7 +53,7 @@ export default class WordDetails extends React.Component {
     console.log('acceptedFiles', acceptedFiles);
     console.log('rejectedFiles', rejectedFiles);
     // convert file to base64 encoded
-    var file = acceptedFiles[0];
+    var file = acceptedFiles;
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = this.onSpeechTranlate.bind(this);
@@ -116,7 +116,8 @@ export default class WordDetails extends React.Component {
     // audiosContainer = document.getElementById('audios-container');
     // console.log('startRecording()');
     console.log('startRecording THIS:', this);
-    this.captureUserMedia(this.mediaConstraints, this.onMediaSuccess, this.onMediaError);
+    var that = this;
+    this.captureUserMedia(this.mediaConstraints, this.onMediaSuccess.bind(that), this.onMediaError);
   };
 
   stopRecording() {
@@ -138,6 +139,7 @@ export default class WordDetails extends React.Component {
     mediaRecorder.stream = stream;
     mediaRecorder.mimeType = 'audio/wav';
     mediaRecorder.audioChannels = 1;
+    console.log('before mediaRecorder THIS: ', this);
     mediaRecorder.ondataavailable = function(blob) {
       $('#record-audio').html("<audio controls=''><source src=" + URL.createObjectURL(blob) + "></source></audio>");
 
@@ -146,9 +148,10 @@ export default class WordDetails extends React.Component {
       link.href = url;
       link.download = 'output.wav';
       // link.download = filename || 'output.wav';
-      this.onDrop(blob);
       console.log('onMediaSuccess THIS:', this);
-    };
+      this.onDrop(blob);
+
+    }.bind(this);
 
     var timeInterval = 360 * 1000;
 
@@ -181,7 +184,7 @@ export default class WordDetails extends React.Component {
         <h2>{this.store.translatedWord}</h2>
         <button onClick={this.handleClick.bind(this)}>Listen</button>
         <br/>
-        <button onClick={this.onAudioPlay.bind(this)}>Play</button>
+
         <br/>
         <button onClick={this.translateAudioSentence.bind(this)}>translate test</button>
         <br/>
