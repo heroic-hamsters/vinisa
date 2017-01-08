@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
-import CLOUD_API from '../../env/config.js';
+import Config from '../../env/config.js';
 import ajax from '../lib/ajax';
 
 @observer
@@ -46,7 +46,7 @@ export default class Home extends React.Component {
       }]
     };
     $.post({
-      url: 'https://vision.googleapis.com/v1/images:annotate?key=' + CLOUD_API,
+      url: 'https://vision.googleapis.com/v1/images:annotate?key=' + Config['CLOUD_API'],
       data: JSON.stringify(request),
       contentType: 'application/json'
     }).done(function(data) {
@@ -68,7 +68,6 @@ export default class Home extends React.Component {
     this.store.word = chosenWord;
 
     ajax.addWord(this.store.username, chosenWord);
-    
     browserHistory.push('/word');
   }
 
