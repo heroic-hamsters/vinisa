@@ -104,7 +104,7 @@ export default class WordDetails extends React.Component {
 
   captureUserMedia(mediaConstraints, successCallback, errorCallback) {
     navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
-    console.log('In captureUserMedia');
+    console.log('captureUserMedia THIS:', this);
   }
 
   mediaConstraints = {
@@ -114,7 +114,8 @@ export default class WordDetails extends React.Component {
   startRecording() {
     // $('#start-recording').disabled = true;
     // audiosContainer = document.getElementById('audios-container');
-    console.log('startRecording()');
+    // console.log('startRecording()');
+    console.log('startRecording THIS:', this);
     this.captureUserMedia(this.mediaConstraints, this.onMediaSuccess, this.onMediaError);
   };
 
@@ -145,7 +146,8 @@ export default class WordDetails extends React.Component {
       link.href = url;
       link.download = 'output.wav';
       // link.download = filename || 'output.wav';
-      // this.onDrop(blob);
+      this.onDrop(blob);
+      console.log('onMediaSuccess THIS:', this);
     };
 
     var timeInterval = 360 * 1000;
