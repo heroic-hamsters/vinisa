@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amazon-s3-url-signer": "^0.1.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.2",
