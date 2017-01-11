@@ -1,8 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { observer } from 'mobx-react';
-import { Link } from 'react-router';
+import { Link, IndexLink } from 'react-router';
 import { browserHistory } from 'react-router';
 import ajax from '../lib/ajax';
+import NavLink from './NavLink.jsx';
 
 @observer
 export default class Library extends React.Component {
@@ -17,7 +19,9 @@ export default class Library extends React.Component {
   componentDidMount() {
     ajax.getWords(this.store.username, function(data) {
       var arr = [];
-      data[0].words.forEach( word => arr.push(word.text) );
+      if (data[0].words) {
+        data[0].words.forEach( word => arr.push(word.text) );
+      }
       this.setState({
         words: arr
       });
@@ -35,9 +39,13 @@ export default class Library extends React.Component {
     return (
       <div>
         <h1>My Library</h1>
+        <button><Link to="library/savedwords">Saved Words</Link></button>
+        <button><Link to="library/savedsentences">savedsentences</Link></button>
+        <button><Link to="library/contributedsentences">contributed sentences</Link></button>
         <ul>
           {this.state.words.map( word => <li onClick={this.onWordSelect.bind(this)}>{word}</li>)}
         </ul>
+        {this.props.children}
       </div>
     );
   }

@@ -6,8 +6,9 @@ export class AppStore {
   @observable password = "";
   @observable languages = {};
   @observable word = "";
-  @observable translatedWord = "test";
+  @observable translatedWord = "";
   @observable showUpload = '';
+  @observable savedWords = 'savedWords sample';
   @observable audioSentence = '';
   @observable audioSentenceTranslation = '';
 }
