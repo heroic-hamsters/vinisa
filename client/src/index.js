@@ -38,8 +38,8 @@ ReactDOM.render((
           <Route path="savedwords" component={ SavedWords } />
           <Route path="savedsentences" component={ SavedSentences} />
           <Route path="contributedsentences" component={ ContributedSentences } />
-          <Route path="/word" store = { AppStore } component={ WordDetails }/>
         </Route>
+        <Route path="/word" store = { AppStore } component={ WordDetails }/>
       </Route>
       <Route path="/signup" store = { AppStore } component={ Signup } />
       <Route path="/login" store = { AppStore } component={ Login } />
