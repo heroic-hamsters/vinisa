@@ -8,14 +8,12 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, 'client', 'compiled'),
+    publicPath: '/compiled/',
     filename: 'bundle.js'
   },
 
-  watch: true,
 
-  devServer: {
-    historyApiFallback: true
-  },
+
 
   module: {
     loaders: [
@@ -25,10 +23,26 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.json$/, 
+        test: /\.json$/,
         loader: 'json-loader'
       }
     ]
+  },
+
+  // performance: {
+  //   hints: process.env.NODE.ENV === 'production' ? 'warning' : false
+  // },
+
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true,
+    stats: 'error-only',
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:3000',
+        secure: false
+      }
+    }
   }
 };
 
