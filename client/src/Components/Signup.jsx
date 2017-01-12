@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
 import ajax from '../lib/ajax';
-import {signupAjax} from '../lib/ajax';
 
 @observer
 export default class Signup extends React.Component {
@@ -23,7 +22,7 @@ export default class Signup extends React.Component {
       nativeLanguage: e.target.nativeLanguage.value,
       learnLanguage: e.target.learnLanguage.value
     };
-    signupAjax(this.store.username, this.store.password, languages.nativeLanguage, languages.learnLanguage);
+    ajax.signupAjax(this.store.username, this.store.password, languages.nativeLanguage, languages.learnLanguage);
     this.store.languages = languages;
     browserHistory.push('/home');
   }
