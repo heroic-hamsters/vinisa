@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const db = require('./db/dbconfig');
-const router = require('./router');
 var handler = require('./request-handler');
 var session = require('express-session');
 var s3Handler = require('./s3handler');
