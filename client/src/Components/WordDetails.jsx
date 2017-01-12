@@ -174,23 +174,24 @@ export default class WordDetails extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>{this.store.word}</h1>
-        <h2>{this.store.translatedWord}</h2>
-        <button onClick={this.handleClick.bind(this)}>Hear translated audio</button>
-        <br/>
-        <button onClick={this.startRecording.bind(this)}>Record</button>
-        <button onClick={this.stopRecording.bind(this)}>STOP</button>
-        <a href="#" id="save">save</a>
-        <div id="record-audio"></div>
-        <br/>
-        <br/>
-        <Dropzone onDrop={this.onDrop.bind(this)}>
-          <div>Upload or drag an audio file here</div>
-        </Dropzone>
-        <div>{this.store.showUpload}</div>
-        <div>{this.store.audioSentence}</div>
-        <div>{this.store.audioSentenceTranslation}</div>
+      <div className="word-details-container">
+        <div className="word-details-box">
+          <h1>{this.store.word} {this.store.translatedWord}</h1>
+          <button onClick={this.handleClick.bind(this)}>Hear translated audio</button>
+          <br/>
+          <button onClick={this.startRecording.bind(this)}>Record</button>
+          <button onClick={this.stopRecording.bind(this)}>STOP</button>
+          <a href="#" id="save">save</a>
+          <div id="record-audio"></div>
+          <br/>
+          <br/>
+          <Dropzone onDrop={this.onDrop.bind(this)}>
+            <div>Upload or drag an audio file here</div>
+          </Dropzone>
+          <div>{this.store.showUpload}</div>
+          <div>{this.store.audioSentence}</div>
+          <div>{this.store.audioSentenceTranslation}</div>
+        </div>
       </div>
     );
   }

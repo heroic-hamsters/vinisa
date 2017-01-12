@@ -31,6 +31,7 @@ export default class Home extends React.Component {
     });
 
     $('.dropzone').hide();
+    $('.search-bar').hide();
   }
 
   // POST base64 picture to Vision API with label detection parameter
@@ -71,12 +72,28 @@ export default class Home extends React.Component {
 
     ajax.addWord(this.store.username, chosenWord);
     browserHistory.push('/word');
+  }
 
+  handleSearch(e) {
+    e.preventDefault();
+    var searchTerm = e.target.query.value;
+
+    this.store.word = searchTerm;
+
+    ajax.addWord(this.store.username, searchTerm);
+    browserHistory.push('/word');
   }
 
   render() {
     return (
       <div className="home-box">
+
+      <div className="search-bar">
+        <h2>Search for a term or upload a picture.</h2>
+        <form onSubmit={this.handleSearch.bind(this)} id="search">
+          <input name="query" type="text" size="40" placeholder="Search..." />
+        </form>
+      </div>
 
       <div className="dropzone-box">
         <Dropzone className="dropzone" onDrop={this.onDrop.bind(this)}>
