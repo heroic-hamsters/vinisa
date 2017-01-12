@@ -8,7 +8,8 @@ export class AppStore {
   @observable word = "";
   @observable translatedWord = "";
   @observable showUpload = '';
-  @observable savedWords = 'savedWords sample';
+  @observable savedWords = [];
+  @observable savedSentences = ['hiiiii'];
   @observable audioSentence = '';
   @observable audioSentenceTranslation = '';
 }
