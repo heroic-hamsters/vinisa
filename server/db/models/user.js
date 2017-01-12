@@ -10,9 +10,18 @@ var User = db.model('User', {
     return this.belongsToMany('Sentence', 'user_sentences');
   },
   words: function() {
-    return this.belongsToMany('Word', 'user_words');
+    return this.belongsToMany('TranslatedWord', 'user_words');
   },
-  createdSentence: () => this.hasOne('Sentence'),
+  createdSentence: function() {
+    return this.hasOne('Sentence');
+  },
+  targetLanguages: function() {
+    return this.belongsToMany('Language', 'user_languages');
+  },
+  nativeLanguage: function() {
+    return this.hasOne('Language');
+  }
+
 
 });
 

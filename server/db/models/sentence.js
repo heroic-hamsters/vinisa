@@ -12,6 +12,9 @@ const Sentence = db.model('Sentence', {
   },
   users: function() {
     return this.belongsToMany('User', 'user_sentences');
+  },
+  languages: function() {
+    return this.belongsToMany('Language', 'translate_sentences').withPivot('translation');
   }
 
 });
