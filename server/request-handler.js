@@ -6,6 +6,7 @@ const Sentence = require('./db/models/sentence');
 const Users = require('./db/collections/users');
 const User = require('./db/models/user');
 const Promise = require('bluebird');
+const Language = require('./db/models/language');
 
 exports.getWords = function(req, res) {
   var username = req.params.username;
@@ -75,14 +76,23 @@ exports.createSentence = function(req, res) {
 
 exports.createUser = (req, res) => {
   console.log('Creating user');
+  var learnLanguage;
   new User({username: req.body.username}).fetch().then((found) => {
     if (found) {
       res.status(403).send('Username already exists');
     } else {
-      new User({username: req.body.username, password: req.body.password, native_language: req.body.nativeLanguage}).save().then(function(newUser) {
-        newUser.languages().attach(new Language({language: req.body.learnLanguage}));
-      });
+      Promise.all([
+        new Language({name: req.body.nativeLanguage}).fetch(),
+        new Language({name: req.body.learnLanguage}).fetch()
+      ])
+      .spread(function(nativeLanguage, newLearnLanguage) {
+        learnLanguage = newLearnLanguage;
 
+        return new User({username: req.body.username, password: req.body.password, native_language: nativeLanguage.id}).save();
+      })
+      .then(function(newUser) {
+        newUser.targetLanguages().attach(learnLanguage);
+      });
     }
   });
 };

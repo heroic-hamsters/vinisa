@@ -14,7 +14,6 @@ export default class Signup extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     this.store.username = e.target.username.value;
     this.store.password = e.target.password.value;
 
@@ -22,7 +21,12 @@ export default class Signup extends React.Component {
       nativeLanguage: e.target.nativeLanguage.value,
       learnLanguage: e.target.learnLanguage.value
     };
-    ajax.signupAjax(this.store.username, this.store.password, languages.nativeLanguage, languages.learnLanguage);
+    var nativeLanguageIndex = e.target.nativeLanguage.selectedIndex;
+    var learnLanguageIndex = e.target.learnLanguage.selectedIndex;
+    var nativeLanguage = e.target.nativeLanguage[nativeLanguageIndex].textContent;
+    var learnLanguage = e.target.learnLanguage[learnLanguageIndex].textContent;
+
+    ajax.signupAjax(this.store.username, this.store.password, nativeLanguage, learnLanguage);
     this.store.languages = languages;
     browserHistory.push('/home');
   }
