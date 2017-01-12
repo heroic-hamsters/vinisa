@@ -109,20 +109,30 @@ export default class WordDetails extends React.Component {
       $('#record-audio').html("<audio controls=''><source src=" + URL.createObjectURL(blob) + "></source></audio>");
 
       var url = (window.URL || window.webkitURL).createObjectURL(blob);
+      var tempFileName = `${Date.now()}.wav`;
+
       var link = document.getElementById("save");
       link.href = url;
-      link.download = 'output.wav';
+      link.download = tempFileName;
+
       // link.download = filename || 'output.wav';
       // console.log('onMediaSuccess THIS:', this);
 
       // var file =
       // url.lastModifiedDate = new Date();
       // url.name = link.download;
-      var file = new File([blob], "fileName");
-      console.log('file:', file);
-
-      // console.log('url: ', url);
       this.onDrop(blob);
+      var file = new File([blob], tempFileName);
+      this.store.audioFile = file;
+      console.log('file:', file);
+      // var bucket1 = sig.urlSigner(Config['S3KEY'], Config['S3SECRET']);
+      // var url1 = bucket1.getUrl('GET', tempFileName, '00hamsters', 10); //url expires in 10 minutes
+      // var putUrl = sig.urlSigner(Config['S3KEY'], Config['S3SECRET'], {
+      //   host: 's3.amazonaws.com',
+      // }).getUrl('PUT', tempFileName, '00hamsters', 100);
+      // console.log(putUrl);
+
+      // this.onDrop(blob);
     }.bind(this);
 
     var timeInterval = 360 * 1000;
@@ -130,6 +140,23 @@ export default class WordDetails extends React.Component {
     mediaRecorder.start(timeInterval);
 
     // $('#stop-recording').disabled = false;
+  }
+
+  uploadAudioFile() {
+    var formData = new FormData();
+    formData.append('audiofile', this.store.audioFile);
+    formData.append('Content-Type', 'multipart/form-data');
+
+    $.ajax({
+      url: '/api/upload',
+      method: 'POST',
+      data: formData,
+      processData: false,  // tell jQuery not to convert to form data
+      contentType: false,  // tell jQuery not to set contentType
+      success: function(response) {
+        console.log(response);
+      }.bind(this)
+    });
   }
 
   onMediaError(e) {
@@ -157,27 +184,25 @@ export default class WordDetails extends React.Component {
          <div className="translated-box">
             <div className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button></div>
          </div>
-         
+
           <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
             <div className="audio-drop-text">Upload or drag an audio file here</div>
           </Dropzone>
           <br/>
-
           <div className="record-stop-button">
             <button id="general-button" onClick={this.startRecording.bind(this)}>Record</button>
             <button id="general-button" onClick={this.stopRecording.bind(this)}>STOP</button>
+            <button onClick={this.uploadAudioFile.bind(this)}>Upload</button>
+            <div id="record-audio"></div>
             <a href="#" id="save">save</a>
           </div>
-          
-          <div id="record-audio"></div>
-          <br/>
-          <br/>
-          <div>{this.store.showUpload}</div>
-          <div>{this.store.audioSentence}</div>
-          <div>{this.store.audioSentenceTranslation}</div>
-
         </div>
+      <div>
+        <div>{this.store.showUpload}</div>
+        <div>{this.store.audioSentence}</div>
+        <div>{this.store.audioSentenceTranslation}</div>
       </div>
+    </div>
     );
   }
 }

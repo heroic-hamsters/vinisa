@@ -5,6 +5,7 @@ const db = require('./db/dbconfig');
 const router = require('./router');
 var handler = require('./request-handler');
 var session = require('express-session');
+var s3Handler = require('./s3handler');
 var morgan = require('morgan');
 
 const app = express();
@@ -32,6 +33,7 @@ app.post('/api/words', handler.addWord);
 app.get('/api/words/:username', handler.getWords);
 app.get('/api/languages', handler.getLanguages);
 app.get('/api/codes', handler.getCodes);
+app.post('/api/upload', s3Handler.uploadAudio);
 
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'));
