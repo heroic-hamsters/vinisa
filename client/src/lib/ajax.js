@@ -42,17 +42,17 @@ var addSentences = function(word, sentence, url) {
   });
 };
 
-var signupAjax = function(username, password) {
+var signupAjax = function(username, password, nativeLanguage, learnLanguage) {
 
   $.ajax({
     url: '/api/signup',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify({username: username, password: password}),
+    data: JSON.stringify({username: username, password: password, nativeLanguage: nativeLanguage, learnLanguage: learnLanguage}),
     success: (data) => console.log(data),
     error: (err) => {
       console.log('Error signing up', err);
-      alert(err.responseText)
+      alert(err.responseText);
     }
   });
 };

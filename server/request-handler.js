@@ -79,16 +79,10 @@ exports.createUser = (req, res) => {
     if (found) {
       res.status(403).send('Username already exists');
     } else {
-      Users.create({
-        username: req.body.username,
-        password: req.body.password
-      }).then((newUser) => {
-        req.session.regenerate(() => {
-          req.session.user = newUser;
-          res.end();
-
-        });
+      new User({username: req.body.username, password: req.body.password, native_language: req.body.nativeLanguage}).save().then(function(newUser) {
+        newUser.languages().attach(new Language({language: req.body.learnLanguage}));
       });
+
     }
   });
 };

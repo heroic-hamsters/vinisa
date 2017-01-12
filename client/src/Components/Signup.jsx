@@ -8,7 +8,8 @@ import ajax from '../lib/ajax';
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store
+
+    this.store = this.props.route.store;
   }
 
   handleSubmit(e) {
@@ -21,7 +22,7 @@ export default class Signup extends React.Component {
       nativeLanguage: e.target.nativeLanguage.value,
       learnLanguage: e.target.learnLanguage.value
     };
-    ajax.signupAjax(this.store.username, this.store.password);
+    ajax.signupAjax(this.store.username, this.store.password, languages.nativeLanguage, languages.learnLanguage);
     this.store.languages = languages;
     browserHistory.push('/home');
   }
