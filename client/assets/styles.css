@@ -1,0 +1,268 @@
+body {
+  font-family: Lora;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background-image: url('bg.jpg')
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:visited {
+  color: black;
+}
+
+ul {
+  list-style-type: none;
+}
+
+h1 {
+  margin: 0;
+}
+
+.title-bar {
+  background-color: lightgray;
+  background-image: url('marble.jpg');
+  background-size: cover;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.website-title {
+  margin-left: 20px;
+  color: black;
+  font-family: 'Source Sans Pro';
+  font-size: 40px;
+  text-decoration: none;
+}
+
+.website-title:visited {
+  color: black;
+}
+
+.information {
+  background: lightgray;
+  background-image: url('splash.jpg');
+  background-position: 25% 25%;
+  background-size: cover;
+  height: 500px;
+  width: 100%;
+  position: fixed;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  font-size: 24px;
+}
+
+.information a:visited {
+  color: white;
+}
+
+.information-text {
+  background-color: rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  border-radius: 1px;
+}
+
+.login-signup-button {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+}
+
+.login-signup-button li {
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-signup-button li:hover {
+  background-color: gray;
+}
+
+.faq {
+  position: fixed;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  top: 600px;
+}
+
+.faq-list {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.faq-list li {
+  margin: 10px;
+}
+
+.navbar {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  background-color: #021e4c;
+  height: 50px;
+  position: fixed;
+  top: 100px;
+  width: 100%;
+}
+
+.navbar > li > a {
+  color: white;
+  margin: 0 15px;
+}
+
+.navbar > li > a:hover {
+  color: lightblue;
+}
+
+.login-signup-box {
+  margin: 10% auto;
+  background-color: white;
+  width: 40%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-signup-form > * {
+  margin: 5px;
+}
+
+.home-box {
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 20%;
+}
+
+.another-button {
+  position: fixed;
+  top: 20%;
+}
+
+#another-button {
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+  background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+  background-color:#f9f9f9;
+  border-radius:5px;
+  border:1px solid #dcdcdc;
+  display:inline-block;
+  cursor:pointer;
+  color:#666666;
+  font-size:14px;
+  font-weight:bold;
+  padding:6px 24px;
+  text-decoration:none;
+}
+
+#another-button:hover {
+  background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+  background-color:#e9e9e9;
+}
+
+#search input[type="text"] {
+  border: 1px solid #d1d1d1;
+  color: #bebebe;
+  width: 150px;
+  padding: 6px 15px 6px 35px;
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
+  transition: all 0.7s ease 0s;
+}
+
+#search input[type="text"]:focus {
+  width: 200px;
+  outline: 0;
+}
+
+.dropzone-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dropzone {
+  position: fixed;
+  top: 35%;
+  background-image: url('pic.gif');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 500px;
+  height: 200px;
+  border: 2.5px dashed;
+}
+
+.dropzone-text {
+  text-align: center;
+}
+
+.found-image {
+  height: 300px;
+  border-radius: 10px;
+}
+
+.image-wordlist {
+  position: fixed;
+  top: 25%;
+  display: flex;
+  flex-direction: row;
+}
+
+.library-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.library-box {
+  position: fixed;
+  top: 20%;
+}
+
+.word-details-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: 5%;
+}
+
+.word-details-box {
+  position: fixed;
+  top: 25%;
+}

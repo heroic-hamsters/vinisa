@@ -29,9 +29,9 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="login-signup-box">
         <h1>Login</h1>
-        <form onSubmit={ this.handleSubmit.bind(this) }>
+        <form className="login-signup-form" onSubmit={ this.handleSubmit.bind(this) }>
           Username: <input type="text" name="username" />
           Password: <input type="password" name="password" />
           <input type="submit" />

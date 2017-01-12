@@ -29,6 +29,19 @@ export default class Home extends React.Component {
     this.setState({
       imgsrc: file.preview
     });
+
+    $('.dropzone').hide();
+    $('.search-bar').hide();
+    $('.image-wordlist').show();
+    $('.another-button').show();
+  }
+
+  uploadAnother(e) {
+    e.preventDefault();
+    $('.dropzone').show();
+    $('.search-bar').show();
+    $('.image-wordlist').hide();
+    $('.another-button').hide();
   }
 
   // POST base64 picture to Vision API with label detection parameter
@@ -52,7 +65,7 @@ export default class Home extends React.Component {
     }).done(function(data) {
       // Create a list using jQuery with the labels of the picture
       var responseArray = data.responses[0].labelAnnotations;
-      var wList = $('ul.wordList');
+      var wList = $('ul.word-list');
 
       wList.empty();
       responseArray.forEach( response => {
@@ -69,22 +82,52 @@ export default class Home extends React.Component {
 
     ajax.addWord(this.store.username, chosenWord);
     browserHistory.push('/word');
+  }
 
+  handleSearch(e) {
+    e.preventDefault();
+    var searchTerm = e.target.query.value;
+
+    this.store.word = searchTerm;
+
+    ajax.addWord(this.store.username, searchTerm);
+    browserHistory.push('/word');
   }
 
   render() {
     return (
-      <div>
-        <Dropzone style={{'width': '400px', 'height': '150px', 'border': '0.5px dashed'}} onDrop={this.onDrop.bind(this)}>
-          <div style={{'textAlign': 'center', 'marginTop': '15%'}}>Drag and drop a photo here or click to upload.</div>
+      <div className="home-box">
+
+      <div className="search-bar">
+        <h2>Search for a term or upload a picture.</h2>
+        <form onSubmit={this.handleSearch.bind(this)} id="search">
+          <input name="query" type="text" size="40" placeholder="Search..." />
+        </form>
+      </div>
+
+      <div className="dropzone-box">
+        <Dropzone className="dropzone" onDrop={this.onDrop.bind(this)}>
+          <div className="dropzone-text">Drag and drop a photo here or click to upload.</div>
         </Dropzone>
+      </div>
 
-        {this.state.imgsrc === '' ? null : <img style={{'height': '300px'}} src={this.state.imgsrc} />}
+      <div className="another-button" style={{'display': 'none'}}>
+        <button id="another-button" onClick={this.uploadAnother.bind(this)}>Upload another picture</button>
+      </div>
 
-        <div className="wordListBox" onClick={this.handleClick.bind(this)}>
-          <ul className="wordList">
+      <div className="image-wordlist">
+
+        <div>
+          {this.state.imgsrc === '' ? null : <img className="found-image" src={this.state.imgsrc} />}
+        </div>
+
+        <div className="word-list-box" onClick={this.handleClick.bind(this)}>
+          <ul className="word-list">
           </ul>
         </div>
+
+      </div>
+
 
       </div>
     );
