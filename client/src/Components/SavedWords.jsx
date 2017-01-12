@@ -14,9 +14,11 @@ export default class SavedWords extends React.Component {
 
   componentDidMount() {
     Ajax.getWords(AppStore.username, (data) => {
-      data[0].words.forEach((word) => {
-        AppStore.savedWords.push(word.text)
-      })
+      if (data) {
+        data[0].words.forEach((word) => {
+          AppStore.savedWords.push(word.text)
+        })
+      }
     })
   }
   
@@ -29,7 +31,7 @@ export default class SavedWords extends React.Component {
         AppStore.savedSentences.push(data[i].text)
 
       }
-                console.log(AppStore.savedSentences)
+                // console.log(AppStore.savedSentences)
       // data.forEach(sentence => {
       //   AppStore.savedSentences.push(sentence)
       //   console.log(AppStore.savedSentences)
@@ -37,14 +39,17 @@ export default class SavedWords extends React.Component {
     })
   }
 
+          // move to line 52
+          // {AppStore.savedWords.map((word) => (
+          //   <li key={word} onClick={this.onWordSelect.bind(this)}>{word}</li>
+          // ))}
+
   render() {
     return (
       <div>
         <h1>SavedWords</h1>
         <ul>
-          {AppStore.savedWords.map((word) => (
-            <li key={word} onClick={this.onWordSelect.bind(this)}>{word}</li>
-          ))}
+
         </ul>
       </div>
     )
