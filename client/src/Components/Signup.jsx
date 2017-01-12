@@ -11,7 +11,6 @@ export default class Signup extends React.Component {
     super(props);
 
     this.store = this.props.route.store;
-k dev server and add tables and models to the database
   }
 
   handleSubmit(e) {
