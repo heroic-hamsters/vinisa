@@ -11,7 +11,7 @@ var Promise = require('bluebird');
 
 
 describe('Language Learning Database', function() {
-  beforeEach(function() {
+  afterEach(function() {
     new User().where({username: 'Steve'}).fetch({withRelated: ['sentences']})
     .then(function(user) {
       user.sentences().detach();

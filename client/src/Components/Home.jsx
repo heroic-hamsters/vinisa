@@ -69,6 +69,7 @@ export default class Home extends React.Component {
 
     ajax.addWord(this.store.username, chosenWord);
     browserHistory.push('/word');
+
   }
 
   render() {
