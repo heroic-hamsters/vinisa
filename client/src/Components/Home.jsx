@@ -32,6 +32,16 @@ export default class Home extends React.Component {
 
     $('.dropzone').hide();
     $('.search-bar').hide();
+    $('.image-wordlist').show();
+    $('.another-button').show();
+  }
+
+  uploadAnother(e) {
+    e.preventDefault();
+    $('.dropzone').show();
+    $('.search-bar').show();
+    $('.image-wordlist').hide();
+    $('.another-button').hide();
   }
 
   // POST base64 picture to Vision API with label detection parameter
@@ -99,6 +109,10 @@ export default class Home extends React.Component {
         <Dropzone className="dropzone" onDrop={this.onDrop.bind(this)}>
           <div className="dropzone-text">Drag and drop a photo here or click to upload.</div>
         </Dropzone>
+      </div>
+
+      <div className="another-button" style={{'display': 'none'}}>
+        <button id="another-button" onClick={this.uploadAnother.bind(this)}>Upload another picture</button>
       </div>
 
       <div className="image-wordlist">

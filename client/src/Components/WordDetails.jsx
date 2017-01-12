@@ -9,6 +9,7 @@ export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
     this.store = this.props.route.store;
+    this.speechText = new SpeechSynthesisUtterance();
   }
 
   componentWillMount() {
@@ -37,8 +38,9 @@ export default class WordDetails extends React.Component {
 
   handleClick(e) {
     e.preventDefault();
-    // responsiveVoice is from the cdn in index.html
-    responsiveVoice.speak(this.store.translatedWord, 'Chinese Female');
+    this.speechText.text = this.store.translatedWord;
+    this.speechText.lang = 'zh-CN';
+    speechSynthesis.speak(this.speechText);
   }
 
   // play an audio clip
