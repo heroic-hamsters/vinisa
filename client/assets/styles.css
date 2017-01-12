@@ -70,6 +70,7 @@ ul {
 }
 
 .login-signup-button {
+  color: white;
   display: flex;
   flex-direction: row;
   padding: 0;
@@ -115,7 +116,7 @@ ul {
   flex-direction: row;
   justify-content: left;
   align-items: center;
-  background-color: black;
+  background-color: #021e4c;
   height: 50px;
   position: fixed;
   top: 100px;
@@ -152,6 +153,11 @@ ul {
   margin: 5px;
 }
 
+.home-box {
+  display: flex;
+  justify-content: center;
+}
+
 .dropzone-box {
   display: flex;
   flex-direction: row;
@@ -160,7 +166,6 @@ ul {
 
 .dropzone {
   background-image: url('pic.gif');
-  background-color: white;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -176,10 +181,13 @@ ul {
 }
 
 .found-image {
-  float:left;
+  height: 300px;
+  border-radius: 10px;
 }
 
-.word-list-box {
+.image-wordlist {
   position: fixed;
   top: 25%;
+  display: flex;
+  flex-direction: row;
 }

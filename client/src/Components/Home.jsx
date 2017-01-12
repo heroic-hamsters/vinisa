@@ -84,6 +84,7 @@ export default class Home extends React.Component {
         </Dropzone>
       </div>
 
+      <div className="image-wordlist">
 
         <div>
           {this.state.imgsrc === '' ? null : <img className="found-image" src={this.state.imgsrc} />}
@@ -93,6 +94,8 @@ export default class Home extends React.Component {
           <ul className="word-list">
           </ul>
         </div>
+
+      </div>
 
 
       </div>
