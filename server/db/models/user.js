@@ -2,6 +2,8 @@ const db = require('../dbconfig.js');
 // var Word = require('./word');
 
 require('./word');
+require('./language');
+require('./sentence');
 
 var User = db.model('User', {
   tableName: 'users',
@@ -19,7 +21,7 @@ var User = db.model('User', {
     return this.belongsToMany('Language', 'user_languages');
   },
   nativeLanguage: function() {
-    return this.hasOne('Language');
+    return this.belongsTo('Language');
   }
 
 

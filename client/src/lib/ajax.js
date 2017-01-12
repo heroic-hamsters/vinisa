@@ -52,7 +52,6 @@ var signupAjax = function(username, password, nativeLanguage, learnLanguage) {
     success: (data) => console.log(data),
     error: (err) => {
       console.log('Error signing up', err);
-      alert(err.responseText);
     }
   });
 };
