@@ -33,10 +33,10 @@ export default class Signup extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="login-signup-box">
         <h1>Signup</h1>
 
-        <form className="signupForm" onSubmit={ this.handleSubmit.bind(this) } >
+        <form className="login-signup-form" onSubmit={ this.handleSubmit.bind(this) } >
           <div>Username: <input type="text" name="username" /></div>
           <div>Password: <input type="password" name="password" /></div>
 

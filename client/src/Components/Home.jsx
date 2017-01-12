@@ -29,6 +29,8 @@ export default class Home extends React.Component {
     this.setState({
       imgsrc: file.preview
     });
+
+    $('.dropzone').hide();
   }
 
   // POST base64 picture to Vision API with label detection parameter
@@ -52,7 +54,7 @@ export default class Home extends React.Component {
     }).done(function(data) {
       // Create a list using jQuery with the labels of the picture
       var responseArray = data.responses[0].labelAnnotations;
-      var wList = $('ul.wordList');
+      var wList = $('ul.word-list');
 
       wList.empty();
       responseArray.forEach( response => {
@@ -74,17 +76,24 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <div>
-        <Dropzone style={{'width': '400px', 'height': '150px', 'border': '0.5px dashed'}} onDrop={this.onDrop.bind(this)}>
-          <div style={{'textAlign': 'center', 'marginTop': '15%'}}>Drag and drop a photo here or click to upload.</div>
+      <div className="home-box">
+
+      <div className="dropzone-box">
+        <Dropzone className="dropzone" onDrop={this.onDrop.bind(this)}>
+          <div className="dropzone-text">Drag and drop a photo here or click to upload.</div>
         </Dropzone>
+      </div>
 
-        {this.state.imgsrc === '' ? null : <img style={{'height': '300px'}} src={this.state.imgsrc} />}
 
-        <div className="wordListBox" onClick={this.handleClick.bind(this)}>
-          <ul className="wordList">
+        <div>
+          {this.state.imgsrc === '' ? null : <img className="found-image" src={this.state.imgsrc} />}
+        </div>
+
+        <div className="word-list-box" onClick={this.handleClick.bind(this)}>
+          <ul className="word-list">
           </ul>
         </div>
+
 
       </div>
     );

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { Link, IndexLink } from 'react-router';
 import { browserHistory } from 'react-router';
 import ajax from '../lib/ajax';
-import NavLink from './NavLink.jsx';
+import Navbar from './Navbar.jsx';
 
 @observer
 export default class Library extends React.Component {
@@ -42,9 +42,6 @@ export default class Library extends React.Component {
         <button><Link to="library/savedwords">Saved Words</Link></button>
         <button><Link to="library/savedsentences">savedsentences</Link></button>
         <button><Link to="library/contributedsentences">contributed sentences</Link></button>
-        <ul>
-          {this.state.words.map( word => <li onClick={this.onWordSelect.bind(this)}>{word}</li>)}
-        </ul>
         {this.props.children}
       </div>
     );

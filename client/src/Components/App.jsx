@@ -15,17 +15,11 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <IndexLink to='/'>{this.store.sitename}</IndexLink>
+        <div className="title-bar">
+          <IndexLink to='/' className="website-title">{this.store.sitename}</IndexLink>
+        </div>
         <br/>
-        <ul>
-          <li><NavLink to='/home'>Home</NavLink></li>
-          <li><NavLink to='/library'>Library</NavLink></li>
-          <li><NavLink to='/help'>Help</NavLink></li>
-          <li><NavLink to='/settings'>Settings</NavLink></li>
-          <li><NavLink to='/login'>Login</NavLink></li>
-          <li><NavLink to='/signup'>Signup</NavLink></li>
-          <li><NavLink to='/logout'>Logout</NavLink></li>
-        </ul>
+
         {this.props.children}
 
       </div>

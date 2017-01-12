@@ -1,0 +1,185 @@
+body {
+  font-family: Lora;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background-image: url('bg.jpg')
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:visited {
+  color: black;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.title-bar {
+  background-color: lightgray;
+  background-image: url('marble.jpg');
+  background-size: cover;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.website-title {
+  margin-left: 20px;
+  color: black;
+  font-family: 'Source Sans Pro';
+  font-size: 40px;
+  text-decoration: none;
+}
+
+.website-title:visited {
+  color: black;
+}
+
+.information {
+  background: lightgray;
+  background-image: url('splash.jpg');
+  background-position: 25% 25%;
+  background-size: cover;
+  height: 500px;
+  width: 100%;
+  position: fixed;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  font-size: 24px;
+}
+
+.information a:visited {
+  color: white;
+}
+
+.information-text {
+  background-color: rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  border-radius: 1px;
+}
+
+.login-signup-button {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+}
+
+.login-signup-button li {
+  font-size: 14px;
+  background-color: black;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-signup-button li:hover {
+  background-color: gray;
+}
+
+.faq {
+  position: fixed;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  top: 600px;
+}
+
+.faq-list {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.faq-list li {
+  margin: 10px;
+}
+
+.navbar {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  background-color: black;
+  height: 50px;
+  position: fixed;
+  top: 100px;
+  width: 100%;
+}
+
+.navbar > li > a {
+  color: white;
+  margin: 0 15px;
+}
+
+.navbar > li > a:hover {
+  color: lightblue;
+}
+
+.login-signup-box {
+  margin: 10% auto;
+  background-color: white;
+  width: 40%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-signup-form > * {
+  margin: 5px;
+}
+
+.dropzone-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dropzone {
+  background-image: url('pic.gif');
+  background-color: white;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: fixed;
+  top: 25%;
+  width: 500px;
+  height: 200px;
+  border: 2.5px dashed;
+}
+
+.dropzone-text {
+  text-align: center;
+}
+
+.found-image {
+  float:left;
+}
+
+.word-list-box {
+  position: fixed;
+  top: 25%;
+}
