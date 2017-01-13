@@ -30,7 +30,7 @@ export default class Home extends React.Component {
       imgsrc: file.preview
     });
 
-    $('.dropzone').hide();
+    $('.pic-drop').hide();
     $('.search-bar').hide();
     $('.image-wordlist').show();
     $('.another-button').show();
@@ -38,7 +38,7 @@ export default class Home extends React.Component {
 
   uploadAnother(e) {
     e.preventDefault();
-    $('.dropzone').show();
+    $('.pic-drop').show();
     $('.search-bar').show();
     $('.image-wordlist').hide();
     $('.another-button').hide();
@@ -98,35 +98,35 @@ export default class Home extends React.Component {
     return (
       <div className="home-box">
 
-      <div className="search-bar">
-        <h2>Search for a term or upload a picture.</h2>
-        <form onSubmit={this.handleSearch.bind(this)} id="search">
-          <input name="query" type="text" size="40" placeholder="Search..." />
-        </form>
-      </div>
-
-      <div className="dropzone-box">
-        <Dropzone className="dropzone" onDrop={this.onDrop.bind(this)}>
-          <div className="dropzone-text">Drag and drop a photo here or click to upload.</div>
-        </Dropzone>
-      </div>
-
-      <div className="another-button" style={{'display': 'none'}}>
-        <button id="another-button" onClick={this.uploadAnother.bind(this)}>Upload another picture</button>
-      </div>
-
-      <div className="image-wordlist">
-
-        <div>
-          {this.state.imgsrc === '' ? null : <img className="found-image" src={this.state.imgsrc} />}
+        <div className="search-bar">
+          <h2>Search for a term or upload a picture.</h2>
+          <form onSubmit={this.handleSearch.bind(this)} id="search">
+            <input name="query" type="text" size="40" placeholder="Search..." />
+          </form>
         </div>
 
-        <div className="word-list-box" onClick={this.handleClick.bind(this)}>
-          <ul className="word-list">
-          </ul>
+        <div className="pic-drop-box">
+          <Dropzone className="pic-drop" onDrop={this.onDrop.bind(this)}>
+            <div className="pic-drop-text">Drag and drop a photo here or click to upload.</div>
+          </Dropzone>
         </div>
 
-      </div>
+        <div className="another-button" style={{'display': 'none'}}>
+          <button id="general-button" onClick={this.uploadAnother.bind(this)}>Upload another picture</button>
+        </div>
+
+        <div className="image-wordlist">
+
+          <div>
+            {this.state.imgsrc === '' ? null : <img className="found-image" src={this.state.imgsrc} />}
+          </div>
+
+          <div className="word-list-box" onClick={this.handleClick.bind(this)}>
+            <ul className="word-list">
+            </ul>
+          </div>
+
+        </div>
 
 
       </div>

@@ -7,7 +7,7 @@ import Ajax from '../lib/ajax.js';
 
 export default class SavedSentences extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   // componentDidMount() {
@@ -25,11 +25,11 @@ export default class SavedSentences extends React.Component {
   render() {
     return (
       <div>
-        <h1>SavedSentences</h1>
+        <h3>Saved Sentences</h3>
         <ul>
 
         </ul>
       </div>
-    )
+    );
   }
 }

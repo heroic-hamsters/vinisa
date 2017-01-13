@@ -34,7 +34,7 @@ export default class Login extends React.Component {
         <form className="login-signup-form" onSubmit={ this.handleSubmit.bind(this) }>
           Username: <input type="text" name="username" />
           Password: <input type="password" name="password" />
-          <input type="submit" />
+          <input id="general-button" type="submit" />
           {this.state.error && (<p>Login Failed</p>)}
         </form>
       </div>

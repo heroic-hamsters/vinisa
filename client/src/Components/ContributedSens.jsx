@@ -7,7 +7,7 @@ import Ajax from '../lib/ajax.js';
 
 export default class ContributedSentences extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   // componentDidMount() {
@@ -26,11 +26,11 @@ export default class ContributedSentences extends React.Component {
   render() {
     return (
       <div>
-        <h1>ContributedSentences</h1>
+        <h3>Contributed Sentences</h3>
         <ul>
 
         </ul>
       </div>
-    )
+    );
   }
 }

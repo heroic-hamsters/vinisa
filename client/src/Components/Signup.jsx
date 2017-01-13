@@ -58,7 +58,7 @@ export default class Signup extends React.Component {
             </select>
           </div>
 
-          <div><input type="submit" /></div>
+          <div><input id="general-button" type="submit" /></div>
 
         </form>
 
