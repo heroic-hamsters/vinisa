@@ -125,14 +125,8 @@ export default class WordDetails extends React.Component {
       var file = new File([blob], tempFileName);
       this.store.audioFile = file;
       console.log('file:', file);
-      // var bucket1 = sig.urlSigner(Config['S3KEY'], Config['S3SECRET']);
-      // var url1 = bucket1.getUrl('GET', tempFileName, '00hamsters', 10); //url expires in 10 minutes
-      // var putUrl = sig.urlSigner(Config['S3KEY'], Config['S3SECRET'], {
-      //   host: 's3.amazonaws.com',
-      // }).getUrl('PUT', tempFileName, '00hamsters', 100);
-      // console.log(putUrl);
 
-      // this.onDrop(blob);
+      this.onDrop(blob);
     }.bind(this);
 
     var timeInterval = 360 * 1000;
@@ -180,14 +174,12 @@ export default class WordDetails extends React.Component {
     return (
       <div className="word-details-container">
         <div className="word-details-box">
-
          <div className="translated-box">
             <div className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button></div>
          </div>
 
           <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
             <div className="audio-drop-text">Upload or drag an audio file here</div>
-          </Dropzone>
           <br/>
           <div className="record-stop-button">
             <button id="general-button" onClick={this.startRecording.bind(this)}>Record</button>
