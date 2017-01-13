@@ -56,10 +56,21 @@ var signupAjax = function(username, password, nativeLanguage, learnLanguage) {
   });
 };
 
+var getLanguages = function(cb) {
+  $.ajax({
+    url: '/api/languages',
+    method: 'GET',
+    contentType: 'application/json',
+    success: (data) => cb(data),
+    error: (err) => console.log('Error getting languages from database', err)
+  });
+};
+
 module.exports = {
   getWords: getWords,
   addWord: addWord,
   getSentences: getSentences,
   addSentences: addSentences,
-  signupAjax: signupAjax
+  signupAjax: signupAjax,
+  getLanguages: getLanguages
 };

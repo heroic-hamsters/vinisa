@@ -4,12 +4,30 @@ import { browserHistory } from 'react-router';
 import $ from 'jquery';
 import ajax from '../lib/ajax';
 
-@observer
+// @observer
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
 
     this.store = this.props.route.store;
+  }
+
+  componentWillMount() {
+    ajax.getLanguages(function(data) {
+      data.forEach( lang => {
+
+        $('#nativeLanguage').append($('<option>', {
+          value: lang.name,
+          text: lang.name
+        }));
+
+        $('#learnLanguage').append($('<option>', {
+          value: lang.name,
+          text: lang.name
+        }));
+
+      });
+    });
   }
 
   handleSubmit(e) {
@@ -42,19 +60,15 @@ export default class Signup extends React.Component {
 
           <div>
             Your Native Language:
-            <select name="nativeLanguage">
+            <select id="nativeLanguage" name="nativeLanguage">
               <option></option>
-              <option value='en-US'>English</option>
-              <option value='cmn-Hans-CN'>Chinese</option>
             </select>
           </div>
 
           <div>
             Language You'd Like to Learn:
-            <select name="learnLanguage">
+            <select id="learnLanguage" name="learnLanguage">
               <option></option>
-              <option value="en">English</option>
-              <option value="zh-TW">Chinese</option>
             </select>
           </div>
 

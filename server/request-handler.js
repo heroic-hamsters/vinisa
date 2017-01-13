@@ -117,5 +117,10 @@ exports.verifyUser = (req, res) => {
   });
 };
 
-
+exports.getLanguages = function(req, res) {
+  new Language().fetchAll()
+ .then(function(languages) {
+   res.send(languages.models);
+ });
+};
 
