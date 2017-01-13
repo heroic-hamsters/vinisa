@@ -9,26 +9,26 @@ import Ajax from '../lib/ajax.js';
 @observer
 export default class SavedWords extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidMount() {
     Ajax.getWords(AppStore.username, (data) => {
       if (data) {
         data[0].words.forEach((word) => {
-          AppStore.savedWords.push(word.text)
-        })
+          AppStore.savedWords.push(word.text);
+        });
       }
-    })
+    });
   }
   
   onWordSelect(e) {
     e.preventDefault();
     Ajax.getSentences(e.target.innerText, (data) => {
-      console.log(data)
+      console.log(data);
       for (var i = 0; i < data.length; i++) {
-        console.log('text', data[i].text)
-        AppStore.savedSentences.push(data[i].text)
+        console.log('text', data[i].text);
+        AppStore.savedSentences.push(data[i].text);
 
       }
                 // console.log(AppStore.savedSentences)
@@ -36,7 +36,7 @@ export default class SavedWords extends React.Component {
       //   AppStore.savedSentences.push(sentence)
       //   console.log(AppStore.savedSentences)
       // })
-    })
+    });
   }
 
           // move to line 52
@@ -47,11 +47,11 @@ export default class SavedWords extends React.Component {
   render() {
     return (
       <div>
-        <h1>SavedWords</h1>
+        <h3>Saved Words</h3>
         <ul>
 
         </ul>
       </div>
-    )
+    );
   }
 }

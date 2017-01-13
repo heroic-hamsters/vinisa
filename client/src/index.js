@@ -35,9 +35,9 @@ ReactDOM.render((
       <Route component={ Navbar }>
         <Route path="/home" store={ AppStore } component={ Home } />
         <Route path="/library" component={ Library } store={ AppStore } >
-          <Route path="savedwords" component={ SavedWords } />
-          <Route path="savedsentences" component={ SavedSentences} />
-          <Route path="contributedsentences" component={ ContributedSentences } />
+          <Route path="/savedwords" component={ SavedWords } />
+          <Route path="/savedsentences" component={ SavedSentences} />
+          <Route path="/contributedsentences" component={ ContributedSentences } />
         </Route>
         <Route path="/word" store = { AppStore } component={ WordDetails }/>
       </Route>
