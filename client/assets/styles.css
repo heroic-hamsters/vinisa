@@ -107,6 +107,7 @@ h1 {
 }
 
 .information-text {
+  width: 80%;
   background-color: rgba(0, 0, 0, 0.25);
   padding: 20px;
   border-radius: 1px;
@@ -162,7 +163,6 @@ h1 {
   margin: 0;
   display: flex;
   flex-direction: row;
-  justify-content: left;
   align-items: center;
   background-color: #021e4c;
   height: 50px;
@@ -219,7 +219,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 25%;
+  top: 175px;
 }
 
 .another-button {
@@ -234,7 +234,7 @@ h1 {
   padding: 6px 15px 6px 35px;
   border-radius: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset;
-  transition: all 0.7s ease 0s;
+  transition: all 1s ease 0s;
 }
 
 #search input[type="text"]:focus {
@@ -250,7 +250,8 @@ h1 {
 
 .pic-drop {
   position: absolute;
-  top: 45%;
+  top: 300px;
+  transition: all 1s ease 0s;
   background-image: url('pic.gif');
   background-size: contain;
   background-position: center;
@@ -258,6 +259,12 @@ h1 {
   width: 500px;
   height: 200px;
   border: 2.5px dashed;
+}
+
+.pic-drop:hover {
+  background-color: rgba(18, 115, 226, 0.25);
+  border-color: rgb(18, 115, 226);
+  cursor: pointer;
 }
 
 .pic-drop-text {
@@ -316,6 +323,7 @@ h1.translated-word {
 }
 
 .audio-drop {
+  transition: all 1s ease 0s;
   background-image: url('audio.svg');
   background-size: contain;
   background-position: center;
@@ -323,6 +331,12 @@ h1.translated-word {
   width: 300px;
   height: 150px;
   border: 2.5px dashed;
+}
+
+.audio-drop:hover {
+  background-color: rgba(18, 115, 226, 0.25);
+  border-color: rgb(18, 115, 226);
+  cursor: pointer;
 }
 
 .audio-drop-text {

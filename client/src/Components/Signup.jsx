@@ -2,14 +2,33 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
+import auth from '../auth.js';
 import ajax from '../lib/ajax';
 
-@observer
+// @observer
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
 
     this.store = this.props.route.store;
+  }
+
+  componentWillMount() {
+    ajax.getLanguages(function(data) {
+      data.forEach( lang => {
+
+        $('#nativeLanguage').append($('<option>', {
+          value: lang.name,
+          text: lang.name
+        }));
+
+        $('#learnLanguage').append($('<option>', {
+          value: lang.name,
+          text: lang.name
+        }));
+
+      });
+    });
   }
 
   handleSubmit(e) {
@@ -28,7 +47,10 @@ export default class Signup extends React.Component {
 
     ajax.signupAjax(this.store.username, this.store.password, nativeLanguage, learnLanguage);
     this.store.languages = languages;
-    browserHistory.push('/home');
+
+    auth.login(this.store.username, this.store.password, (loggedIn) => {
+      browserHistory.push('/home');
+    });
   }
 
   render() {
@@ -42,19 +64,15 @@ export default class Signup extends React.Component {
 
           <div>
             Your Native Language:
-            <select name="nativeLanguage">
+            <select id="nativeLanguage" name="nativeLanguage">
               <option></option>
-              <option value='en-US'>English</option>
-              <option value='cmn-Hans-CN'>Chinese</option>
             </select>
           </div>
 
           <div>
             Language You'd Like to Learn:
-            <select name="learnLanguage">
+            <select id="learnLanguage" name="learnLanguage">
               <option></option>
-              <option value="en">English</option>
-              <option value="zh-TW">Chinese</option>
             </select>
           </div>
 
