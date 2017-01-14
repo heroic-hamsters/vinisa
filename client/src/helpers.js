@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import Config from '../env/config.js';
 
-
 var detectLabels = function(request, callback) {
   $.post({
     url: 'https://vision.googleapis.com/v1/images:annotate?key=' + Config['CLOUD_API'],
@@ -40,5 +39,5 @@ var recognizeAudio = function(request, callback) {
 module.exports = {
   detectLabels: detectLabels,
   translateText: translateText,
-  recognizeAudio: recognizeAudio
+  recognizeAudio: recognizeAudio,
 };

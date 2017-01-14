@@ -5,7 +5,7 @@ import $ from 'jquery';
 import auth from '../auth.js';
 import ajax from '../lib/ajax';
 
-// @observer
+@observer
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);

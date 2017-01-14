@@ -6,7 +6,7 @@ import auth from '../auth.js';
 import NavLink from './NavLink.jsx';
 import ajax from '../lib/ajax';
 
-// @observer
+@observer
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
