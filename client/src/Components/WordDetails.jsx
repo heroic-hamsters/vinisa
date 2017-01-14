@@ -7,7 +7,6 @@ import MediaStreamRecorder from 'msr';
 import helpers from '../helpers.js';
 import ajax from '../lib/ajax.js';
 
-@observer
 export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
