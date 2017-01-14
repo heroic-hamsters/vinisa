@@ -6,7 +6,7 @@ import $ from 'jquery';
 import ajax from '../lib/ajax';
 import helpers from '../helpers.js';
 
-// @observer
+@observer
 export default class Home extends React.Component {
   constructor(props) {
     super(props);

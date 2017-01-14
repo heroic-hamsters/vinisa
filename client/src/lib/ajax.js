@@ -51,15 +51,33 @@ var addSentences = function(word, sentence, url) {
   });
 };
 
-var signupAjax = function(username, password, nativeLanguage, learnLanguage) {
+var loginAjax = (username, password, cb) => {
+  $.ajax({
+    url: '/api/login',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({username: username, password: password}),
+    success: (data) => {
+      cb({authenticated: true});
+    },
+    error: (data) => {
+      cb({authenticated: false});
+    }
+  });
+};
 
+var signupAjax = function(username, password, nativeLanguage, learnLanguage, cb) {
   $.ajax({
     url: '/api/signup',
     method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({username: username, password: password, nativeLanguage: nativeLanguage, learnLanguage: learnLanguage}),
-    success: (data) => console.log(data),
-    error: (err) => console.log('Error signing up', err)
+    success: (data) => {
+      cb({authenticated: true});
+    },
+    error: (data) => {
+      cb({authenticated: false});
+    }
   });
 };
 
@@ -78,6 +96,7 @@ module.exports = {
   addWord: addWord,
   getSentences: getSentences,
   addSentences: addSentences,
+  loginAjax: loginAjax,
   signupAjax: signupAjax,
   getLanguages: getLanguages,
   getCodes: getCodes

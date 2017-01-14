@@ -1,22 +1,20 @@
 import $ from 'jquery';
+import ajax from './lib/ajax.js';
 
-var loginAjax = (username, password, cb) => {
-  $.ajax({
-    url: '/api/login',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({username: username, password: password}),
-    success: (data) => {
-      cb({authenticated: true});
-    },
-    error: (data) => {
-      cb({authenticated: false});
+var login = (username, password, authCB) => {
+  ajax.loginAjax(username, password, (res) => {
+    if (res.authenticated) {
+      localStorage.setItem('authenticated', true);
+      authCB(true);
+    } else {
+      localStorage.setItem('authenticated', false);
+      authCB(false);
     }
   });
 };
 
-var login = (username, password, authCB) => {
-  loginAjax(username, password, (res) => {
+var signup = (username, password, nativeLanguage, learnLanguage, authCB) => {
+  ajax.signupAjax(username, password, nativeLanguage, learnLanguage, (res) => {
     if (res.authenticated) {
       localStorage.setItem('authenticated', true);
       authCB(true);
@@ -28,15 +26,16 @@ var login = (username, password, authCB) => {
 };
 
 var logout = () => {
-  localStorage.removeItem('authenticated');
+  localStorage.setItem('authenticated', false);
 };
 
 var isLoggedIn = () => {
-  return !!localStorage.authenticated;
+  return localStorage.authenticated === 'true';
 };
 
 module.exports = {
   login: login,
+  signup: signup,
   logout: logout,
   isLoggedIn: isLoggedIn
 };
