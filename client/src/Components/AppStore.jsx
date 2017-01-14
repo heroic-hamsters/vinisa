@@ -6,10 +6,10 @@ export class AppStore {
   @observable password = '';
   @observable nativeLanguage = 'English';
   @observable learnLanguage = 'Chinese';
-  @observable nativeLanguageCode = 'en-US';
-  @observable learnLanguageCode = 'zh-CN';
-  @observable nativeLanguageSpeechCode = 'en';
-  @observable learnLanguageSpeechCode = 'zh';
+  @observable nativeLanguageCode = 'en';
+  @observable learnLanguageCode = 'zh';
+  @observable nativeLanguageSpeechCode = 'en-US';
+  @observable learnLanguageSpeechCode = 'zh-CN';
   @observable word = '';
   @observable translatedWord = '';
   @observable showUpload = '';
