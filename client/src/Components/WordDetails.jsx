@@ -49,7 +49,7 @@ export default class WordDetails extends React.Component {
     var body = {
       "config": {
           "encoding":"linear16",
-          "sampleRate": 44100,
+          "sampleRate": 48000,
           "languageCode": this.store.nativeLanguageCode
       },
       "audio": {
