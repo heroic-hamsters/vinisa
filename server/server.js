@@ -5,12 +5,22 @@ const db = require('./db/dbconfig');
 const router = require('./router');
 var handler = require('./request-handler');
 var session = require('express-session');
+var morgan = require('morgan');
 
 const app = express();
 
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({secret: 'heroic translating hamsters', resave: false, saveUninitialized: true}));
+app.use(session({
+  secret: 'heroic translating hamsters',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false, //Should be true, but requires https.
+    maxAge: 200000
+  }
+}));
 
 app.use(express.static(path.join(__dirname, '../client')));
 
@@ -21,6 +31,7 @@ app.get('/api/sentences/:word', handler.listSentences);
 app.post('/api/words', handler.addWord);
 app.get('/api/words/:username', handler.getWords);
 app.get('/api/languages', handler.getLanguages);
+
 
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'));

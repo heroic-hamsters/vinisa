@@ -226,3 +226,4 @@ languages.forEach(function(language) {
   new Language({translateCode: language.translateCode, name: language.name, speechCode: language.speechCode}).save();
 });
 
+// console.log(languages.length);

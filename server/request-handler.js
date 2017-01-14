@@ -7,6 +7,7 @@ const Users = require('./db/collections/users');
 const User = require('./db/models/user');
 const Promise = require('bluebird');
 const Language = require('./db/models/language');
+const TranslatedWord = require('./db/models/translatedWord');
 
 exports.getWords = function(req, res) {
   var username = req.params.username;
@@ -17,23 +18,42 @@ exports.getWords = function(req, res) {
 };
 
 exports.addWord = function(req, res) {
-  var username = req.body.username;
+
+  var username = req.session.user.username;
   var text = req.body.text;
   var word = new Word({text: text});
+  var foundWord;
 
   word.fetch()
   .then(function(found) {
     if (!found) {
       return word.save();
     }
-    return word;
-  }).then(function(foundWord) {
-    new User().where({username: username}).fetch()
-    .then(function(user) {
-      user.words().attach(foundWord);
-      res.send('Added word');
-    });
+    return found;
+  }).then(function(word) {
+    foundWord = word;
+    return new TranslatedWord().where({word_id: foundWord.id, language_id: req.session.learnLanguage.id}).fetch();
+  })
+  .then(function(translatedWord) {
+    if (!translatedWord) {
+      return foundWord.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation});
+    }
+    return;
+  })
+  .then(function() {
+    return Promise.all([
+      new TranslatedWord().where({language_id: req.session.learnLanguage.id, word_id: foundWord.id}).fetch(),
+      new User().where({username: username}).fetch()
+    ]);
+  })
+  .spread(function(translatedWord, user) {
 
+    return user.words().attach(translatedWord);
+  })
+  .catch(function(err) {
+    if (err.errno !== 1062) {
+      throw err;
+    }
   });
 };
 
@@ -49,7 +69,7 @@ exports.listSentences = function(req, res) {
 };
 
 exports.createSentence = function(req, res) {
-  var creator = req.session.username;
+  var creator = req.session.user.username;
   var word = req.body.word;
   var text = req.body.sentence;
   var url = req.body.url;
@@ -75,8 +95,9 @@ exports.createSentence = function(req, res) {
 };
 
 exports.createUser = (req, res) => {
-  console.log('Creating user');
   var learnLanguage;
+  var natLanguage;
+  var user;
   new User({username: req.body.username}).fetch().then((found) => {
     if (found) {
       res.status(403).send('Username already exists');
@@ -87,11 +108,20 @@ exports.createUser = (req, res) => {
       ])
       .spread(function(nativeLanguage, newLearnLanguage) {
         learnLanguage = newLearnLanguage;
-
-        return new User({username: req.body.username, password: req.body.password, native_language: nativeLanguage.id}).save();
+        natLanguage = nativeLanguage;
+        return new User({username: req.body.username, password: req.body.password, native_language: nativeLanguage.id, learn_language: learnLanguage.id}).save();
       })
       .then(function(newUser) {
-        newUser.targetLanguages().attach(learnLanguage);
+        user = newUser;
+        return newUser.targetLanguages().attach(learnLanguage);
+      })
+      .then(function() {
+        return req.session.regenerate(function() {
+          req.session.user = user;
+          req.session.learnLanguage = learnLanguage;
+          req.session.nativeLanguage = natLanguage;
+          res.end();
+        });
       });
     }
   });
@@ -105,9 +135,17 @@ exports.verifyUser = (req, res) => {
       res.sendStatus(403);
     } else {
       if (user.attributes.password === password) {
-        req.session.regenerate(() => {
-          req.session.user = user;
-          res.json({authenticated: true});
+        Promise.all([new Language({id: user.attributes.native_language}).fetch(),
+          new Language({id: user.attributes.learn_language}).fetch()
+        ])
+        .spread((nativeLanguage, learnLanguage) => {
+          req.session.regenerate(() => {
+            req.session.user = user;
+            req.session.nativeLanguage = nativeLanguage;
+            req.session.learnLanguage = learnLanguage;
+            res.json({authenticated: true});
+          });
+
         });
 
       } else {
@@ -119,8 +157,9 @@ exports.verifyUser = (req, res) => {
 
 exports.getLanguages = function(req, res) {
   new Language().fetchAll()
- .then(function(languages) {
-   res.send(languages.models);
- });
+  .then(function(languages) {
+    res.send(languages.models);
+  });
 };
+
 

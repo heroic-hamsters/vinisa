@@ -10,3 +10,5 @@ const TranslatedSentence = db.model('TranslatedSentence', {
     return this.belongsTo('Language');
   }
 });
+
+module.exports = TranslatedSentence;

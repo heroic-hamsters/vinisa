@@ -18,9 +18,10 @@ db.plugin('registry');
 db.plugin('visibility');
 
 Promise.all([
-  db.knex.schema.hasTable('languages').then(function(exists) {
+  db.knex.schema.hasTable('languages')
+  .then(function(exists) {
     if (!exists) {
-      db.knex.schema.createTable('languages', function(table) {
+      return db.knex.schema.createTable('languages', function(table) {
         table.increments('id').primary();
         table.string('speechCode', 255).unique();
         table.string('name', 255).unique();
@@ -32,7 +33,7 @@ Promise.all([
   }),
   db.knex.schema.hasTable('words').then(function(exists) {
     if (!exists) {
-      db.knex.schema.createTable('words', function(table) {
+      return db.knex.schema.createTable('words', function(table) {
         table.increments('id').primary();
         table.string('text', 255).unique();
       }).then(function(table) {
@@ -44,11 +45,12 @@ Promise.all([
 .then(() => {
   return db.knex.schema.hasTable('users').then(function(exists) {
     if (!exists) {
-      db.knex.schema.createTable('users', function(user) {
+      return db.knex.schema.createTable('users', function(user) {
         user.increments('id').primary();
         user.string('username', 255).unique();
         user.string('password', 255);
         user.integer('native_language', 255).references('id').inTable('languages').unsigned();
+        user.integer('learn_language', 255).references('id').inTable('languages').unsigned();
       }).then(function(table) {
         console.log('Created table users');
       });
@@ -60,7 +62,7 @@ Promise.all([
   return Promise.all([
     db.knex.schema.hasTable('sentences').then(function(exists) {
       if (!exists) {
-        db.knex.schema.createTable('sentences', function(table) {
+        return db.knex.schema.createTable('sentences', function(table) {
           table.increments('id').primary();
           table.string('text', 255);
           table.string('url', 255);
@@ -79,6 +81,7 @@ Promise.all([
           table.integer('word_id').references('id').inTable('words').unsigned();
           table.integer('language_id').references('id').inTable('languages').unsigned();
           table.string('translation', 255);
+          table.unique(['word_id', 'language_id', 'translation']);
         }).then(function(table) {
           console.log('Created table translated words');
         });
@@ -92,7 +95,7 @@ Promise.all([
   return Promise.all([
     db.knex.schema.hasTable('user_sentences').then(function(exists) {
       if (!exists) {
-        db.knex.schema.createTable('user_sentences', function(table) {
+        return db.knex.schema.createTable('user_sentences', function(table) {
           table.increments('id').primary();
           table.integer('sentence_id').references('id').inTable('sentences').unsigned();
           table.integer('user_id').references('id').inTable('users').unsigned();
@@ -104,7 +107,7 @@ Promise.all([
 
     db.knex.schema.hasTable('user_languages').then(function(exists) {
       if (!exists) {
-        db.knex.schema.createTable('user_languages', function(table) {
+        return db.knex.schema.createTable('user_languages', function(table) {
           table.increments('id').primary();
           table.integer('user_id').references('id').inTable('users').unsigned();
           table.integer('language_id').references('id').inTable('languages').unsigned();
@@ -119,10 +122,11 @@ Promise.all([
   return Promise.all([
     db.knex.schema.hasTable('user_words').then(function(exists) {
       if (!exists) {
-        db.knex.schema.createTable('user_words', function(table) {
+        return db.knex.schema.createTable('user_words', function(table) {
           table.increments('id').primary();
           table.integer('user_id').references('id').inTable('users').unsigned();
           table.integer('translated_word_id').references('id').inTable('translated_words').unsigned();
+          table.unique(['user_id', 'translated_word_id']);
         }).then(function(table) {
           console.log('Created table user words');
         });
@@ -130,7 +134,7 @@ Promise.all([
     }),
     db.knex.schema.hasTable('translated_sentences').then(function(exists) {
       if (!exists) {
-        db.knex.schema.createTable('translated_sentences', function(table) {
+        return db.knex.schema.createTable('translated_sentences', function(table) {
           table.increments('id').primary();
           table.integer('language_id').references('id').inTable('languages').unsigned();
           table.integer('sentence_id').references('id').inTable('sentences').unsigned();
