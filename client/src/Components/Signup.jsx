@@ -11,6 +11,10 @@ export default class Signup extends React.Component {
     super(props);
 
     this.store = this.props.route.store;
+
+    this.state = {
+      error: false
+    }
   }
 
   componentWillMount() {
@@ -41,9 +45,10 @@ export default class Signup extends React.Component {
     var nativeLanguage = e.target.nativeLanguage[nativeLanguageIndex].textContent;
     var learnLanguage = e.target.learnLanguage[learnLanguageIndex].textContent;
 
-    ajax.signupAjax(this.store.username, this.store.password, nativeLanguage, learnLanguage);
-
-    auth.login(this.store.username, this.store.password, (loggedIn) => {
+    auth.signup(this.store.username, this.store.password, nativeLanguage, learnLanguage, (loggedIn) => {
+      if (!loggedIn) {
+        return this.setState({error: true});
+      }
       browserHistory.push('/home');
     });
   }
@@ -72,6 +77,8 @@ export default class Signup extends React.Component {
           </div>
 
           <div><input id="general-button" type="submit" /></div>
+
+          {this.state.error && (<p>Signup Failed</p>)}
 
         </form>
 

@@ -17,17 +17,6 @@ export default class Login extends React.Component {
     };
   }
 
-  componentWillMount() {
-    ajax.getLanguages(function(data) {
-      data.forEach( lang => {
-        $('#login-learn-language').append($('<option>', {
-          value: lang.name,
-          text: lang.name
-        }));
-      });
-    });
-  }
-
   handleSubmit(e) {
     e.preventDefault();
     this.store.username = e.target.username.value;
@@ -47,10 +36,6 @@ export default class Login extends React.Component {
         <form className="login-signup-form" onSubmit={ this.handleSubmit.bind(this) }>
           Username: <input type="text" name="username" />
           Password: <input type="password" name="password" />
-          Language you want to learn today:
-          <select id="login-learn-language" name="login-learn-language">
-            <option></option>
-          </select>
           <input id="general-button" type="submit" />
           {this.state.error && (<p>Login Failed</p>)}
         </form>

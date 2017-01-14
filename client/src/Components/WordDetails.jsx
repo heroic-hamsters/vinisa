@@ -183,8 +183,6 @@ export default class WordDetails extends React.Component {
            <div className="audio-drop-text">Upload or drag an audio file here</div>
          </Dropzone>
 
-          <h1>{this.store.word} {this.store.translatedWord}</h1>
-          <button onClick={this.handleListenClick.bind(this)}>Hear translated audio</button>
           <br/>
           <br/>
           <div className="record-stop-button">
