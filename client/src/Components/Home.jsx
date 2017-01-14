@@ -76,13 +76,15 @@ export default class Home extends React.Component {
     var chosenWord = e.target.innerHTML;
     this.store.word = chosenWord;
 
-    ajax.addWord(this.store.username, chosenWord);
 
     helpers.translateText(chosenWord, this.store.learnLanguageCode, function(response){
       var translated = response.data.translations[0].translatedText;
       this.store.translatedWord = translated;
+      ajax.addWord(chosenWord, translated);
       browserHistory.push('/word');
     }.bind(this));
+
+    browserHistory.push('/word');
   }
 
   handleSearch(e) {
@@ -91,13 +93,16 @@ export default class Home extends React.Component {
 
     this.store.word = searchTerm;
 
-    ajax.addWord(this.store.username, searchTerm);
+
 
     helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response){
       var translated = response.data.translations[0].translatedText;
       this.store.translatedWord = translated;
+      ajax.addWord(searchTerm, translated);
       browserHistory.push('/word');
     }.bind(this));
+
+    browserHistory.push('/word');
   }
 
   render() {
