@@ -13,10 +13,13 @@ export default class SavedWords extends React.Component {
   }
 
   componentDidMount() {
-    Ajax.getWords(AppStore.username, (data) => {
+    console.log(AppStore.username);
+    Ajax.getWords( (data) => {
       if (data) {
+        console.log(data);
         data[0].words.forEach((word) => {
-          AppStore.savedWords.push(word.text);
+          console.log(word);
+          AppStore.savedWords.push(word.translation);
         });
       }
     });
@@ -24,14 +27,14 @@ export default class SavedWords extends React.Component {
   
   onWordSelect(e) {
     e.preventDefault();
-    Ajax.getSentences(e.target.innerText, (data) => {
-      console.log(data);
+    var selectedText = e.target.innerText;
+    Ajax.getSentences(selectedText, (data) => {
       for (var i = 0; i < data.length; i++) {
         console.log('text', data[i].text);
         AppStore.savedSentences.push(data[i].text);
 
       }
-                // console.log(AppStore.savedSentences)
+      // console.log(AppStore.savedSentences)
       // data.forEach(sentence => {
       //   AppStore.savedSentences.push(sentence)
       //   console.log(AppStore.savedSentences)
@@ -39,17 +42,14 @@ export default class SavedWords extends React.Component {
     });
   }
 
-          // move to line 52
-          // {AppStore.savedWords.map((word) => (
-          //   <li key={word} onClick={this.onWordSelect.bind(this)}>{word}</li>
-          // ))}
-
   render() {
     return (
       <div>
         <h3>Saved Words</h3>
         <ul>
-
+        {AppStore.savedWords.map((word) => (
+          <li key={word} onClick={this.onWordSelect.bind(this)}>{word}</li>
+        ))}
         </ul>
       </div>
     );

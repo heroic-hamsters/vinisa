@@ -19,7 +19,6 @@ export default class Home extends React.Component {
 
   componentWillMount() {
     ajax.getCodes(function(data) {
-      console.log(data);
       this.store.nativeLanguageCode = data[0].translateCode;
       this.store.learnLanguageCode = data[1].translateCode;
       this.store.nativeLanguageSpeechCode = data[0].speechCode;

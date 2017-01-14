@@ -10,11 +10,19 @@ const Language = require('./db/models/language');
 const TranslatedWord = require('./db/models/translatedWord');
 
 exports.getWords = function(req, res) {
-  var username = req.params.username;
-  new User().where({username: username}).fetchAll({withRelated: 'words'})
-  .then(function(results) {
-    res.send(results.models);
-  });
+  var username = req.session.user.username;
+  new User().where({username: username}).fetch({withRelated: 'words'})
+   .then(function(results) {
+     return Promise.map(results.toJSON().words, function(word) {
+       if (word.language_id === req.session.nativeLanguage.id) {
+         return new Word({id: word.word_id}).fetch();
+       }
+     });
+   })
+   .then(function(words) {    
+     res.send(words);
+   });
+
 };
 
 exports.addWord = function(req, res) {
