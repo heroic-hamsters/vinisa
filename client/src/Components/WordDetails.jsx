@@ -2,8 +2,9 @@ import React from 'react';
 import $ from 'jquery';
 import Config from '../../env/config.js';
 import Dropzone from 'react-dropzone';
-import ajax from '../lib/ajax.js';
 import MediaStreamRecorder from 'msr';
+import helpers from '../helpers.js';
+import ajax from '../lib/ajax.js';
 
 export default class WordDetails extends React.Component {
   constructor(props) {
@@ -16,27 +17,7 @@ export default class WordDetails extends React.Component {
     window.mediaRecorder = {};
   }
 
-  componentDidMount() {
-    var getUrl = 'https://www.googleapis.com/language/translate/v2?key=' +
-                  Config['CLOUD_API'] +
-                  '&q=' + this.store.word +
-                  '&target=zh';
-    $.ajax({
-      url: getUrl,
-      method: 'GET',
-      success: function(response) {
-        this.successHandler(response);
-      }.bind(this)
-    });
-  }
-
-  successHandler(response) {
-    var translated = response.data.translations[0].translatedText;
-    this.store.translatedWord = translated;
-    this.forceUpdate();
-  }
-
-  handleClick(e) {
+  handleListenClick(e) {
     e.preventDefault();
     this.speechText.text = this.store.translatedWord;
     this.speechText.lang = 'zh-CN';
@@ -50,8 +31,6 @@ export default class WordDetails extends React.Component {
   // }
 
   onDrop(acceptedFiles, rejectedFiles) {
-    console.log('acceptedFiles', acceptedFiles);
-    console.log('rejectedFiles', rejectedFiles);
     // convert file to base64 encoded
     var file = acceptedFiles;
     var reader = new FileReader();
@@ -65,41 +44,30 @@ export default class WordDetails extends React.Component {
   // translate audio with google speech
   onSpeechTranlate(e) {
     e.preventDefault();
+
     var body = {
       "config": {
           "encoding":"linear16",
           "sampleRate": 44100,
-          "languageCode": this.store.languages.nativeLanguage
+          "languageCode": this.store.nativeLanguageCode
       },
       "audio": {
         "content": e.target.result.replace('data:audio/wav;base64,', '')
       }
     };
-    $.post({
-      url: 'https://speech.googleapis.com/v1beta1/speech:syncrecognize?key=' + Config['CLOUD_API'],
-      data: JSON.stringify(body),
-      contentType: 'application/json',
-      success: function(data) {
-        console.log('data', data);
-        this.store.showUpload = 'Uploaded Sentence:';
-        this.store.audioSentence = data.results[0].alternatives[0].transcript;
-        this.translateAudioSentence();
-      }.bind(this)
-    });
+
+    helpers.recognizeAudio(body, function(data) {
+      this.store.showUpload = 'Uploaded Sentence:';
+      this.store.audioSentence = data.results[0].alternatives[0].transcript;
+      this.translateAudioSentence();
+    }.bind(this));
   }
 
   translateAudioSentence() {
-    console.log('this', this.store.languages.learnLanguage);
-    var url = `https://translation.googleapis.com/language/translate/v2?key=${Config['CLOUD_API']}&q=${this.store.audioSentence}&target=${this.store.languages.learnLanguage}`;
-    $.post ({
-      url: url,
-      contentType: 'application/json',
-      success: function(data) {
-        this.store.audioSentenceTranslation = data.data.translations[0].translatedText;
-        console.log('translate', this.store.audioSentenceTranslation);
+    helpers.translateText(this.store.audioSentence, this.store.learnLanguageCode, function(response) {
+        this.store.audioSentenceTranslation = response.data.translations[0].translatedText;
         this.forceUpdate();
-      }.bind(this)
-    });
+    }.bind(this));
   }
 
   captureUserMedia(mediaConstraints, successCallback, errorCallback) {
@@ -180,7 +148,7 @@ export default class WordDetails extends React.Component {
         <div className="word-details-box">
 
          <div className="translated-box">
-            <h1 className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleClick.bind(this)}>Hear translated audio</button></h1>
+            <h1 className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button></h1>
          </div>
          
           <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
