@@ -100,8 +100,19 @@ new Word({text: 'apple'}).fetch()
 //   });
 // });
 
-new TranslatedWord().where({id: 1})
-.fetchAll({withRelated: ''})
+new User().where({username: 'sam'}).fetch({withRelated: 'words'})
 .then(function(results) {
-  console.log(results.toJSON());
+  // console.log(results.toJSON().words);
+  var words = results.toJSON().words;
+  Promise.map(words, function(word) {
+    return new Word({id: word.word_id}).fetch();
+  }).then(function(arr) {
+    console.log(arr);
+  });
+  // var actualWords = words.map(function(model) {
+  //   return new Word({id: model.word_id}).fetch();
+  // });
+
+  // console.log(actualWords[0].id);
+
 });

@@ -49,6 +49,7 @@ exports.addWord = function(req, res) {
   .spread(function(translatedWord, user) {
 
     return user.words().attach(translatedWord);
+    res.end();
   })
   .catch(function(err) {
     if (err.errno !== 1062) {
@@ -162,4 +163,17 @@ exports.getLanguages = function(req, res) {
   });
 };
 
+exports.getCodes = function(req, res) {
+  new User({username: req.session.user.username}).fetch()
+  .then(function(user) {
+    console.log(user.attributes.native_language);
+    return Promise.all([
+      new Language({id: user.attributes.native_language}).fetch(),
+      new Language({id: user.attributes.learn_language}).fetch()
+    ]);
+  })
+  .then(function(results) {
+    res.send(results);
+  });
+};
 
