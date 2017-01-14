@@ -1,8 +1,8 @@
 import $ from 'jquery';
 
-var getWords = function(username, cb) {
+var getWords = function(cb) {
   $.ajax({
-    url: '/api/words/' + username,
+    url: '/api/words',
     method: 'GET',
     contentType: 'application/json',
     success: (data) => cb(data),

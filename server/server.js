@@ -18,7 +18,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     secure: false, //Should be true, but requires https.
-    maxAge: 200000
+    // maxAge: 200000
   }
 }));
 
@@ -29,7 +29,7 @@ app.post('/api/login', handler.verifyUser);
 app.post('/api/sentences', handler.createSentence);
 app.get('/api/sentences/:word', handler.listSentences);
 app.post('/api/words', handler.addWord);
-app.get('/api/words/:username', handler.getWords);
+app.get('/api/words', handler.getWords);
 app.get('/api/languages', handler.getLanguages);
 app.get('/api/codes', handler.getCodes);
 app.post('/api/upload', s3Handler.uploadAudio);
