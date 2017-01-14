@@ -31,7 +31,7 @@ app.get('/api/sentences/:word', handler.listSentences);
 app.post('/api/words', handler.addWord);
 app.get('/api/words/:username', handler.getWords);
 app.get('/api/languages', handler.getLanguages);
-
+app.get('/api/codes', handler.getCodes);
 
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'));
