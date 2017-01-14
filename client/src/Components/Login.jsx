@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { observer } from 'mobx-react';
 import { browserHistory } from 'react-router';
 import auth from '../auth.js';
+import $ from 'jquery';
 import NavLink from './NavLink.jsx';
 import ajax from '../lib/ajax';
 

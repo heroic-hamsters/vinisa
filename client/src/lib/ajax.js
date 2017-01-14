@@ -21,6 +21,15 @@ var addWord = function(text, translation) {
   });
 };
 
+var getCodes = function(cb) {
+  $.ajax({
+    method: 'GET',
+    url: '/api/codes',
+    success: (data) => cb(data),
+    error: (err) => console.log('Error getting language codes', err)
+  });
+};
+
 var getSentences = function(word, cb) {
   $.ajax({
     url: '/api/sentences/' + word,
@@ -50,9 +59,7 @@ var signupAjax = function(username, password, nativeLanguage, learnLanguage) {
     contentType: 'application/json',
     data: JSON.stringify({username: username, password: password, nativeLanguage: nativeLanguage, learnLanguage: learnLanguage}),
     success: (data) => console.log(data),
-    error: (err) => {
-      console.log('Error signing up', err);
-    }
+    error: (err) => console.log('Error signing up', err)
   });
 };
 

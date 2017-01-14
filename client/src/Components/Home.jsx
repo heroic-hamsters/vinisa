@@ -17,6 +17,15 @@ export default class Home extends React.Component {
     };
   }
 
+  componentWillMount() {
+    ajax.getCodes(function(data) {
+      this.store.nativeLanguageCode = '';
+      this.store.learnLanguageCode = '';
+      this.store.nativeLanguageSpeechCode = '';
+      this.store.learnLanguageSpeecCode = '';  
+    }.bind(this));
+  }
+
   onDrop(acceptedFiles, rejectedFiles) {
     var file = acceptedFiles[0];
 
