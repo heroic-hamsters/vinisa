@@ -2,6 +2,11 @@ import React from 'react';
 import $ from 'jquery';
 import Config from '../../env/config.js';
 import Dropzone from 'react-dropzone';
+<<<<<<< HEAD
+=======
+import ajax from '../lib/ajax.js';
+// import AudioRecorder from '../lib/audio-recorder';
+>>>>>>> Temporarily hold off modularizing audio recording
 import MediaStreamRecorder from 'msr';
 import helpers from '../helpers.js';
 import ajax from '../lib/ajax.js';
@@ -70,6 +75,7 @@ export default class WordDetails extends React.Component {
     }.bind(this));
   }
 
+  // Beginning of audio audio recorder
   captureUserMedia(mediaConstraints, successCallback, errorCallback) {
     navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
     console.log('captureUserMedia THIS:', this);
@@ -122,11 +128,13 @@ export default class WordDetails extends React.Component {
       // url.lastModifiedDate = new Date();
       // url.name = link.download;
       this.onDrop(blob);
+<<<<<<< HEAD
+=======
+
+>>>>>>> Temporarily hold off modularizing audio recording
       var file = new File([blob], tempFileName);
       this.store.audioFile = file;
       console.log('file:', file);
-
-      this.onDrop(blob);
     }.bind(this);
 
     var timeInterval = 360 * 1000;
@@ -135,6 +143,23 @@ export default class WordDetails extends React.Component {
 
     // $('#stop-recording').disabled = false;
   }
+  onMediaError(e) {
+    console.error('media error', e);
+  }
+
+  bytesToSize(bytes) {
+    var k = 1000;
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Bytes';
+    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
+    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+  }
+
+  getTimeLength(milliseconds) {
+    var data = new Date(milliseconds);
+    return data.getUTCHours() + " hours, " + data.getUTCMinutes() + " minutes and " + data.getUTCSeconds() + " second(s)";
+  }
+  // End of audio audio recorder
 
   uploadAudioFile() {
     var formData = new FormData();
@@ -153,23 +178,6 @@ export default class WordDetails extends React.Component {
     });
   }
 
-  onMediaError(e) {
-    console.error('media error', e);
-  }
-
-  bytesToSize(bytes) {
-    var k = 1000;
-    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes === 0) return '0 Bytes';
-    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(k)), 10);
-    return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
-  }
-
-  getTimeLength(milliseconds) {
-    var data = new Date(milliseconds);
-    return data.getUTCHours() + " hours, " + data.getUTCMinutes() + " minutes and " + data.getUTCSeconds() + " second(s)";
-  }
-
   render() {
     return (
       <div className="word-details-container">
@@ -178,8 +186,13 @@ export default class WordDetails extends React.Component {
             <div className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button></div>
          </div>
 
-          <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
-            <div className="audio-drop-text">Upload or drag an audio file here</div>
+         <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
+           <div className="audio-drop-text">Upload or drag an audio file here</div>
+         </Dropzone>
+            
+          <h1>{this.store.word} {this.store.translatedWord}</h1>
+          <button onClick={this.handleClick.bind(this)}>Hear translated audio</button>
+          <br/>
           <br/>
           <div className="record-stop-button">
             <button id="general-button" onClick={this.startRecording.bind(this)}>Record</button>
