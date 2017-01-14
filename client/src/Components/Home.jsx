@@ -3,8 +3,8 @@ import { browserHistory } from 'react-router';
 import { observer } from 'mobx-react';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
-import Config from '../../env/config.js';
 import ajax from '../lib/ajax';
+import helpers from '../helpers.js';
 
 @observer
 export default class Home extends React.Component {
@@ -15,7 +15,6 @@ export default class Home extends React.Component {
     this.state = {
       imgsrc: ''
     };
-
   }
 
   onDrop(acceptedFiles, rejectedFiles) {
@@ -58,11 +57,8 @@ export default class Home extends React.Component {
         }]
       }]
     };
-    $.post({
-      url: 'https://vision.googleapis.com/v1/images:annotate?key=' + Config['CLOUD_API'],
-      data: JSON.stringify(request),
-      contentType: 'application/json'
-    }).done(function(data) {
+
+    helpers.detectLabels(request, function(data) {
       // Create a list using jQuery with the labels of the picture
       var responseArray = data.responses[0].labelAnnotations;
       var wList = $('ul.word-list');
@@ -81,7 +77,12 @@ export default class Home extends React.Component {
     this.store.word = chosenWord;
 
     ajax.addWord(this.store.username, chosenWord);
-    browserHistory.push('/word');
+
+    helpers.translateText(chosenWord, this.store.learnLanguageCode, function(response){
+      var translated = response.data.translations[0].translatedText;
+      this.store.translatedWord = translated;
+      browserHistory.push('/word');
+    }.bind(this));
   }
 
   handleSearch(e) {
@@ -91,7 +92,12 @@ export default class Home extends React.Component {
     this.store.word = searchTerm;
 
     ajax.addWord(this.store.username, searchTerm);
-    browserHistory.push('/word');
+
+    helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response){
+      var translated = response.data.translations[0].translatedText;
+      this.store.translatedWord = translated;
+      browserHistory.push('/word');
+    }.bind(this));
   }
 
   render() {

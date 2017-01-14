@@ -1,8 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import NavLink from './NavLink.jsx';
+import auth from '../auth.js';
 
 export default class Navbar extends React.Component {
+  handleLogout() {
+    auth.logout();
+    browserHistory.push('/');
+  }
+
   render() {
     return (
       <div>
@@ -12,7 +18,7 @@ export default class Navbar extends React.Component {
           <li><NavLink to='/library'>Library</NavLink></li>
           <li><NavLink to='/help'>Help</NavLink></li>
           <li><NavLink to='/settings'>Settings</NavLink></li>
-          <li><NavLink to='/logout'>Logout</NavLink></li>
+          <li><NavLink onClick={this.handleLogout.bind(this)}>Logout</NavLink></li>
         </ul>
 
         {this.props.children}

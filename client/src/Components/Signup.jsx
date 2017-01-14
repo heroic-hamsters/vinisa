@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
+import auth from '../auth.js';
 import ajax from '../lib/ajax';
 
 // @observer
@@ -46,7 +47,10 @@ export default class Signup extends React.Component {
 
     ajax.signupAjax(this.store.username, this.store.password, nativeLanguage, learnLanguage);
     this.store.languages = languages;
-    browserHistory.push('/home');
+
+    auth.login(this.store.username, this.store.password, (loggedIn) => {
+      browserHistory.push('/home');
+    });
   }
 
   render() {
