@@ -17,6 +17,7 @@ export class AppStore {
   @observable savedSentences = ['hiiiii'];
   @observable audioSentence = '';
   @observable audioSentenceTranslation = '';
+  @observable audioFile = {};
 }
 
 export default new AppStore;

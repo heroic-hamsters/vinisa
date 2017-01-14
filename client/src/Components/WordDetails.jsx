@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import Config from '../../env/config.js';
 import Dropzone from 'react-dropzone';
+// import AudioRecorder from '../lib/audio-recorder';
 import MediaStreamRecorder from 'msr';
 import helpers from '../helpers.js';
 import ajax from '../lib/ajax.js';
@@ -70,6 +71,7 @@ export default class WordDetails extends React.Component {
     }.bind(this));
   }
 
+  // Beginning of audio audio recorder
   captureUserMedia(mediaConstraints, successCallback, errorCallback) {
     navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
     console.log('captureUserMedia THIS:', this);
@@ -109,13 +111,23 @@ export default class WordDetails extends React.Component {
       $('#record-audio').html("<audio controls=''><source src=" + URL.createObjectURL(blob) + "></source></audio>");
 
       var url = (window.URL || window.webkitURL).createObjectURL(blob);
+      var tempFileName = `${Date.now()}.wav`;
+
       var link = document.getElementById("save");
       link.href = url;
-      link.download = 'output.wav';
+      link.download = tempFileName;
+
       // link.download = filename || 'output.wav';
-      console.log('onMediaSuccess THIS:', this);
+      // console.log('onMediaSuccess THIS:', this);
+
+      // var file =
+      // url.lastModifiedDate = new Date();
+      // url.name = link.download;
       this.onDrop(blob);
 
+      var file = new File([blob], tempFileName);
+      this.store.audioFile = file;
+      console.log('file:', file);
     }.bind(this);
 
     var timeInterval = 360 * 1000;
@@ -124,7 +136,6 @@ export default class WordDetails extends React.Component {
 
     // $('#stop-recording').disabled = false;
   }
-
   onMediaError(e) {
     console.error('media error', e);
   }
@@ -141,36 +152,55 @@ export default class WordDetails extends React.Component {
     var data = new Date(milliseconds);
     return data.getUTCHours() + " hours, " + data.getUTCMinutes() + " minutes and " + data.getUTCSeconds() + " second(s)";
   }
+  // End of audio audio recorder
+
+  uploadAudioFile() {
+    var formData = new FormData();
+    formData.append('audiofile', this.store.audioFile);
+    formData.append('Content-Type', 'multipart/form-data');
+
+    $.ajax({
+      url: '/api/upload',
+      method: 'POST',
+      data: formData,
+      processData: false,  // tell jQuery not to convert to form data
+      contentType: false,  // tell jQuery not to set contentType
+      success: function(response) {
+        console.log(response);
+      }.bind(this)
+    });
+  }
 
   render() {
     return (
       <div className="word-details-container">
         <div className="word-details-box">
-
          <div className="translated-box">
             <div className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button></div>
          </div>
-         
-          <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
-            <div className="audio-drop-text">Upload or drag an audio file here</div>
-          </Dropzone>
-          <br/>
 
+         <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
+           <div className="audio-drop-text">Upload or drag an audio file here</div>
+         </Dropzone>
+
+          <h1>{this.store.word} {this.store.translatedWord}</h1>
+          <button onClick={this.handleListenClick.bind(this)}>Hear translated audio</button>
+          <br/>
+          <br/>
           <div className="record-stop-button">
             <button id="general-button" onClick={this.startRecording.bind(this)}>Record</button>
             <button id="general-button" onClick={this.stopRecording.bind(this)}>STOP</button>
+            <button onClick={this.uploadAudioFile.bind(this)}>Upload</button>
+            <div id="record-audio"></div>
             <a href="#" id="save">save</a>
           </div>
-          
-          <div id="record-audio"></div>
-          <br/>
-          <br/>
-          <div>{this.store.showUpload}</div>
-          <div>{this.store.audioSentence}</div>
-          <div>{this.store.audioSentenceTranslation}</div>
-
         </div>
+      <div>
+        <div>{this.store.showUpload}</div>
+        <div>{this.store.audioSentence}</div>
+        <div>{this.store.audioSentenceTranslation}</div>
       </div>
+    </div>
     );
   }
 }
