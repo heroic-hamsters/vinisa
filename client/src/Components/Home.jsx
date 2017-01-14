@@ -6,7 +6,7 @@ import $ from 'jquery';
 import ajax from '../lib/ajax';
 import helpers from '../helpers.js';
 
-@observer
+// @observer
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -19,10 +19,11 @@ export default class Home extends React.Component {
 
   componentWillMount() {
     ajax.getCodes(function(data) {
-      this.store.nativeLanguageCode = '';
-      this.store.learnLanguageCode = '';
-      this.store.nativeLanguageSpeechCode = '';
-      this.store.learnLanguageSpeecCode = '';  
+      console.log(data);
+      this.store.nativeLanguageCode = data[0].translateCode;
+      this.store.learnLanguageCode = data[1].translateCode;
+      this.store.nativeLanguageSpeechCode = data[0].speechCode;
+      this.store.learnLanguageSpeecCode = data[1].translateCode;  
     }.bind(this));
   }
 
@@ -31,7 +32,7 @@ export default class Home extends React.Component {
 
     // Have to turn the uploaded picture into base64 to work with Google's API
     var reader = new FileReader();
-    reader.onloadend = this.processFile;
+    reader.onloadend = this.processFile.bind(this);
     reader.readAsDataURL(file);
 
     this.setState({
@@ -70,13 +71,22 @@ export default class Home extends React.Component {
     helpers.detectLabels(request, function(data) {
       // Create a list using jQuery with the labels of the picture
       var responseArray = data.responses[0].labelAnnotations;
-      var wList = $('ul.word-list');
 
-      wList.empty();
-      responseArray.forEach( response => {
-        var li = $('<li />').text(response.description).appendTo(wList);
-      });
-    });
+      this.translateAndDisplayLabels(responseArray);
+    }.bind(this));
+  }
+
+  translateAndDisplayLabels(responseArray) {
+    var finalArray = [];
+    var wList = $('ul.word-list');
+    wList.empty();
+
+    for (var i = 0; i < responseArray.length; i++) {
+      helpers.translateText(responseArray[i].description, this.store.nativeLanguageCode, function(response) {
+        var translated = response.data.translations[0].translatedText;
+        var li = $('<li />').text(translated).appendTo(wList);
+      }.bind(this));
+    }
   }
 
   // set word in the mobx store, redirect to word details page
@@ -86,7 +96,7 @@ export default class Home extends React.Component {
     this.store.word = chosenWord;
 
 
-    helpers.translateText(chosenWord, this.store.learnLanguageCode, function(response){
+    helpers.translateText(chosenWord, this.store.learnLanguageCode, function(response) {
       var translated = response.data.translations[0].translatedText;
       this.store.translatedWord = translated;
       ajax.addWord(chosenWord, translated);
@@ -104,7 +114,7 @@ export default class Home extends React.Component {
 
 
 
-    helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response){
+    helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response) {
       var translated = response.data.translations[0].translatedText;
       this.store.translatedWord = translated;
       ajax.addWord(searchTerm, translated);

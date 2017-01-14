@@ -79,5 +79,6 @@ module.exports = {
   getSentences: getSentences,
   addSentences: addSentences,
   signupAjax: signupAjax,
-  getLanguages: getLanguages
+  getLanguages: getLanguages,
+  getCodes: getCodes
 };
