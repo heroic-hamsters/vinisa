@@ -20,7 +20,7 @@ export default class WordDetails extends React.Component {
   handleListenClick(e) {
     e.preventDefault();
     this.speechText.text = this.store.translatedWord;
-    this.speechText.lang = 'zh-CN';
+    this.speechText.lang = this.store.learnLanguageSpeechCode;
     speechSynthesis.speak(this.speechText);
   }
 
@@ -148,7 +148,7 @@ export default class WordDetails extends React.Component {
         <div className="word-details-box">
 
          <div className="translated-box">
-            <h1 className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button></h1>
+            <div className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button></div>
          </div>
          
           <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>

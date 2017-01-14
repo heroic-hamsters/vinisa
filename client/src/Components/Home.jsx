@@ -23,7 +23,7 @@ export default class Home extends React.Component {
       this.store.nativeLanguageCode = data[0].translateCode;
       this.store.learnLanguageCode = data[1].translateCode;
       this.store.nativeLanguageSpeechCode = data[0].speechCode;
-      this.store.learnLanguageSpeecCode = data[1].translateCode;  
+      this.store.learnLanguageSpeechCode = data[1].translateCode;  
     }.bind(this));
   }
 
@@ -111,8 +111,6 @@ export default class Home extends React.Component {
     var searchTerm = e.target.query.value;
 
     this.store.word = searchTerm;
-
-
 
     helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response) {
       var translated = response.data.translations[0].translatedText;
