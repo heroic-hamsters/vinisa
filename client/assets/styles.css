@@ -313,8 +313,8 @@ h1 {
   justify-content: center;
 }
 
-h1.translated-word {
-  font-size: 70px;
+.translated-word {
+  font-size: 50px;
   margin: 0 20px;
 }
 
