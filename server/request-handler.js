@@ -66,16 +66,18 @@ exports.addWord = function(req, res) {
   });
 };
 
-exports.listSentences = function(req, res) {
+exports.listWordSentences = function(req, res) {
   var word = req.params.word;
   // var params = {};
   new Word({text: word}).fetchAll({withRelated: 'sentences'})
   .then(function(results) {
 
     // params.sentences = results.models;
-    res.send(JSON.stringify(results.models));
+    res.send(results.models);
   });
 };
+
+exports
 
 exports.createSentence = function(req, res) {
   var creator = req.session.user.username;
