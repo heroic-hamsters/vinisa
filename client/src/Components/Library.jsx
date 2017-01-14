@@ -17,10 +17,11 @@ export default class Library extends React.Component {
   }
 
   componentDidMount() {
-    ajax.getWords(this.store.username, function(data) {
+    ajax.getWords(function(data) {
+      console.log(data);
       var arr = [];
-      if (data[0].words) {
-        data[0].words.forEach( word => arr.push(word.text) );
+      if (data) {
+        data.forEach( word => arr.push(word.text) );
       }
       this.setState({
         words: arr

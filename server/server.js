@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.post('/api/signup', handler.createUser);
 app.post('/api/login', handler.verifyUser);
 app.post('/api/sentences', handler.createSentence);
-app.get('/api/sentences/:word', handler.listSentences);
+app.get('/api/sentences/:word', handler.listWordSentences);
 app.post('/api/words', handler.addWord);
 app.get('/api/words', handler.getWords);
 app.get('/api/languages', handler.getLanguages);

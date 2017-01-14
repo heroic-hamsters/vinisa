@@ -10,18 +10,23 @@ const Language = require('./db/models/language');
 const TranslatedWord = require('./db/models/translatedWord');
 
 exports.getWords = function(req, res) {
+  var responseObj = {};
+  responseObj.translations = [];
   var username = req.session.user.username;
   new User().where({username: username}).fetch({withRelated: 'words'})
    .then(function(results) {
      return Promise.map(results.toJSON().words, function(word) {
-       if (word.language_id === req.session.nativeLanguage.id) {
+       if (word.language_id === req.session.learnLanguage.id) {
+         responseObj.translations.push(word);
          return new Word({id: word.word_id}).fetch();
        }
      });
    })
-   .then(function(words) {    
-     res.send(words);
+   .then(function(words) {
+     responseObj.words = words;
+     res.send(responseObj);
    });
+
 
 };
 
@@ -77,7 +82,13 @@ exports.listWordSentences = function(req, res) {
   });
 };
 
-exports
+exports.listCreatedSentences = function(req, res) {
+  var user = req.session.user;
+  new Sentence({creator_id: user.id}).fetch()
+  .then(function(sentences) {
+
+  })
+};
 
 exports.createSentence = function(req, res) {
   var creator = req.session.user.username;

@@ -14,17 +14,18 @@ export default class SavedWords extends React.Component {
 
   componentDidMount() {
     console.log(AppStore.username);
-    Ajax.getWords( (data) => {
+    AppStore.savedWords = [];
+    Ajax.getWords((data) => {
       if (data) {
         console.log(data);
-        data[0].words.forEach((word) => {
+        data.forEach((word) => {
           console.log(word);
-          AppStore.savedWords.push(word.translation);
+          AppStore.savedWords.push(word.text);
         });
       }
     });
   }
-  
+
   onWordSelect(e) {
     e.preventDefault();
     var selectedText = e.target.innerText;
