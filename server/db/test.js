@@ -105,9 +105,13 @@ new User().where({username: 'sam'}).fetch({withRelated: 'words'})
   // console.log(results.toJSON().words);
   var words = results.toJSON().words;
   Promise.map(words, function(word) {
-    return new Word({id: word.word_id}).fetch();
+    // console.log(word);
+    if ( word.language_id === 5) {
+      return new Word({id: word.word_id}).fetch();
+
+    }
   }).then(function(arr) {
-    console.log(arr);
+    console.log(arr.length);
   });
   // var actualWords = words.map(function(model) {
   //   return new Word({id: model.word_id}).fetch();

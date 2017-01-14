@@ -10,18 +10,23 @@ const Language = require('./db/models/language');
 const TranslatedWord = require('./db/models/translatedWord');
 
 exports.getWords = function(req, res) {
+  var responseObj = {};
+  responseObj.translations = [];
   var username = req.session.user.username;
   new User().where({username: username}).fetch({withRelated: 'words'})
    .then(function(results) {
      return Promise.map(results.toJSON().words, function(word) {
-       if (word.language_id === req.session.nativeLanguage.id) {
+       if (word.language_id === req.session.learnLanguage.id) {
+         responseObj.translations.push(word);
          return new Word({id: word.word_id}).fetch();
        }
      });
    })
-   .then(function(words) {    
-     res.send(words);
+   .then(function(words) {
+     responseObj.words = words;
+     res.send(responseObj);
    });
+
 
 };
 
@@ -66,15 +71,23 @@ exports.addWord = function(req, res) {
   });
 };
 
-exports.listSentences = function(req, res) {
+exports.listWordSentences = function(req, res) {
   var word = req.params.word;
   // var params = {};
   new Word({text: word}).fetchAll({withRelated: 'sentences'})
   .then(function(results) {
 
     // params.sentences = results.models;
-    res.send(JSON.stringify(results.models));
+    res.send(results.models);
   });
+};
+
+exports.listCreatedSentences = function(req, res) {
+  var user = req.session.user;
+  new Sentence({creator_id: user.id}).fetch()
+  .then(function(sentences) {
+
+  })
 };
 
 exports.createSentence = function(req, res) {
@@ -82,6 +95,7 @@ exports.createSentence = function(req, res) {
   var word = req.body.word;
   var text = req.body.sentence;
   var url = req.body.url;
+  var languageId;
   var wordId;
   var creatorId;
 
@@ -98,7 +112,7 @@ exports.createSentence = function(req, res) {
   }).then(function(user) {
     // console.log(user);
     creatorId = user.id;
-    new Sentence({text: text, url: url, word_id: wordId, creator_id: creatorId}).save();
+    new Sentence({text: text, url: url, word_id: wordId, creator_id: creatorId, language_id: req.session.nativeLanguage.id}).save();
     res.send('Created sentence');
   });
 };

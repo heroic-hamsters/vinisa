@@ -22,7 +22,8 @@ export default class Home extends React.Component {
       this.store.nativeLanguageCode = data[0].translateCode;
       this.store.learnLanguageCode = data[1].translateCode;
       this.store.nativeLanguageSpeechCode = data[0].speechCode;
-      this.store.learnLanguageSpeechCode = data[1].translateCode;  
+      this.store.learnLanguageSpeechCode = data[1].translateCode;
+
     }.bind(this));
   }
 
