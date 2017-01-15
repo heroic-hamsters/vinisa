@@ -84,10 +84,14 @@ exports.listWordSentences = function(req, res) {
 
 exports.listCreatedSentences = function(req, res) {
   var user = req.session.user;
-  new Sentence({creator_id: user.id}).fetch()
+  new Sentence({creator_id: user.id}).fetchAll()
   .then(function(sentences) {
+    res.send(sentences);
+  });
+};
 
-  })
+exports.listSavedSentences = function(req, res) {
+
 };
 
 exports.createSentence = function(req, res) {
@@ -112,8 +116,12 @@ exports.createSentence = function(req, res) {
   }).then(function(user) {
     // console.log(user);
     creatorId = user.id;
-    new Sentence({text: text, url: url, word_id: wordId, creator_id: creatorId, language_id: req.session.nativeLanguage.id}).save();
-    res.send('Created sentence');
+    return new Sentence({text: text, url: url, word_id: wordId, creator_id: creatorId, language_id: req.session.nativeLanguage.id}).save();
+    // res.send('Created sentence');
+  })
+  .then(function(sentence) {
+    sentence.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation})
+    res.send('Saved sentence');
   });
 };
 
@@ -196,5 +204,28 @@ exports.getCodes = function(req, res) {
   })
   .then(function(results) {
     res.send(results);
+  });
+};
+
+exports.setDefaultLanguage = function(req, res) {
+  var currentUser;
+  var newLanguage;
+  new User({username: req.session.user.username}).fetch()
+  .then(function(user) {
+    currentUser = user;
+    return new Language({name: req.body.language}).fetch();
+  })
+  .then(function(language) {
+    newLanguage = language;
+    return currentUser.targetLanguages().attach(newLanguage);
+  })
+  .then(function() {
+    currentUser.save({learn_language: newLanguage.id}, {method: 'update'});
+    res.done();
+  })
+  .catch(function(err) {
+    if (err.errno !== 1062) {
+      throw err;
+    }
   });
 };
