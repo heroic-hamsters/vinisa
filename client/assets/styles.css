@@ -313,13 +313,31 @@ h1 {
   justify-content: center;
 }
 
-.translated-word {
+.word-details-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.word-details-button {
+  margin-left: 20px;
+}
+
+.original-word {
   font-size: 50px;
+}
+
+.translated-word {
+  color: gray;
+  font-size: 30px;
   margin: 0 20px;
 }
 
 .translated-box {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .audio-drop {
