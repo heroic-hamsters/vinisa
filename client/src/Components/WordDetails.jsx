@@ -178,6 +178,7 @@ export default class WordDetails extends React.Component {
   addSentenceToDb(word, translatedWord, audioSentence, sentenceTranslation, url) {
     console.log(word, translatedWord, audioSentence, sentenceTranslation, url);
     // ajax.addSentences();
+
   }
 
   render() {
@@ -220,6 +221,7 @@ export default class WordDetails extends React.Component {
         <div>{this.store.audioSentence}</div>
         <div>{this.store.audioSentenceTranslation}</div>
       </div>
+      
     </div>
     );
   }
