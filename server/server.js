@@ -30,6 +30,7 @@ app.post('/api/sentences', handler.createSentence);
 app.get('/api/sentences/:word', handler.listWordSentences);
 app.post('/api/words', handler.addWord);
 app.get('/api/words', handler.getWords);
+app.post('/api/languages', handler.setDefaultLanguage);
 app.get('/api/languages', handler.getLanguages);
 app.get('/api/codes', handler.getCodes);
 app.post('/api/upload', s3Handler.uploadAudio);

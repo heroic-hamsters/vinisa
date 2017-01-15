@@ -111,6 +111,7 @@ Promise.all([
           table.increments('id').primary();
           table.integer('user_id').references('id').inTable('users').unsigned();
           table.integer('language_id').references('id').inTable('languages').unsigned();
+          table.unique(['user_id', 'language_id']);
         }).then(function(table) {
           console.log('Created table user languages');
         });

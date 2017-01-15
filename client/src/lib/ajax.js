@@ -91,6 +91,17 @@ var getLanguages = function(cb) {
   });
 };
 
+var addLanguage = function(language) {
+  $.ajax({
+    url: '/api/languages',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({language: language}),
+    success: (data) => console.log('Added new language to user'),
+    error: (err) => console.log('Error adding language to user')
+  });
+};
+
 module.exports = {
   getWords: getWords,
   addWord: addWord,
@@ -99,5 +110,6 @@ module.exports = {
   loginAjax: loginAjax,
   signupAjax: signupAjax,
   getLanguages: getLanguages,
-  getCodes: getCodes
+  getCodes: getCodes,
+  addLanguage: addLanguage
 };

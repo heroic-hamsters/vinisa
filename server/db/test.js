@@ -100,23 +100,42 @@ new Word({text: 'apple'}).fetch()
 //   });
 // });
 
-new User().where({username: 'sam'}).fetch({withRelated: 'words'})
-.then(function(results) {
-  // console.log(results.toJSON().words);
-  var words = results.toJSON().words;
-  Promise.map(words, function(word) {
-    // console.log(word);
-    if ( word.language_id === 5) {
-      return new Word({id: word.word_id}).fetch();
+// new User().where({username: 'sam'}).fetch({withRelated: 'words'})
+// .then(function(results) {
+//   // console.log(results.toJSON().words);
+//   var words = results.toJSON().words;
+//   Promise.map(words, function(word) {
+//     // console.log(word);
+//     if ( word.language_id === 5) {
+//       return new Word({id: word.word_id}).fetch();
 
-    }
-  }).then(function(arr) {
-    console.log(arr.length);
-  });
+//     }
+//   }).then(function(arr) {
+//     console.log(arr.length);
+//   });
   // var actualWords = words.map(function(model) {
   //   return new Word({id: model.word_id}).fetch();
   // });
 
   // console.log(actualWords[0].id);
 
+// });
+// new User({username: 'sam'}).fetch()
+// .then(function(user) {
+//   return user.targetLanguages().attach({language_id: 2});
+// })
+// .then(function() {
+//   return new User({username: 'sam'}).fetch();
+// })
+// .then(function(user) {
+//   user.save({learn_language: 2}, {method: 'update'});
+// });
+
+new User({username: 'sam'}).fetch({withRelated: 'targetLanguages'}).then(function(languages) {
+  console.log(languages.targetLanguages());
 });
+
+// new Language({id: 5}).fetch()
+// .then(function(language) {
+//   language.learnUsers().attach(new User)
+// })
