@@ -156,12 +156,13 @@ export default class WordDetails extends React.Component {
     var data = new Date(milliseconds);
     return data.getUTCHours() + " hours, " + data.getUTCMinutes() + " minutes and " + data.getUTCSeconds() + " second(s)";
   }
-  // End of audio audio recorder
+  // End of audio audio recorde'acl', 'public-read'r
 
   uploadAudioFile() {
     var formData = new FormData();
     formData.append('audiofile', this.store.audioFile);
     formData.append('Content-Type', 'multipart/form-data');
+    formData.append('acl', 'public-read');
 
     $.ajax({
       url: '/api/upload',
