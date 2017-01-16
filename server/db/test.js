@@ -131,8 +131,9 @@ new Word({text: 'apple'}).fetch()
 //   user.save({learn_language: 2}, {method: 'update'});
 // });
 
-new User({username: 'sam'}).fetch({withRelated: 'targetLanguages'}).then(function(languages) {
-  console.log(languages.targetLanguages());
+new User({username: 'sam'}).fetch({withRelated: 'sentences'})
+.then(function(results) {
+  console.log(results.toJSON());
 });
 
 // new Language({id: 5}).fetch()
