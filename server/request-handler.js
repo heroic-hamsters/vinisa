@@ -91,7 +91,10 @@ exports.listCreatedSentences = function(req, res) {
 };
 
 exports.listSavedSentences = function(req, res) {
-
+  new User({username: req.session.user.username}).fetch({withRelated: 'sentences'})
+  .then(function(results) {
+    console.log(results);
+  });
 };
 
 exports.createSentence = function(req, res) {
@@ -114,12 +117,14 @@ exports.createSentence = function(req, res) {
     wordId = word.id;
     return new User({username: creator}).fetch();
   }).then(function(user) {
-    // console.log(user);
+    console.log(user);
     creatorId = user.id;
     return new Sentence({text: text, url: url, word_id: wordId, creator_id: creatorId, language_id: req.session.nativeLanguage.id}).save();
     // res.send('Created sentence');
   })
   .then(function(sentence) {
+    console.log(sentence);
+
     sentence.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation})
     res.send('Saved sentence');
   });
@@ -221,6 +226,7 @@ exports.setDefaultLanguage = function(req, res) {
   })
   .then(function() {
     currentUser.save({learn_language: newLanguage.id}, {method: 'update'});
+    req.session.learnLanguage = newLanguage;
     res.done();
   })
   .catch(function(err) {
