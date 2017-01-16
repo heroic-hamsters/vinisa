@@ -8,6 +8,7 @@ const User = require('./db/models/user');
 const Promise = require('bluebird');
 const Language = require('./db/models/language');
 const TranslatedWord = require('./db/models/translatedWord');
+const TranslatedSentence = require('./db/models/translatedSentence');
 
 exports.getWords = function(req, res) {
   var responseObj = {};
@@ -73,12 +74,22 @@ exports.addWord = function(req, res) {
 
 exports.listWordSentences = function(req, res) {
   var word = req.params.word;
-  // var params = {};
-  new Word({text: word}).fetchAll({withRelated: 'sentences'})
-  .then(function(results) {
+  var sentenceObj = {};
 
-    // params.sentences = results.models;
-    res.send(results.models);
+  new Word({text: word}).fetch()
+  .then(function(word) {
+    return new Sentence().where({word_id: word.id, language_id: req.session.learnLanguage.id}).fetchAll();
+  })
+  .then(function(sentences) {
+    sentenceObj.nativeSentences = sentences;
+    console.log(sentences.toJSON());
+    return Promise.map(sentences.toJSON(), function(sentence) {
+      return new TranslatedSentence().where({sentence_id: sentence.id, language_id: req.session.nativeLanguage.id}).fetch();
+    });
+  })
+  .then(function(translatedSentences) {
+    sentenceObj.translatedSentences = translatedSentences;
+    res.send(sentenceObj);
   });
 };
 
