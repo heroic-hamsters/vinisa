@@ -7,6 +7,7 @@ var Sentence = require('./models/sentence');
 var Languages = require('./collections/languages.js');
 var Language = require('./models/language.js');
 var TranslatedWord = require('./models/translatedWord');
+var TranslatedSentence = require('./models/translatedSentence');
 
 // User
 // .where({id: 66})
@@ -131,12 +132,26 @@ new Word({text: 'apple'}).fetch()
 //   user.save({learn_language: 2}, {method: 'update'});
 // });
 
-new User({username: 'sam'}).fetch({withRelated: 'sentences'})
-.then(function(results) {
-  console.log(results.toJSON());
-});
+// new User({username: 'sam'}).fetch({withRelated: 'sentences'})
+// .then(function(results) {
+//   console.log(results.toJSON());
+// });
 
 // new Language({id: 5}).fetch()
 // .then(function(language) {
 //   language.learnUsers().attach(new User)
 // })
+
+new Word({text: 'dog'}).fetch()
+.then(function(word) {
+  return new Sentence().where({word_id: word.id}).fetchAll();
+})
+.then(function(sentences) {
+  console.log(sentences.toJSON());
+  return Promise.map(sentences.toJSON(), function(sentence) {
+    return new TranslatedSentence().where({sentence_id: sentence.id}).fetch();
+  });
+})
+.then(function(translatedSentences) {
+  console.log(translatedSentences[0].attributes);
+});
