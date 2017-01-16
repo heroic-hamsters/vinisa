@@ -170,15 +170,13 @@ export default class WordDetails extends React.Component {
       processData: false,  // tell jQuery not to convert to form data
       contentType: false,  // tell jQuery not to set contentType
       success: function(response) {
-        this.addSentenceToDb(this.store.word, this.store.translatedWord, this.store.audioSentence, this.store.audioSentenceTranslation, response.location);
+        this.addSentenceToDb(this.store.word, this.store.audioSentence, this.store.audioSentenceTranslation, response.location);
       }.bind(this)
     });
   }
 
-  addSentenceToDb(word, translatedWord, audioSentence, sentenceTranslation, url) {
-    console.log(word, translatedWord, audioSentence, sentenceTranslation, url);
-    // ajax.addSentences();
-
+  addSentenceToDb(word, audioSentence, sentenceTranslation, url) {
+    ajax.addSentences(word, audioSentence, sentenceTranslation, url);
   }
 
   render() {

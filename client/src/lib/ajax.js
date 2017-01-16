@@ -40,12 +40,12 @@ var getSentences = function(word, cb) {
   });
 };
 
-var addSentences = function(word, sentence, url) {
+var addSentences = function(word, sentence, translation, url) {
   $.ajax({
     url: '/api/sentences',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify({word: word, sentence: sentence, url: url}),
+    data: JSON.stringify({word: word, sentence: sentence, translation: translation, url: url}),
     success: (data) => console.log('Successfully added sentence'),
     error: (err) => console.log('Error adding sentence')
   });
