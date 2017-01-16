@@ -340,6 +340,13 @@ h1 {
   align-items: center;
 }
 
+.audio-drop-and-record {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .audio-drop {
   transition: all 1s ease 0s;
   background-image: url('audio.svg');
@@ -359,4 +366,13 @@ h1 {
 
 .audio-drop-text {
   text-align: center;
+}
+
+.record-stop-button {
+  display: flex;
+  flex-direction: row;
+}
+
+.recorded-audio-box {
+  display: flex;
 }
