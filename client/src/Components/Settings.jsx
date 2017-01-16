@@ -17,9 +17,11 @@ export default class Settings extends React.Component {
   }
 
   componentWillMount() {
+    // console.log('localStorage.getItem(authenticated)', localStorage.getItem('authenticated'));
+    console.log('this.store.learnLanguage:', this.store.learnLanguage);
+    // console.log('localStorage.getItem(learnLanguage)', localStorage.getItem('learnLanguage'));
     ajax.getLanguages(function(data) {
       data.forEach( lang => {
-
         $('#learnLanguage').append($('<option>', {
           value: lang.name,
           text: lang.name
@@ -32,6 +34,7 @@ export default class Settings extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     ajax.addLanguage(e.target.language.value);
+    this.store.learnLanguage = e.target.language.value;
     // console.log(e.target.language.value);
   }
 
@@ -42,7 +45,10 @@ export default class Settings extends React.Component {
 
         <form className="login-signup-form" onSubmit={ this.handleSubmit.bind(this) } >
           <div>
-            Language You'd Like to Learn:
+            Current Target Language: {this.store.learnLanguage}
+          </div>
+          <div>
+            Language You'd Like to Learn:&nbsp;
             <select id="learnLanguage" name="language">
               <option></option>
             </select>
