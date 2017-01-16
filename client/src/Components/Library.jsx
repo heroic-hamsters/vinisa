@@ -16,18 +16,17 @@ export default class Library extends React.Component {
     };
   }
 
-  componentDidMount() {
-    ajax.getWords(function(data) {
-      console.log(data);
-      var arr = [];
-      if (data) {
-        data.forEach( word => arr.push(word.text) );
-      }
-      this.setState({
-        words: arr
-      });
-    }.bind(this));
-  }
+  // componentDidMount() {
+  //   ajax.getWords(function(data) {
+  //     var arr = [];
+  //     if (data) {
+  //       data.forEach( word => arr.push(word.text) );
+  //     }
+  //     this.setState({
+  //       words: arr
+  //     });
+  //   }.bind(this));
+  // }
 
   onWordSelect(event) {
     event.persist();

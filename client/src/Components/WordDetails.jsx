@@ -11,11 +11,14 @@ export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
     this.store = this.props.route.store;
-    this.speechText = new SpeechSynthesisUtterance();
+    this.state = {
+      audioURL: ''
+    }
   }
 
   componentWillMount() {
     window.mediaRecorder = {};
+    this.speechText = new SpeechSynthesisUtterance();
   }
 
   handleListenClick(e) {
@@ -49,7 +52,7 @@ export default class WordDetails extends React.Component {
     var body = {
       "config": {
           "encoding":"linear16",
-          "sampleRate": 48000,
+          "sampleRate": 44100,
           "languageCode": this.store.nativeLanguageCode
       },
       "audio": {
@@ -106,6 +109,7 @@ export default class WordDetails extends React.Component {
     mediaRecorder.stream = stream;
     mediaRecorder.mimeType = 'audio/wav';
     mediaRecorder.audioChannels = 1;
+    mediaRecorder.sampleRate = 44100;
     console.log('before mediaRecorder THIS: ', this);
     mediaRecorder.ondataavailable = function(blob) {
       $('#record-audio').html("<audio controls=''><source src=" + URL.createObjectURL(blob) + "></source></audio>");
@@ -166,17 +170,34 @@ export default class WordDetails extends React.Component {
       processData: false,  // tell jQuery not to convert to form data
       contentType: false,  // tell jQuery not to set contentType
       success: function(response) {
-        console.log(response);
+        this.addSentenceToDb(this.store.word, this.store.audioSentence, this.store.audioSentenceTranslation, response.location);
       }.bind(this)
     });
+  }
+
+  addSentenceToDb(word, audioSentence, sentenceTranslation, url) {
+    ajax.addSentences(word, audioSentence, sentenceTranslation, url);
   }
 
   render() {
     return (
       <div className="word-details-container">
+
         <div className="word-details-box">
-         <div className="translated-box">
-            <div className="translated-word">{this.store.word} {this.store.translatedWord} <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button></div>
+
+         <div className="word-details-wrapper">
+
+            <div className="translated-box">
+
+              <div className="original-word">{this.store.word}</div>
+              <div className="translated-word">{this.store.translatedWord}</div>
+
+            </div>
+            
+            <div className="word-details-button">
+              <button id="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button>
+            </div>
+
          </div>
 
          <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
@@ -198,6 +219,7 @@ export default class WordDetails extends React.Component {
         <div>{this.store.audioSentence}</div>
         <div>{this.store.audioSentenceTranslation}</div>
       </div>
+      
     </div>
     );
   }
