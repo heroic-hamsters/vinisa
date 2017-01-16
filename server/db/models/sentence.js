@@ -14,7 +14,7 @@ const Sentence = db.model('Sentence', {
     return this.belongsToMany('User', 'user_sentences');
   },
   languages: function() {
-    return this.belongsToMany('Language', 'translate_sentences').withPivot('translation');
+    return this.belongsToMany('Language', 'translated_sentences').withPivot('translation');
   }
 
 });
