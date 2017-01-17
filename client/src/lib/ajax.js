@@ -10,12 +10,12 @@ var getWords = function(cb) {
   });
 };
 
-var addWord = function(text, translation, cb) {
+var addWord = function(text, cb) {
   $.ajax({
     url: '/api/words',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify({translation: translation, text: text}),
+    data: JSON.stringify({text: text}),
     success: (data) => cb(data),
     error: (err) => console.log('Error adding word to user', err)
   });
