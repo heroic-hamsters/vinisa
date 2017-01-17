@@ -1,13 +1,14 @@
 import $ from 'jquery';
 import ajax from './lib/ajax.js';
+import cookie from 'react-cookie';
 
 var login = (username, password, authCB) => {
   ajax.loginAjax(username, password, (res) => {
     if (res.authenticated) {
-      localStorage.setItem('authenticated', true);
+      cookie.save('authenticated', true, { path: '/' });
       authCB(true);
     } else {
-      localStorage.setItem('authenticated', false);
+      cookie.save('authenticated', false, { path: '/' });
       authCB(false);
     }
   });
@@ -16,21 +17,21 @@ var login = (username, password, authCB) => {
 var signup = (username, password, nativeLanguage, learnLanguage, authCB) => {
   ajax.signupAjax(username, password, nativeLanguage, learnLanguage, (res) => {
     if (res.authenticated) {
-      localStorage.setItem('authenticated', true);
+      cookie.save('authenticated', true, { path: '/' });
       authCB(true);
     } else {
-      localStorage.setItem('authenticated', false);
+      cookie.save('authenticated', false, { path: '/' });
       authCB(false);
     }
   });
 };
 
 var logout = () => {
-  localStorage.setItem('authenticated', false);
+  cookie.save('authenticated', false, { path: '/' });
 };
 
 var isLoggedIn = () => {
-  return localStorage.authenticated === 'true';
+  return cookie.load('authenticated') === 'true';
 };
 
 module.exports = {
