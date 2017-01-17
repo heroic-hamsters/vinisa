@@ -29,4 +29,5 @@ bower_components/
 
 ## API keys
 client/env
+.env
 .DS_Store

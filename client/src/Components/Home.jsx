@@ -21,7 +21,7 @@ export default class Home extends React.Component {
     ajax.getCodes(function(data) {
       this.store.nativeLanguage = data[0].name;
       this.store.learnLanguage = data[1].name;
-      
+
       this.store.nativeLanguageCode = data[0].translateCode;
       this.store.learnLanguageCode = data[1].translateCode;
       this.store.nativeLanguageSpeechCode = data[0].speechCode;
@@ -101,7 +101,9 @@ export default class Home extends React.Component {
     helpers.translateText(chosenWord, this.store.learnLanguageCode, function(response) {
       var translated = response.data.translations[0].translatedText;
       this.store.translatedWord = translated;
-      ajax.addWord(chosenWord, translated);
+      ajax.addWord(chosenWord, function(data) {
+        console.log(data);
+      });
       browserHistory.push('/word');
     }.bind(this));
 
@@ -114,13 +116,15 @@ export default class Home extends React.Component {
 
     this.store.word = searchTerm;
 
-    helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response) {
-      var translated = response.data.translations[0].translatedText;
-      this.store.translatedWord = translated;
-      ajax.addWord(searchTerm, translated);
-      browserHistory.push('/word');
-    }.bind(this));
+    // helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response) {
+    //   var translated = response.data.translations[0].translatedText;
+    //   this.store.translatedWord = translated;
+    //   browserHistory.push('/word');
+    // }.bind(this));
 
+    ajax.addWord(searchTerm, function(data) {
+      console.log(data);
+    });
     browserHistory.push('/word');
   }
 
