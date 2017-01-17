@@ -127,7 +127,7 @@ var recognizeAudio = function(request, cb) {
   $.ajax({
     url: '/api/speech',
     method: 'POST',
-    data: JSON.stringify(request),
+    data: {request: request},
     success: (data) => cb(data),
     error: (error) => console.log('Error in recognizing audio', error)
   });
