@@ -282,7 +282,13 @@ exports.setDefaultLanguage = function(req, res) {
 exports.getLabels = function(req, res) {
   axios.post(`https://vision.googleapis.com/v1/images:annotate?key=${process.env.CLOUD_API}`, req.body.request)
   .then(function(response) {
-    res.json(response.data.responses);
+    // console.log(response.data.responses);
+    return Promise.map(response.data.responses[0].labelAnnotations, function(label) {
+      return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${label.description}&target=${req.session.nativeLanguage.translateCode}`);
+    });
+  })
+  .then(function(translatedLabels) {
+    res.send(translatedLabels);
   })
   .catch(function(err) {
     console.log(err);
