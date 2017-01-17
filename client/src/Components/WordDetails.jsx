@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import Config from '../../env/config.js';
 import Dropzone from 'react-dropzone';
 // import AudioRecorder from '../lib/audio-recorder';
 import MediaStreamRecorder from 'msr';

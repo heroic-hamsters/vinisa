@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const db = require('./db/dbconfig');
 var handler = require('./request-handler');
 var session = require('express-session');
 var s3Handler = require('./s3handler');
@@ -11,7 +10,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(session({
   secret: 'heroic translating hamsters',
   resave: false,
