@@ -300,14 +300,13 @@ exports.getLabels = function(req, res) {
   });
 };
 
-
 exports.audioToSpeech = function(req, res) {
   // console.log(Object.keys(req.body));
   var speechObj = {};
   axios.post(`https://speech.googleapis.com/v1beta1/speech:syncrecognize?key=${process.env.CLOUD_API}`, req.body.request)
   .then(function(response) {
     speechObj.text = response.data.results[0].alternatives[0].transcript;
-    return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${text}&target=${req.session.learnLanguage.translateCode}`);
+    return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${speechObj.text}&target=${req.session.learnLanguage.translateCode}`);
   })
   .then(function(response) {
     speechObj.translatedText = response.data.data.translations[0].translatedText;
