@@ -233,11 +233,11 @@ exports.setDefaultLanguage = function(req, res) {
   })
   .then(function(language) {
     newLanguage = language;
+    currentUser.save({learn_language: newLanguage.id}, {method: 'update'});
+    req.session.learnLanguage = newLanguage;
     return currentUser.targetLanguages().attach(newLanguage);
   })
   .then(function() {
-    currentUser.save({learn_language: newLanguage.id}, {method: 'update'});
-    req.session.learnLanguage = newLanguage;
     res.send(currentUser);
   })
   .catch(function(err) {
