@@ -142,7 +142,6 @@ new Word({text: 'apple'}).fetch()
 //   language.learnUsers().attach(new User)
 // })
 
-new Sentence().where({text: 'this is a dog'}).fetch()
-.then(function(sentence) {
-  sentence.users().attach({user_id: 1});
-});
+if (new Sentence().where({text: 'this is a pig'}).fetch()) {
+  console.log('This is truthy');
+}
