@@ -63,15 +63,9 @@ export default class WordDetails extends React.Component {
     };
 
     ajax.recognizeAudio(body, function(data) {
-      this.store.audioSentence = data.results[0].alternatives[0].transcript;
-      this.translateAudioSentence();
-    }.bind(this));
-  }
-
-  translateAudioSentence() {
-    ajax.translateText(this.store.audioSentence, this.store.learnLanguageCode, function(response) {
-        this.store.audioSentenceTranslation = response.data.translations[0].translatedText;
-        this.forceUpdate();
+      this.store.audioSentence = data.text;
+      this.store.audioSentenceTranslation = data.translatedText;
+      this.forceUpdate();
     }.bind(this));
   }
 
