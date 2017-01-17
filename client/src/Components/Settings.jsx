@@ -17,9 +17,12 @@ export default class Settings extends React.Component {
   }
 
   componentWillMount() {
-    // console.log('localStorage.getItem(authenticated)', localStorage.getItem('authenticated'));
-    console.log('this.store.learnLanguage:', this.store.learnLanguage);
-    // console.log('localStorage.getItem(learnLanguage)', localStorage.getItem('learnLanguage'));
+    ajax.getCodes(function(data) {
+      this.store.nativeLanguage = data[0].name;
+      this.store.learnLanguage = data[1].name;
+
+    }.bind(this));
+
     ajax.getLanguages(function(data) {
       data.forEach( lang => {
         $('#learnLanguage').append($('<option>', {
@@ -60,6 +63,7 @@ export default class Settings extends React.Component {
 
         </form>
 
-      </div>    )
+      </div>
+    )
   }
 }
