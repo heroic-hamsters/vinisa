@@ -71,8 +71,7 @@ export default class Home extends React.Component {
       }]
     };
 
-    helpers.detectLabels(request, function(data) {
-      // Create a list using jQuery with the labels of the picture
+    ajax.getLabels(request, function(data) {
       var responseArray = data.responses[0].labelAnnotations;
 
       this.translateAndDisplayLabels(responseArray);

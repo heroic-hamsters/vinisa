@@ -82,9 +82,9 @@ export default class WordDetails extends React.Component {
     console.log('captureUserMedia THIS:', this);
   }
 
-  // mediaConstraints = {
-  //   audio: true
-  // };
+  mediaConstraints = {
+    audio: true
+  };
 
   startRecording() {
     // $('#start-recording').disabled = true;
@@ -210,11 +210,11 @@ export default class WordDetails extends React.Component {
             <button className="general-button" onClick={this.startRecording.bind(this)}>Record</button>
             <button className="general-button" onClick={this.stopRecording.bind(this)}>STOP</button>
             <button className="general-button" onClick={this.uploadAudioFile.bind(this)}>Upload</button>
+            <button className="general-button"><a href="#" id="save">Save</a></button>
           </div>
 
           <div className="recorded-audio-box">
             <div id="record-audio"></div>
-            <button id="general-button"><a href="#" id="save">Save</a></button>
           </div>
 
         </div>

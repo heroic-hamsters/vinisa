@@ -40,9 +40,9 @@ export default class Library extends React.Component {
       <div className="library-container">
         <div className="library-box">
           <h1>My Library
-          <button id="general-button"><Link to="/savedwords">Saved Words</Link></button>
-          <button id="general-button"><Link to="/savedsentences">Saved Sentences</Link></button>
-          <button id="general-button"><Link to="/contributedsentences">Contributed Sentences</Link></button></h1>
+          <button className="general-button"><Link to="/savedwords">Saved Words</Link></button>
+          <button className="general-button"><Link to="/savedsentences">Saved Sentences</Link></button>
+          <button className="general-button"><Link to="/contributedsentences">Contributed Sentences</Link></button></h1>
           {this.props.children}
         </div>
       </div>
