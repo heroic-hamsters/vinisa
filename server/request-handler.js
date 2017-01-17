@@ -95,6 +95,28 @@ exports.addWord = function(req, res) {
   });
 };
 
+var getTranslatedSentence = function(sentenceId, languageId, text, translateCode) {
+  return new Promise(function(resolve, reject) {
+    new TranslatedSentence().where({sentence_id: sentenceId, language_id: languageId}).fetch()
+    .then(function(translatedSentence) {
+      if (translatedSentence) {
+        resolve(translatedSentence);
+      } else {
+        axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${text}&target=${translateCode}`).
+        then(function(response) {
+          return new TranslatedSentence({sentence_id: sentenceId, language_id: languageId, translation: response.data.data.translations[0].translatedText}).save();
+        })
+        .then(function(translatedSentence) {
+          resolve(translatedSentence);
+        });
+      }
+    });
+  })
+  .catch(function(err) {
+    throw err;
+  });
+};
+
 exports.listWordSentences = function(req, res) {
   var word = req.params.word;
   var sentenceObj = {};
@@ -107,7 +129,9 @@ exports.listWordSentences = function(req, res) {
     sentenceObj.nativeSentences = sentences;
     console.log(sentences.toJSON());
     return Promise.map(sentences.toJSON(), function(sentence) {
-      return new TranslatedSentence().where({sentence_id: sentence.id, language_id: req.session.nativeLanguage.id}).fetch();
+      // new TranslatedSentence().where({sentence_id: sentence.id, language_id: req.session.nativeLanguage.id}).fetch()
+      return getTranslatedSentence(sentence.id, req.session.nativeLanguage.id, sentence.text, req.session.nativeLanguage.translateCode);
+
     });
   })
   .then(function(translatedSentences) {
