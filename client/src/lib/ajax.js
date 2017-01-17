@@ -113,6 +113,16 @@ var saveSentence = function(text) {
   });
 };
 
+var getLabels = function(request, cb) {
+  $.ajax({
+    url: '/api/vision',
+    method: 'POST',
+    data: JSON.stringify(request),
+    success: (data) => cb(data),
+    error: (error) => console.log('Error in getting labels')
+  });
+};
+
 module.exports = {
   getWords: getWords,
   addWord: addWord,

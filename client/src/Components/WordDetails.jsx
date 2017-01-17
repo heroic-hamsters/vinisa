@@ -11,14 +11,17 @@ export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
     this.store = this.props.route.store;
-    this.state = {
-      audioURL: ''
-    }
   }
 
   componentWillMount() {
     window.mediaRecorder = {};
     this.speechText = new SpeechSynthesisUtterance();
+
+    // Get all sentences related to a word
+    console.log('STORE WORD', this.store.word);
+    ajax.getSentences(this.store.word, sentences => {
+      console.log('SENTENCES', sentences);
+    });
   }
 
   handleListenClick(e) {
@@ -61,7 +64,6 @@ export default class WordDetails extends React.Component {
     };
 
     helpers.recognizeAudio(body, function(data) {
-      this.store.showUpload = 'Uploaded Sentence:';
       this.store.audioSentence = data.results[0].alternatives[0].transcript;
       this.translateAudioSentence();
     }.bind(this));
@@ -183,38 +185,52 @@ export default class WordDetails extends React.Component {
   render() {
     return (
       <div className="word-details-container">
+
         <div className="word-details-box">
+
           <div className="translated-box">
+
             <div className="original-word">{this.store.word}</div>
             <div className="translated-word">{this.store.translatedWord}</div>
+
           </div>
+
           <div className="word-details-button">
             <button className="general-button" onClick={this.handleListenClick.bind(this)}>Hear translated audio</button>
           </div>
-         </div>
-         <div className="translated-box">
-            <div className="translated-word">{this.store.word} {this.store.translatedWord}
-              <button className="general-button" onClick={this.handleListenClick.bind(this)}>
-                Hear translated audio
-              </button>
-            </div>
-         </div>
 
-         <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
-           <div className="audio-drop-text">Upload or drag an audio file here</div>
-         </Dropzone>
-          <br/>
-          <br/>
+        </div>
+
+        <div className="audio-drop-and-record">
+          <Dropzone className="audio-drop" onDrop={this.onDrop.bind(this)}>
+            <div className="audio-drop-text">Upload or drag an audio file here</div>
+          </Dropzone>
+
           <div className="record-stop-button">
             <button className="general-button" onClick={this.startRecording.bind(this)}>Record</button>
             <button className="general-button" onClick={this.stopRecording.bind(this)}>STOP</button>
             <button className="general-button" onClick={this.uploadAudioFile.bind(this)}>Upload</button>
-            <div id="record-audio"></div>
-            <a href="#" id="save">save</a>
+            <button className="general-button"><a href="#" id="save">Save</a></button>
           </div>
-        <div>{this.store.showUpload}</div>
-        <div>{this.store.audioSentence}</div>
-        <div>{this.store.audioSentenceTranslation}</div>
+
+          <div className="recorded-audio-box">
+            <div id="record-audio"></div>
+          </div>
+
+        </div>
+
+        <div className="recorded-sentence">
+          {this.store.audioSentence &&
+            <div>
+              Your recorded sentence:
+              <div>{this.store.audioSentence}</div>
+              <div>{this.store.audioSentenceTranslation}</div>
+            </div>
+          }
+        </div>
+
+        <div className="related-sentences">
+        </div>
       </div>
     );
   }

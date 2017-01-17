@@ -76,7 +76,7 @@ export default class Signup extends React.Component {
             </select>
           </div>
 
-          <div><input id="general-button" type="submit" /></div>
+          <div><input className="general-button" type="submit" /></div>
 
           {this.state.error && (<p>Signup Failed</p>)}
 
