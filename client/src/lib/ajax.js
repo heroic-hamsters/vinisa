@@ -156,7 +156,7 @@ module.exports = {
   getLanguages: getLanguages,
   getCodes: getCodes,
   addLanguage: addLanguage,
-  getLabels: getLabels
+  getLabels: getLabels,
   recognizeAudio: recognizeAudio,
   translateText: translateText
 };

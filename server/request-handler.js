@@ -280,7 +280,6 @@ exports.setDefaultLanguage = function(req, res) {
 };
 
 exports.getLabels = function(req, res) {
-  console.log(req.body.request);
   axios.post(`https://vision.googleapis.com/v1/images:annotate?key=${process.env.CLOUD_API}`, req.body.request)
   .then(function(response) {
     res.json(response.data.responses);
