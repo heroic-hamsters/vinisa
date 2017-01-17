@@ -287,7 +287,11 @@ exports.getLabels = function(req, res) {
       return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${label.description}&target=${req.session.nativeLanguage.translateCode}`);
     });
   })
-  .then(function(translatedLabels) {
+  .then(function(results) {
+    var translatedLabels = [];
+    for (var i = 0; i < results.length; i++) {
+      translatedLabels.push(results[i].data.data.translations[0].translatedText);
+    }
     res.send(translatedLabels);
   })
   .catch(function(err) {

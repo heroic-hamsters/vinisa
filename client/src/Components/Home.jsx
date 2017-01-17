@@ -72,9 +72,10 @@ export default class Home extends React.Component {
     };
 
     ajax.getLabels(request, function(data) {
-      var responseArray = data[0].labelAnnotations;
+      console.log(data);
+      // var responseArray = data[0].labelAnnotations;
 
-      this.translateAndDisplayLabels(responseArray);
+      // this.translateAndDisplayLabels(responseArray);
     }.bind(this));
   }
 
