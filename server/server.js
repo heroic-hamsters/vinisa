@@ -38,6 +38,7 @@ app.get('/api/languages', handler.getLanguages);
 app.get('/api/codes', handler.getCodes);
 app.post('/api/upload', s3Handler.uploadAudio);
 app.post('/api/vision', handler.getLabels);
+app.post('/api/speech', handler.audioToSpeech);
 app.get('/api/test', handler.test);
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'));

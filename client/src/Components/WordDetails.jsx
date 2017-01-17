@@ -41,14 +41,14 @@ export default class WordDetails extends React.Component {
     var file = acceptedFiles;
     var reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = this.onSpeechTranlate.bind(this);
+    reader.onloadend = this.onSpeechTranslate.bind(this);
     reader.onerror = function (error) {
       console.log('Base64 encoded error: ', error);
     };
   }
 
   // translate audio with google speech
-  onSpeechTranlate(e) {
+  onSpeechTranslate(e) {
     e.preventDefault();
 
     var body = {

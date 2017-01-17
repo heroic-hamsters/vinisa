@@ -27,10 +27,13 @@ var translateText = function(text, target, callback) {
 var recognizeAudio = function(request, callback) {
   $.post({
     url: 'https://speech.googleapis.com/v1beta1/speech:syncrecognize?key=' + Config['CLOUD_API'],
-    data: JSON.stringify(request),
     contentType: 'application/json',
+    data: {request: request},
     success: function(data) {
       callback(data);
+    },
+    error: function(err) {
+      console.log(err);
     }
   });
 };
