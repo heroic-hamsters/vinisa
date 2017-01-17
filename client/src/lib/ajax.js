@@ -123,6 +123,29 @@ var getLabels = function(request, cb) {
   });
 };
 
+var recognizeAudio = function(request, cb) {
+  $.ajax({
+    url: '/api/speech',
+    method: 'POST',
+    data: JSON.stringify(request),
+    success: (data) => cb(data),
+    error: (error) => console.log('Error in recognizing audio', error)
+  });
+};
+
+var translateText = function(text, target, cb) {
+  $.ajax({
+    url: '/api/translate',
+    method: 'POST',
+    data: {
+      text: text,
+      target: target
+    },
+    success: (data) => cb(data),
+    error: (error) => console.log('Error in translating text', error)
+  });
+};
+
 module.exports = {
   getWords: getWords,
   addWord: addWord,
@@ -133,5 +156,7 @@ module.exports = {
   getLanguages: getLanguages,
   getCodes: getCodes,
   addLanguage: addLanguage,
-  getLabels: getLabels
+  getLabels: getLabels,
+  recognizeAudio: recognizeAudio,
+  translateText: translateText
 };

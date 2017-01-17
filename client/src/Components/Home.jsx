@@ -72,10 +72,9 @@ export default class Home extends React.Component {
     };
 
     ajax.getLabels(request, function(data) {
-      // var responseArray = data.responses[0].labelAnnotations;
+      var responseArray = data[0].labelAnnotations;
 
-      // this.translateAndDisplayLabels(responseArray);
-      console.log(data);
+      this.translateAndDisplayLabels(responseArray);
     }.bind(this));
   }
 
@@ -117,16 +116,10 @@ export default class Home extends React.Component {
 
     this.store.word = searchTerm;
 
-    // helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response) {
-    //   var translated = response.data.translations[0].translatedText;
-    //   this.store.translatedWord = translated;
-    //   browserHistory.push('/word');
-    // }.bind(this));
-
     ajax.addWord(searchTerm, function(data) {
-      console.log(data);
-    });
-    browserHistory.push('/word');
+      this.store.translatedWord = data;
+      browserHistory.push('/word');
+    }.bind(this));
   }
 
   render() {
