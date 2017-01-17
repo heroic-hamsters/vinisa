@@ -41,6 +41,7 @@ exports.addWord = function(req, res) {
   var word = new Word({text: text});
   var foundWord;
   var translation;
+
   word.fetch()
   .then(function(found) {
     if (!found) {
@@ -55,14 +56,21 @@ exports.addWord = function(req, res) {
     if (!translatedWord) {
       return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${text}&target=${req.session.learnLanguage.translateCode}`);
       // return foundWord.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation});
+    } else {
+
+      translation = translatedWord.attributes.translation;
+      // console.log(translation);
+      return;
     }
-    return;
   })
   .then(function(response) {
+    // console.log(response);
     if (response) {
       translation = response.data.data.translations[0].translatedText;
       return foundWord.languages().attach({language_id: req.session.learnLanguage.id, translation: translation});
     }
+    // console.log(translation);
+    return;
   })
   .then(function() {
     return Promise.all([
@@ -71,12 +79,15 @@ exports.addWord = function(req, res) {
     ]);
   })
   .spread(function(translatedWord, user) {
+    // console.log(translation);
 
-    return user.words().attach(translatedWord);
-  })
-  .then(function() {
+    user.words().attach(translatedWord);
     res.send(translation);
   })
+  // .then(function() {
+  //   console.log(translation);
+  //   res.send(translation);
+  // })
   .catch(function(err) {
     if (err.errno !== 1062) {
       throw err;
