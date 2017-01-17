@@ -178,6 +178,7 @@ exports.createUser = (req, res) => {
   var user;
   new User({username: req.body.username}).fetch().then((found) => {
     if (found) {
+      throw ('Username already exists');
       res.status(403).send('Username already exists');
     } else {
       Promise.all([
@@ -278,6 +279,16 @@ exports.setDefaultLanguage = function(req, res) {
   });
 };
 
+exports.getLabels = function(req, res) {
+  console.log(req.body.request);
+  axios.post(`https://vision.googleapis.com/v1/images:annotate?key=${process.env.CLOUD_API}`, req.body.request)
+  .then(function(response) {
+    res.json(response.data.responses);
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+};
 exports.test = function(req, res) {
   return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=dog&target=zh-TW`)
   .then(function(response) {

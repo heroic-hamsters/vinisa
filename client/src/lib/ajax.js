@@ -117,7 +117,7 @@ var getLabels = function(request, cb) {
   $.ajax({
     url: '/api/vision',
     method: 'POST',
-    data: JSON.stringify(request),
+    data: {request: request},
     success: (data) => cb(data),
     error: (error) => console.log('Error in getting labels')
   });
@@ -132,5 +132,6 @@ module.exports = {
   signupAjax: signupAjax,
   getLanguages: getLanguages,
   getCodes: getCodes,
-  addLanguage: addLanguage
+  addLanguage: addLanguage,
+  getLabels: getLabels
 };
