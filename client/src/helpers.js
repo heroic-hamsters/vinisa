@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import Config from '../env/config.js';
 
 var detectLabels = function(request, callback) {
   $.post({
