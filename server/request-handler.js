@@ -9,6 +9,9 @@ const Promise = require('bluebird');
 const Language = require('./db/models/language');
 const TranslatedWord = require('./db/models/translatedWord');
 const TranslatedSentence = require('./db/models/translatedSentence');
+const axios = require('axios');
+require('dotenv').config();
+
 
 exports.getWords = function(req, res) {
   var responseObj = {};
@@ -37,7 +40,7 @@ exports.addWord = function(req, res) {
   var text = req.body.text;
   var word = new Word({text: text});
   var foundWord;
-
+  var translation;
   word.fetch()
   .then(function(found) {
     if (!found) {
@@ -50,9 +53,16 @@ exports.addWord = function(req, res) {
   })
   .then(function(translatedWord) {
     if (!translatedWord) {
-      return foundWord.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation});
+      return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${text}&target=${req.session.learnLanguage.translateCode}`);
+      // return foundWord.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation});
     }
     return;
+  })
+  .then(function(response) {
+    if (response) {
+      translation = response.data.data.translations[0].translatedText;
+      return foundWord.languages().attach({language_id: req.session.learnLanguage.id, translation: translation});
+    }
   })
   .then(function() {
     return Promise.all([
@@ -63,7 +73,9 @@ exports.addWord = function(req, res) {
   .spread(function(translatedWord, user) {
 
     return user.words().attach(translatedWord);
-    res.end();
+  })
+  .then(function() {
+    res.send(translation);
   })
   .catch(function(err) {
     if (err.errno !== 1062) {
@@ -252,5 +264,16 @@ exports.setDefaultLanguage = function(req, res) {
     if (err.errno !== 1062) {
       throw err;
     }
+  });
+};
+
+exports.test = function(req, res) {
+  return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=dog&target=zh-TW`)
+  .then(function(response) {
+    // res.send(data);
+    res.send(response.data.data);
+  })
+  .catch(function(err) {
+    console.log(err);
   });
 };

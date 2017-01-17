@@ -28,13 +28,14 @@ app.post('/api/signup', handler.createUser);
 app.post('/api/login', handler.verifyUser);
 app.post('/api/sentences', handler.createSentence);
 app.get('/api/sentences/:word', handler.listWordSentences);
+app.post('/api/users/sentences', handler.saveSentence);
 app.post('/api/words', handler.addWord);
 app.get('/api/words', handler.getWords);
 app.post('/api/languages', handler.setDefaultLanguage);
 app.get('/api/languages', handler.getLanguages);
 app.get('/api/codes', handler.getCodes);
 app.post('/api/upload', s3Handler.uploadAudio);
-
+app.get('/api/test', handler.test);
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'));
 });

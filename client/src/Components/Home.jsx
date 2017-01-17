@@ -101,7 +101,9 @@ export default class Home extends React.Component {
     helpers.translateText(chosenWord, this.store.learnLanguageCode, function(response) {
       var translated = response.data.translations[0].translatedText;
       this.store.translatedWord = translated;
-      ajax.addWord(chosenWord, translated);
+      ajax.addWord(chosenWord, translated, function(data) {
+        console.log(data);
+      });
       browserHistory.push('/word');
     }.bind(this));
 
@@ -117,7 +119,9 @@ export default class Home extends React.Component {
     helpers.translateText(searchTerm, this.store.learnLanguageCode, function(response) {
       var translated = response.data.translations[0].translatedText;
       this.store.translatedWord = translated;
-      ajax.addWord(searchTerm, translated);
+      ajax.addWord(searchTerm, translated, function(data) {
+        console.log(data);
+      });
       browserHistory.push('/word');
     }.bind(this));
 
