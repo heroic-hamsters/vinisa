@@ -141,6 +141,14 @@ exports.createSentence = function(req, res) {
   });
 };
 
+exports.saveSentence = function(req, res) {
+  new Sentence().where({text: req.body.text}).fetch()
+  .then(function(sentence) {
+    sentence.users().attach({user_id: req.session.user.id});
+    res.done();
+  });
+};
+
 exports.createUser = (req, res) => {
   var learnLanguage;
   var natLanguage;

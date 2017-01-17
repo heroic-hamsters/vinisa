@@ -142,16 +142,7 @@ new Word({text: 'apple'}).fetch()
 //   language.learnUsers().attach(new User)
 // })
 
-new Word({text: 'dog'}).fetch()
-.then(function(word) {
-  return new Sentence().where({word_id: word.id}).fetchAll();
-})
-.then(function(sentences) {
-  console.log(sentences.toJSON());
-  return Promise.map(sentences.toJSON(), function(sentence) {
-    return new TranslatedSentence().where({sentence_id: sentence.id}).fetch();
-  });
-})
-.then(function(translatedSentences) {
-  console.log(translatedSentences[0].attributes);
+new Sentence().where({text: 'this is a dog'}).fetch()
+.then(function(sentence) {
+  sentence.users().attach({user_id: 1});
 });

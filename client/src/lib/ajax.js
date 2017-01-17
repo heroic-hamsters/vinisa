@@ -102,7 +102,16 @@ var addLanguage = function(language) {
   });
 };
 
-
+var saveSentence = function(text) {
+  $.ajax({
+    url: '/api/users/sentences',
+    method: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify({text: text}),
+    success: (data) => console.log('Added sentence to user'),
+    error: (err) => console.log('Error adding sentence to user')
+  });
+};
 
 module.exports = {
   getWords: getWords,
