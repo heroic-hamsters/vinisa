@@ -72,23 +72,16 @@ export default class Home extends React.Component {
     };
 
     ajax.getLabels(request, function(data) {
-      console.log(data);
-      // var responseArray = data[0].labelAnnotations;
-
-      // this.translateAndDisplayLabels(responseArray);
+      this.translateAndDisplayLabels(data);
     }.bind(this));
   }
 
   translateAndDisplayLabels(responseArray) {
-    var finalArray = [];
     var wList = $('ul.word-list');
     wList.empty();
 
     for (var i = 0; i < responseArray.length; i++) {
-      helpers.translateText(responseArray[i].description, this.store.nativeLanguageCode, function(response) {
-        var translated = response.data.translations[0].translatedText;
-        var li = $('<li />').text(translated).appendTo(wList);
-      }.bind(this));
+      var li = $('<li />').text(responseArray[i]).appendTo(wList);
     }
   }
 
