@@ -1,18 +1,17 @@
 const aws = require('aws-sdk'),
       multer = require('multer'),
-      multerS3 = require('multer-s3'),
-      Config = require('../client/env/config.js');
+      multerS3 = require('multer-s3');
 
 const s3 = new aws.S3({
-  accessKeyId: Config["S3KEY"],
-  secretAccessKey: Config["S3SECRET"],
-  region: Config["S3REGION"],
+  accessKeyId: process.env.S3KEY,
+  secretAccessKey: process.env.S3SECRET,
+  region: process.env.S3REGION,
 });
 
 upload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: Config["S3BUCKET"],
+        bucket: process.env.S3BUCKET,
         key: function (req, file, cb) {
             console.log(file);
             cb(null, file.originalname);
