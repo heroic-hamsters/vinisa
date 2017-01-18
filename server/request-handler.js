@@ -161,9 +161,17 @@ exports.listCreatedSentences = function(req, res) {
 };
 
 exports.listSavedSentences = function(req, res) {
+  var sentenceObj = {};
   new User({username: req.session.user.username}).fetch({withRelated: 'sentences'})
   .then(function(results) {
-    res.send(results);
+
+    sentenceObj.translatedSentences = results.sentences;
+    return Promise.map(results.sentences, function(sentence) {
+      return new TranslatedSentence().where({sentence_id : sentence.id}).fetch();
+    });
+  })
+  .then(function(nativeSentences) {
+    sentenceObj.nativeSentences = results.sentences;
   });
 };
 
