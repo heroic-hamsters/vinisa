@@ -162,7 +162,7 @@ exports.listCreatedSentences = function(req, res) {
 
 exports.listSavedSentences = function(req, res) {
   var sentenceObj = {};
-  new User({username: req.session.user.username}).fetch({withRelated: 'sentences'})
+  new User().where({username: req.session.user.username}).fetch({withRelated: 'sentences'})
   .then(function(results) {
     console.log(results.toJSON().sentences);
     sentenceObj.translatedSentences = results.toJSON().sentences;
@@ -234,7 +234,6 @@ exports.createUser = (req, res) => {
   new User({username: req.body.username}).fetch().then((found) => {
     if (found) {
       throw ('Username already exists');
-      res.status(403).send('Username already exists');
     } else {
       Promise.all([
         new Language({name: req.body.nativeLanguage}).fetch(),
@@ -258,6 +257,10 @@ exports.createUser = (req, res) => {
         });
       });
     }
+  }).catch(function(err) {
+    if (err === 'Username already exists') {
+      res.status(403).send('Username already exists');
+    }
   });
 };
 
@@ -266,11 +269,12 @@ exports.verifyUser = (req, res) => {
   var password = req.body.password;
   new User({username: username}).fetch().then((user) => {
     if (!user) {
+      throw ('Invalid username or password');
       res.sendStatus(403);
     } else {
       if (user.attributes.password === password) {
-        Promise.all([new Language({id: user.attributes.native_language}).fetch(),
-          new Language({id: user.attributes.learn_language}).fetch()
+        Promise.all([new Language().where({id: user.attributes.native_language}).fetch(),
+          new Language().where({id: user.attributes.learn_language}).fetch()
         ])
         .spread((nativeLanguage, learnLanguage) => {
           req.session.regenerate(() => {
@@ -306,7 +310,6 @@ exports.getLanguages = function(req, res) {
 exports.getCodes = function(req, res) {
   new User({username: req.session.user.username}).fetch()
   .then(function(user) {
-    console.log(user.attributes.native_language);
     return Promise.all([
       new Language({id: user.attributes.native_language}).fetch(),
       new Language({id: user.attributes.learn_language}).fetch()
@@ -380,9 +383,34 @@ exports.audioToSpeech = function(req, res) {
 };
 
 exports.unsaveSentence = function(req, res) {
-
+  var sentence;
+  new Sentence().where({url: req.params.url}).fetch()
+  .then(function(foundSentence) {
+    sentence = foundSentence;
+    return new User().where({id: req.session.user.id}).fetch()
+  })
+  .then(function(user) {
+    user.sentences().detach(sentence);
+    res.send('Unsaved sentence');
+  })
+  .catch(function(err) {
+    console.log('Error unsaving sentence ', err);
+  });
 };
 
 exports.unsaveWord = function(req, res) {
+  var word;
 
+  new Word().where({text: req.params.text}).fetch()
+  .then(function(foundWord) {
+    word = foundWord;
+    return new User().where({id: req.session.user.id}).fetch();
+  })
+  .then(function(user) {
+    user.words().detach(word);
+    res.send('Unsaved word');
+  })
+  .catch(function(err) {
+    console.log('Error unsaving word', err);
+  });
 };
