@@ -154,7 +154,7 @@ exports.listWordSentences = function(req, res) {
 
 exports.listCreatedSentences = function(req, res) {
   var user = req.session.user;
-  new Sentence({creator_id: user.id}).fetchAll()
+  new Sentence().where({creator_id: user.id}).fetchAll()
   .then(function(sentences) {
     res.send(sentences);
   });

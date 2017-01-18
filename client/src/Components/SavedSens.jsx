@@ -8,32 +8,53 @@ import ajax from '../lib/ajax.js';
 export default class SavedSentences extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      sentences: null
+    };
   }
 
   componentDidMount() {
     ajax.getSavedSentences(function(response) {
-      console.log('SAVED', response);
-    });
-  }
+      var learnSentences = [];
+      var urls = [];
+      var nativeSentences = [];
 
-  // componentDidMount() {
-  //   Ajax.getSavedSentences(AppStore.username, (data) => {
-  //     if (data) {
-  //       AppStore.SavedSentences.push(data)
-  //     }
-  //   })
-  // }
-          // move to line 30
-          // {AppStore.SavedSentences.map((sentence) => (
-          //   <li key={sentence}>{sentence}</li>
-          // ))}
+      response.translatedSentences.forEach( tSentence => {
+        learnSentences.push(tSentence.text);
+        urls.push(tSentence.url);
+      });
+
+      response.nativeSentences.forEach( nSentence => {
+        nativeSentences.push(nSentence.translation);
+      });
+
+      var sentenceObj = {
+        nativeSentences: nativeSentences,
+        learnSentences: learnSentences,
+        urls: urls
+      };
+
+      this.setState({
+        sentences: sentenceObj
+      });
+    }.bind(this));
+  }
 
   render() {
     return (
       <div>
         <h3>Saved Sentences</h3>
         <ul>
-
+          {this.state.sentences &&
+            this.state.sentences.learnSentences.map( (sentence, index) => (
+              <li>
+                <div>{this.state.sentences.nativeSentences[index]}</div>
+                <div>{sentence}</div>
+                <div><audio src={this.state.sentences.urls[index]} controls="controls" /></div>
+              </li>
+            ))
+          }
         </ul>
       </div>
     );
