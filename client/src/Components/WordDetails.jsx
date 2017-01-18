@@ -77,7 +77,7 @@ export default class WordDetails extends React.Component {
       "config": {
           "encoding":"linear16",
           "sampleRate": 44100,
-          "languageCode": this.store.nativeLanguageCode
+          "languageCode": this.store.nativeLanguageSpeechCode
       },
       "audio": {
         "content": e.target.result.replace('data:audio/wav;base64,', '')
