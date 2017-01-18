@@ -30,6 +30,7 @@ app.post('/api/signup', handler.createUser);
 app.post('/api/login', handler.verifyUser);
 app.post('/api/sentences', handler.createSentence);
 app.get('/api/sentences/:word', handler.listWordSentences);
+app.get('/api/savedsentences', handler.listSavedSentences);
 app.post('/api/users/sentences', handler.saveSentence);
 app.post('/api/words', handler.addWord);
 app.get('/api/words', handler.getWords);

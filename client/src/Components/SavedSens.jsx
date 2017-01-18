@@ -3,11 +3,17 @@ import ReactDOM from 'react-dom';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
-import Ajax from '../lib/ajax.js';
+import ajax from '../lib/ajax.js';
 
 export default class SavedSentences extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    ajax.getSavedSentences(function(response) {
+      console.log('SAVED', response);
+    });
   }
 
   // componentDidMount() {
