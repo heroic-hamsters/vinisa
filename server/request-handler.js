@@ -161,9 +161,19 @@ exports.listCreatedSentences = function(req, res) {
 };
 
 exports.listSavedSentences = function(req, res) {
+  var sentenceObj = {};
   new User({username: req.session.user.username}).fetch({withRelated: 'sentences'})
   .then(function(results) {
-    res.send(results);
+    console.log(results.toJSON().sentences);
+    sentenceObj.translatedSentences = results.toJSON().sentences;
+    return Promise.map(results.toJSON().sentences, function(sentence) {
+      return new TranslatedSentence().where({sentence_id : sentence.id}).fetch();
+    });
+  })
+  .then(function(nativeSentences) {
+    sentenceObj.nativeSentences = nativeSentences;
+    console.log(sentenceObj);
+    res.send(sentenceObj);
   });
 };
 

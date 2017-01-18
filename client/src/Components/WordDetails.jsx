@@ -257,7 +257,7 @@ export default class WordDetails extends React.Component {
 
         <div className="related-sentences-box">
           <h3>Sentences uploaded by users: </h3>
-          <ul onClick={this.handleSaveSentence.bind(this)} id="related-sentences">
+          <ul id="related-sentences">
             {this.state.sentences &&
               this.state.sentences.learnSentences.map( (sentence, index) => (
                 <li>
