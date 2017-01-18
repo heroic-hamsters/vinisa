@@ -44,6 +44,8 @@ exports.addWord = function(req, res) {
   var word = new Word({text: text});
   var foundWord;
   var translation;
+  var translatedWordModel;
+  var userModel;
 
   word.fetch()
   .then(function(found) {
@@ -58,12 +60,10 @@ exports.addWord = function(req, res) {
   .then(function(translatedWord) {
     console.log(translatedWord);
     if (!translatedWord) {
-      console.log(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${encodeURIComponent(text)}&target=${req.session.learnLanguage.translateCode}`);
 
       return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${encodeURIComponent(text)}&target=${req.session.learnLanguage.translateCode}`);
       // return foundWord.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation});
     } else {
-      console.log('not axios');
       translation = translatedWord.attributes.translation;
       // console.log(translation);
       return;
@@ -86,17 +86,17 @@ exports.addWord = function(req, res) {
   })
   .spread(function(translatedWord, user) {
     // console.log(translation);
-    db.knex('user_words').where({user_id: user.id, translated_word_id: translatedWord.id}).then(function(result) {
-      if (results.length === 0) {
-        user.words().attach(translatedWord);
-      }
-    });
+    translatedWordModel = translatedWord;
+    userModel = user;
+    return db.knex('user_words').where({user_id: user.id, translated_word_id: translatedWord.id});
+    // res.send(translation);
+  })
+  .then(function(queryResults) {
+    if (queryResults.length === 0) {
+      userModel.words().attach(translatedWordModel);
+    }
     res.send(translation);
   })
-  // .then(function() {
-  //   console.log(translation);
-  //   res.send(translation);
-  // })
   .catch(function(err) {
     if (err.errno !== 1062) {
       throw err;
@@ -111,8 +111,9 @@ var getTranslatedSentence = function(sentenceId, languageId, text, translateCode
       if (translatedSentence) {
         resolve(translatedSentence);
       } else {
-        axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${text}&target=${translateCode}`).
+        axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${encodeURIComponent(text)}&target=${translateCode}`).
         then(function(response) {
+          console.log(response.data.data.translations[0].translatedText);
           return new TranslatedSentence({sentence_id: sentenceId, language_id: languageId, translation: response.data.data.translations[0].translatedText}).save();
         })
         .then(function(translatedSentence) {
