@@ -10,6 +10,10 @@ export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
     this.store = this.props.route.store;
+
+    this.state = {
+      sentences: null
+    };
   }
 
   componentWillMount() {
@@ -22,27 +26,29 @@ export default class WordDetails extends React.Component {
   componentDidMount() {
     // Get all sentences related to a word
     ajax.getSentences(this.store.translatedWord, function(sentences) {
-      var nativeSentences = [];
+      var learnSentences = [];
       var urls = [];
-      var translatedSentences = [];
+      var nativeSentences = [];
+
+      sentences.learnSentences.forEach( lSentence => {
+        learnSentences.push(lSentence.text);
+        urls.push(lSentence.url);
+      });
 
       sentences.nativeSentences.forEach( nSentence => {
-        nativeSentences.push(nSentence.text);
-        urls.push(nSentence.url);
+        nativeSentences.push(nSentence.translation);
       });
 
-      sentences.translatedSentences.forEach( tSentence => {
-        translatedSentences.push(tSentence.translation);
+      var sentenceObj = {
+        nativeSentences: nativeSentences,
+        learnSentences: learnSentences,
+        urls: urls
+      };
+
+      this.setState({
+        sentences: sentenceObj
       });
-
-      for (var i = 0; i < nativeSentences.length; i++) {
-        var native = `<div>${nativeSentences[i]}</div>`;
-        var translation = `<div>${translatedSentences[i]}</div>`;
-        var audio = `<audio src=${urls[i]} controls="controls" />`;
-        $('#related-sentences').append(`<li>${native} ${translation} ${audio}</li>`);
-      }
-
-    });
+    }.bind(this));
   }
 
   handleListenClick(e) {
@@ -197,6 +203,11 @@ export default class WordDetails extends React.Component {
     ajax.addSentences(word, audioSentence, sentenceTranslation, url);
   }
 
+  handleSaveSentence(sentence) {
+    console.log(sentence);
+    ajax.saveSentence(sentence);
+  }
+
   render() {
     return (
       <div className="word-details-container">
@@ -246,7 +257,17 @@ export default class WordDetails extends React.Component {
 
         <div className="related-sentences-box">
           <h3>Sentences uploaded by users: </h3>
-          <ul id="related-sentences">
+          <ul onClick={this.handleSaveSentence.bind(this)} id="related-sentences">
+            {this.state.sentences &&
+              this.state.sentences.learnSentences.map( (sentence, index) => (
+                <li>
+                  <div>{this.state.sentences.nativeSentences[index]}</div>
+                  <div>{sentence}</div>
+                  <div><audio src={this.state.sentences.urls[index]} controls="controls" /></div>
+                  <button onClick={this.handleSaveSentence.bind(this, sentence)}>Save Sentence</button>
+                </li>
+              ))
+            }
           </ul>
         </div>
       </div>

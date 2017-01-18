@@ -40,6 +40,15 @@ var getSentences = function(word, cb) {
   });
 };
 
+var getSavedSentences = function(cb) {
+  $.ajax({
+    url: '/api/savedsentences',
+    method: 'GET',
+    success: (data) => cb(data),
+    error: (error) => console.log('Error getting saved sentences', err)
+  });
+};
+
 var addSentences = function(word, sentence, translation, url) {
   $.ajax({
     url: '/api/sentences',
@@ -133,30 +142,18 @@ var recognizeAudio = function(request, cb) {
   });
 };
 
-var translateText = function(text, target, cb) {
-  $.ajax({
-    url: '/api/translate',
-    method: 'POST',
-    data: {
-      text: text,
-      target: target,
-      success: (data) => cb(data),
-    },
-    error: (error) => console.log('Error in translating text', error)
-  });
-};
-
 module.exports = {
   getWords: getWords,
   addWord: addWord,
   getSentences: getSentences,
+  getSavedSentences: getSavedSentences,
   addSentences: addSentences,
   loginAjax: loginAjax,
   signupAjax: signupAjax,
   getLanguages: getLanguages,
+  saveSentence: saveSentence,
   getCodes: getCodes,
   addLanguage: addLanguage,
   getLabels: getLabels,
   recognizeAudio: recognizeAudio,
-  translateText: translateText
 };

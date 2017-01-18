@@ -138,17 +138,16 @@ exports.listWordSentences = function(req, res) {
     console.log(word);
     return new Sentence().where({word_id: word.id, language_id: req.session.learnLanguage.id}).fetchAll();
   })
-  .then(function(sentences) {
-    sentenceObj.nativeSentences = sentences;
-    console.log(sentences.toJSON());
-    return Promise.map(sentences.toJSON(), function(sentence) {
+  .then(function(learnSentences) {
+    sentenceObj.learnSentences = learnSentences;
+    return Promise.map(learnSentences.toJSON(), function(sentence) {
       // new TranslatedSentence().where({sentence_id: sentence.id, language_id: req.session.nativeLanguage.id}).fetch()
       return getTranslatedSentence(sentence.id, req.session.nativeLanguage.id, sentence.text, req.session.nativeLanguage.translateCode);
 
     });
   })
-  .then(function(translatedSentences) {
-    sentenceObj.translatedSentences = translatedSentences;
+  .then(function(nativeSentences) {
+    sentenceObj.nativeSentences = nativeSentences;
     res.send(sentenceObj);
   });
 };
@@ -164,7 +163,7 @@ exports.listCreatedSentences = function(req, res) {
 exports.listSavedSentences = function(req, res) {
   new User({username: req.session.user.username}).fetch({withRelated: 'sentences'})
   .then(function(results) {
-    console.log(results);
+    res.send(results);
   });
 };
 
@@ -197,7 +196,7 @@ exports.createSentence = function(req, res) {
     console.log(sentence);
 
     sentence.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation})
-    res.send('Saved sentence');
+    res.send('Created sentence');
   });
 };
 
@@ -205,7 +204,7 @@ exports.saveSentence = function(req, res) {
   new Sentence().where({text: req.body.text}).fetch()
   .then(function(sentence) {
     sentence.users().attach({user_id: req.session.user.id});
-    res.done();
+    res.send('Saved sentence');
   });
 };
 
