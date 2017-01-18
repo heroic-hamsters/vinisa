@@ -139,9 +139,9 @@ var translateText = function(text, target, cb) {
     method: 'POST',
     data: {
       text: text,
-      target: target
+      target: target,
+      success: (data) => cb(data),
     },
-    success: (data) => cb(data),
     error: (error) => console.log('Error in translating text', error)
   });
 };
