@@ -45,7 +45,7 @@ var getSavedSentences = function(cb) {
     url: '/api/savedsentences',
     method: 'GET',
     success: (data) => cb(data),
-    error: (error) => console.log('Error getting saved sentences', err)
+    error: (error) => console.log('Error getting saved sentences', error)
   });
 };
 

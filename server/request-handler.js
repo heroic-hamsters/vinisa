@@ -164,14 +164,16 @@ exports.listSavedSentences = function(req, res) {
   var sentenceObj = {};
   new User({username: req.session.user.username}).fetch({withRelated: 'sentences'})
   .then(function(results) {
-
-    sentenceObj.translatedSentences = results.sentences;
-    return Promise.map(results.sentences, function(sentence) {
+    console.log(results.toJSON().sentences);
+    sentenceObj.translatedSentences = results.toJSON().sentences;
+    return Promise.map(results.toJSON().sentences, function(sentence) {
       return new TranslatedSentence().where({sentence_id : sentence.id}).fetch();
     });
   })
   .then(function(nativeSentences) {
-    sentenceObj.nativeSentences = results.sentences;
+    sentenceObj.nativeSentences = nativeSentences;
+    console.log(sentenceObj);
+    res.send(sentenceObj);
   });
 };
 
