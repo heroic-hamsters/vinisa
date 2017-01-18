@@ -133,7 +133,6 @@ exports.listWordSentences = function(req, res) {
   // console.log(decodeURIComponent(req.params.word));
   var word = decodeURIComponent(req.params.word);
   var sentenceObj = {};
-
   new Word({text: word}).fetch()
   .then(function(word) {
     console.log(word);

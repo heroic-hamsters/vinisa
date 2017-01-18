@@ -92,16 +92,10 @@ export default class Home extends React.Component {
     this.store.word = chosenWord;
 
 
-    helpers.translateText(chosenWord, this.store.learnLanguageCode, function(response) {
-      var translated = response.data.translations[0].translatedText;
-      this.store.translatedWord = translated;
-      ajax.addWord(chosenWord, function(data) {
-        console.log(data);
-      });
+    ajax.addWord(chosenWord, function(data) {
+      this.store.translatedWord = data;
       browserHistory.push('/word');
     }.bind(this));
-
-    browserHistory.push('/word');
   }
 
   handleSearch(e) {

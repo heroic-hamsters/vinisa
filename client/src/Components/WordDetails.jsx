@@ -15,11 +15,33 @@ export default class WordDetails extends React.Component {
   componentWillMount() {
     window.mediaRecorder = {};
     this.speechText = new SpeechSynthesisUtterance();
+    this.store.audioSentence = '';
+    this.store.audioSentenceTranslation = '';
+  }
 
+  componentDidMount() {
     // Get all sentences related to a word
-    console.log('STORE WORD', this.store.word);
-    ajax.getSentences(this.store.word, sentences => {
-      console.log('SENTENCES', sentences);
+    ajax.getSentences(this.store.translatedWord, function(sentences) {
+      var nativeSentences = [];
+      var urls = [];
+      var translatedSentences = [];
+
+      sentences.nativeSentences.forEach( nSentence => {
+        nativeSentences.push(nSentence.text);
+        urls.push(nSentence.url);
+      });
+
+      sentences.translatedSentences.forEach( tSentence => {
+        translatedSentences.push(tSentence.translation);
+      });
+
+      for (var i = 0; i < nativeSentences.length; i++) {
+        var native = `<div>${nativeSentences[i]}</div>`;
+        var translation = `<div>${translatedSentences[i]}</div>`;
+        var audio = `<audio src=${urls[i]} controls="controls" />`;
+        $('#related-sentences').append(`<li>${native} ${translation} ${audio}</li>`);
+      }
+
     });
   }
 
@@ -222,7 +244,10 @@ export default class WordDetails extends React.Component {
           }
         </div>
 
-        <div className="related-sentences">
+        <div className="related-sentences-box">
+          <h3>Sentences uploaded by users: </h3>
+          <ul id="related-sentences">
+          </ul>
         </div>
       </div>
     );
