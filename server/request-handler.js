@@ -11,7 +11,8 @@ const TranslatedWord = require('./db/models/translatedWord');
 const TranslatedSentence = require('./db/models/translatedSentence');
 const axios = require('axios');
 require('dotenv').config();
-
+var languageData = require('./db/languageStorage');
+var cookie = require('react-cookie');
 
 exports.getWords = function(req, res) {
   var responseObj = {};
@@ -259,6 +260,13 @@ exports.verifyUser = (req, res) => {
 };
 
 exports.getLanguages = function(req, res) {
+  // console.log('req.url:', req.protocol);
+  if (!cookie.load('languagesSaved')) {
+    eval(languageData.runScript());
+    cookie.save('languagesSaved', true);
+  }
+
+
   new Language().fetchAll()
   .then(function(languages) {
     res.send(languages.models);
