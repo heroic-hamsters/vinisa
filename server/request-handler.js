@@ -1,4 +1,5 @@
 const request = require('request');
+const db = require('./db/dbconfig');
 const Words = require('./db/collections/words');
 const Word = require('./db/models/word');
 const Sentences = require('./db/collections/sentences');
@@ -38,6 +39,7 @@ exports.addWord = function(req, res) {
 
   var username = req.session.user.username;
   var text = req.body.text;
+  console.log(text);
   var word = new Word({text: text});
   var foundWord;
   var translation;
@@ -53,11 +55,14 @@ exports.addWord = function(req, res) {
     return new TranslatedWord().where({word_id: foundWord.id, language_id: req.session.learnLanguage.id}).fetch();
   })
   .then(function(translatedWord) {
+    console.log(translatedWord);
     if (!translatedWord) {
-      return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${text}&target=${req.session.learnLanguage.translateCode}`);
+      console.log(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${encodeURIComponent(text)}&target=${req.session.learnLanguage.translateCode}`);
+
+      return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${encodeURIComponent(text)}&target=${req.session.learnLanguage.translateCode}`);
       // return foundWord.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation});
     } else {
-
+      console.log('not axios');
       translation = translatedWord.attributes.translation;
       // console.log(translation);
       return;
@@ -80,8 +85,11 @@ exports.addWord = function(req, res) {
   })
   .spread(function(translatedWord, user) {
     // console.log(translation);
-
-    user.words().attach(translatedWord);
+    db.knex('user_words').where({user_id: user.id, translated_word_id: translatedWord.id}).then(function(result) {
+      if (results.length === 0) {
+        user.words().attach(translatedWord);
+      }
+    });
     res.send(translation);
   })
   // .then(function() {
@@ -118,11 +126,15 @@ var getTranslatedSentence = function(sentenceId, languageId, text, translateCode
 };
 
 exports.listWordSentences = function(req, res) {
-  var word = req.params.word;
+  // console.log(req.params);
+  // console.log((req.params.word).fromCharCode(parseInt(unicode, 16)));
+  // console.log(decodeURIComponent(req.params.word));
+  var word = decodeURIComponent(req.params.word);
   var sentenceObj = {};
 
   new Word({text: word}).fetch()
   .then(function(word) {
+    console.log(word);
     return new Sentence().where({word_id: word.id, language_id: req.session.learnLanguage.id}).fetchAll();
   })
   .then(function(sentences) {
@@ -342,7 +354,7 @@ exports.audioToSpeech = function(req, res) {
 };
 
 exports.test = function(req, res) {
-  return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=dog&target=zh-TW`)
+  return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=%E9%B1%BC&target=en`)
   .then(function(response) {
     // res.send(data);
     res.send(response.data.data);

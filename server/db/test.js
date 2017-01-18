@@ -8,6 +8,7 @@ var Languages = require('./collections/languages.js');
 var Language = require('./models/language.js');
 var TranslatedWord = require('./models/translatedWord');
 var TranslatedSentence = require('./models/translatedSentence');
+var knex = require('knex');
 
 // User
 // .where({id: 66})
@@ -142,6 +143,21 @@ new Word({text: 'apple'}).fetch()
 //   language.learnUsers().attach(new User)
 // })
 
-if (new Sentence().where({text: 'this is a pig'}).fetch()) {
-  console.log('This is truthy');
-}
+// new TranslatedWord().where({word_id: 5}).fetch()
+// .then(function(translatedWord) {
+//   console.log(JSON.stringify(translatedWord));
+// });
+
+// new User().where({id: 1}).fetch({withRelated: 'words'})
+// .then(function(user) {
+//   console.log(user.words().relatedData.target.where({translated_word_id: 5, user_id: 1}));
+//   // .then(function(model) {
+//   //   console.log(model.toJSON());
+//   // });
+//   // user.words().relatedData.target.where({translated_word_id: 5})
+
+// });
+
+db.knex('user_words').where({user_id: 1, translated_word_id: 5}).then(function(result) {
+  console.log(result);
+});
