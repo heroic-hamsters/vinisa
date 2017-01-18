@@ -111,12 +111,12 @@ var addLanguage = function(language) {
   });
 };
 
-var saveSentence = function(text) {
+var saveSentence = function(url) {
   $.ajax({
     url: '/api/users/sentences',
     method: 'POST',
     contentType: 'application/json',
-    data: JSON.stringify({text: text}),
+    data: JSON.stringify({url: url}),
     success: (data) => console.log('Added sentence to user'),
     error: (err) => console.log('Error adding sentence to user')
   });

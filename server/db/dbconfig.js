@@ -99,6 +99,7 @@ Promise.all([
           table.increments('id').primary();
           table.integer('sentence_id').references('id').inTable('sentences').unsigned();
           table.integer('user_id').references('id').inTable('users').unsigned();
+          table.unique(['sentence_id', 'user_id']);
         }).then(function(table) {
           console.log('Created table user sentences');
         });

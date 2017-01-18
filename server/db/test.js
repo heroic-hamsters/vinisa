@@ -158,6 +158,7 @@ new Word({text: 'apple'}).fetch()
 
 // });
 
-db.knex('user_words').where({user_id: 1, translated_word_id: 5}).then(function(result) {
-  console.log(result);
+new User().where({id: 2}).fetch()
+.then(function(user) {
+  user.sentences().detach({sentence_id: 1});
 });
