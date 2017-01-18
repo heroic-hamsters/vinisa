@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 var detectLabels = function(request, callback) {
   $.post({
-    url: 'https://vision.googleapis.com/v1/images:annotate?key=' + Config['CLOUD_API'],
+    url: 'https://vision.googleapis.com/v1/images:annotate?key=' + process.env.CLOUD_API,
     data: JSON.stringify(request),
     contentType: 'application/json'
   }).done(function(data) {
@@ -12,7 +12,7 @@ var detectLabels = function(request, callback) {
 
 var translateText = function(text, target, callback) {
   var url = 'https://www.googleapis.com/language/translate/v2?key=' +
-                  Config['CLOUD_API'] +
+                  process.env.CLOUD_API +
                   '&q=' + text +
                   '&target=' + target;
   $.ajax({

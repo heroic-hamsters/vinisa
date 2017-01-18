@@ -6,7 +6,6 @@
   "scripts": {
     "start": "nodemon server/server.js",
     "preinstall": "mysql -u root -e 'CREATE DATABASE IF NOT EXISTS translate;'",
-    "postinstall": "node server/db/dbconfig.js && node server/db/languageStorage.js",
     "test": "mocha server/db/spec/db-spec.js; RES=$?; kill %1; exit $RES",
     "dev": "nodemon server/server.js & webpack-dev-server --content-base client --open --inline --hot"
   },

@@ -1,4 +1,6 @@
 var Language = require('./models/language');
+// var db = require('./dbconfig');
+var Promise = require('bluebird');
 
 var languages = [
   {
@@ -222,8 +224,25 @@ var languages = [
   }
 ];
 
-languages.forEach(function(language) {
-  new Language({translateCode: language.translateCode, name: language.name, speechCode: language.speechCode}).save();
-});
+exports.runScript = () => {
+  return Promise.try(function() {
+    languages.forEach(function(language) {
+      new Language({translateCode: language.translateCode, name: language.name, speechCode: language.speechCode}).save();
+    });
+  }).catch(function(error) {
+    console.log('Failed adding all da languages');
+  })
+}
+
+// Promise.map(languages, function(language) {
+//   return new Language({translateCode: language.translateCode, name: language.name, speechCode: language.speechCode}).save();
+// })
+// .then(function() {
+//   db.knex.destroy();
+// })
+
+// languages.forEach(function(language) {
+//   new Language({translateCode: language.translateCode, name: language.name, speechCode: language.speechCode}).save();
+// });
 
 // console.log(languages.length);
