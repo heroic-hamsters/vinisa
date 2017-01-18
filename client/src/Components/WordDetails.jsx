@@ -203,9 +203,9 @@ export default class WordDetails extends React.Component {
     ajax.addSentences(word, audioSentence, sentenceTranslation, url);
   }
 
-  handleSaveSentence(sentence) {
-    console.log(sentence);
-    ajax.saveSentence(sentence);
+  handleSaveSentence(url) {
+    console.log(url);
+    ajax.saveSentence(url);
   }
 
   render() {
@@ -264,7 +264,7 @@ export default class WordDetails extends React.Component {
                   <div>{this.state.sentences.nativeSentences[index]}</div>
                   <div>{sentence}</div>
                   <div><audio src={this.state.sentences.urls[index]} controls="controls" /></div>
-                  <button onClick={this.handleSaveSentence.bind(this, sentence)}>Save Sentence</button>
+                  <button onClick={this.handleSaveSentence.bind(this, this.state.sentences.urls[index])}>Save Sentence</button>
                 </li>
               ))
             }

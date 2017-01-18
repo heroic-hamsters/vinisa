@@ -167,7 +167,7 @@ exports.listSavedSentences = function(req, res) {
     console.log(results.toJSON().sentences);
     sentenceObj.translatedSentences = results.toJSON().sentences;
     return Promise.map(results.toJSON().sentences, function(sentence) {
-      return new TranslatedSentence().where({sentence_id : sentence.id}).fetch();
+      return new TranslatedSentence().where({sentence_id : sentence.id, language_id: req.session.nativeLanguage.id}).fetch();
     });
   })
   .then(function(nativeSentences) {
@@ -211,10 +211,19 @@ exports.createSentence = function(req, res) {
 };
 
 exports.saveSentence = function(req, res) {
-  new Sentence().where({text: req.body.text}).fetch()
+  var saveSentence;
+  new Sentence().where({url: req.body.url}).fetch()
   .then(function(sentence) {
-    sentence.users().attach({user_id: req.session.user.id});
-    res.send('Saved sentence');
+    saveSentence = sentence;
+    return db.knex('user_sentences').where({user_id: req.session.user.id, sentence_id: sentence.id});
+
+  })
+  .then(function(queryResults) {
+    if (queryResults.length === 0) {
+      saveSentence.users().attach({user_id: req.session.user.id});
+      res.send('Saved sentence');
+
+    }
   });
 };
 
@@ -370,13 +379,10 @@ exports.audioToSpeech = function(req, res) {
   });
 };
 
-exports.test = function(req, res) {
-  return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=%E9%B1%BC&target=en`)
-  .then(function(response) {
-    // res.send(data);
-    res.send(response.data.data);
-  })
-  .catch(function(err) {
-    console.log(err);
-  });
+exports.unsaveSentence = function(req, res) {
+
+};
+
+exports.unsaveWord = function(req, res) {
+
 };
