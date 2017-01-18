@@ -49,6 +49,15 @@ var getSavedSentences = function(cb) {
   });
 };
 
+var getContributedSentences = function(cb) {
+  $.ajax({
+    url: '/api/contributedsentences',
+    method: 'GET',
+    success: (data) => cb(data),
+    error: (error) => console.log('Error getting contributed sentences', error)
+  });
+};
+
 var addSentences = function(word, sentence, translation, url) {
   $.ajax({
     url: '/api/sentences',
@@ -147,6 +156,7 @@ module.exports = {
   addWord: addWord,
   getSentences: getSentences,
   getSavedSentences: getSavedSentences,
+  getContributedSentences: getContributedSentences,
   addSentences: addSentences,
   loginAjax: loginAjax,
   signupAjax: signupAjax,
