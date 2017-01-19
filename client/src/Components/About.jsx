@@ -13,8 +13,8 @@ export default class About extends React.Component {
 
         <div className="information">
           <div className="information-text">
-            <p>Take a photo, and it will identify what objects are in that photo and translate it for you into your language of choice.</p>
-            <p>More details here</p>
+            <h3>Crowd-source and image based language learning</h3>
+            <p>Taking the mundane and isolated feeling out of online language learning</p>
           </div>
           <ul className="login-signup-button">
             <li><NavLink to='/login'>Login</NavLink></li>
