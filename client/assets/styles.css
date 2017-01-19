@@ -110,7 +110,7 @@ h1 {
   background-image: url('splash.jpg');
   background-position: 25% 25%;
   background-size: cover;
-  height: 500px;
+  height: 600px;
   width: 100%;
   position: absolute;
   top: 100px;
@@ -121,6 +121,10 @@ h1 {
   color: white;
   text-align: center;
   font-size: 24px;
+}
+
+.information a {
+  color: white;
 }
 
 .information a:visited {
@@ -160,7 +164,7 @@ h1 {
   display: flex;
   align-items: center;
   width: 100%;
-  top: 600px;
+  top: 700px;
   height: 100px;
 }
 
