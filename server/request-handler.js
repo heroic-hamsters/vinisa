@@ -403,8 +403,11 @@ exports.unsaveWord = function(req, res) {
   var word;
 
   new Word().where({text: req.params.text}).fetch()
-  .then(function(foundWord) {
-    word = foundWord;
+  .then(function(word) {
+    return new TranslatedWord().where({word_id: word.id}).fetch();
+  })
+  .then(function(translatedWord) {
+    word = translatedWord;
     return new User().where({id: req.session.user.id}).fetch();
   })
   .then(function(user) {
