@@ -16,18 +16,6 @@ export default class Library extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   ajax.getWords(function(data) {
-  //     var arr = [];
-  //     if (data) {
-  //       data.forEach( word => arr.push(word.text) );
-  //     }
-  //     this.setState({
-  //       words: arr
-  //     });
-  //   }.bind(this));
-  // }
-
   onWordSelect(event) {
     event.persist();
     event.preventDefault();
@@ -39,10 +27,12 @@ export default class Library extends React.Component {
     return (
       <div className="library-container">
         <div className="library-box">
-          <h1>My Library
-          <button className="general-button"><Link to="/savedwords">Saved Words</Link></button>
-          <button className="general-button"><Link to="/savedsentences">Saved Sentences</Link></button>
-          <button className="general-button"><Link to="/contributedsentences">Contributed Sentences</Link></button></h1>
+          <h1>My Library</h1>
+          <div>
+            <button className="general-button"><Link to="/savedwords">Saved Words</Link></button>
+            <button className="general-button"><Link to="/savedsentences">Saved Sentences</Link></button>
+            <button className="general-button"><Link to="/contributedsentences">Contributed Sentences</Link></button>
+          </div>
           {this.props.children}
         </div>
       </div>

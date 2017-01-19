@@ -41,7 +41,7 @@ app.get('/api/codes', handler.getCodes);
 app.post('/api/upload', s3Handler.uploadAudio);
 app.post('/api/vision', handler.getLabels);
 app.post('/api/speech', handler.audioToSpeech);
-app.delete('/api/sentences/:url', handler.unsaveSentence);
+app.delete('/api/sentences/:url?', handler.unsaveSentence);
 app.delete('/api/words/:text', handler.unsaveWord);
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'));

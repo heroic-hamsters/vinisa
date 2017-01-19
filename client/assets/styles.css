@@ -55,6 +55,27 @@ h1 {
 }
 
 /*
+ Lists
+ */
+
+.gen-list {
+  margin: 10px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  transition: font-size 0.3s ease;
+  display: flex;
+}
+
+.gen-list:last-child {
+  border: none;
+}
+
+.gen-list:hover {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/*
  Title
  */
 
@@ -308,7 +329,7 @@ h1 {
 .word-details-box {
   margin-top: 5%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 }
@@ -375,4 +396,32 @@ h1 {
 
 .recorded-audio-box {
   display: flex;
+}
+
+.related-sentences-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.related-sentences-box > h3 {
+  margin: 10px 0 5px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.related-sentences-box > ul {
+  margin: 0;
+}
+
+.related-sentences {
+  margin: 5px;
+}
+
+/*
+ Saved Words
+ */
+
+.remove-saved-word-button {
+  margin: 0 0 10px 30px;
 }
