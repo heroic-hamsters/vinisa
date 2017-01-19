@@ -4,12 +4,12 @@ import { observer } from 'mobx-react';
 import $ from 'jquery';
 import ajax from '../lib/ajax';
 import Navbar from './Navbar.jsx';
+import AppStore from './AppStore.jsx'
 
 @observer
 export default class Settings extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store;
 
     this.state = {
       error: false
@@ -18,8 +18,8 @@ export default class Settings extends React.Component {
 
   componentWillMount() {
     ajax.getCodes(function(data) {
-      this.store.nativeLanguage = data[0].name;
-      this.store.learnLanguage = data[1].name;
+      AppStore.nativeLanguage = data[0].name;
+      AppStore.learnLanguage = data[1].name;
 
     }.bind(this));
 
@@ -37,8 +37,7 @@ export default class Settings extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     ajax.addLanguage(e.target.language.value);
-    this.store.learnLanguage = e.target.language.value;
-    // console.log(e.target.language.value);
+    AppStore.learnLanguage = e.target.language.value;
   }
 
   render() {
@@ -48,7 +47,7 @@ export default class Settings extends React.Component {
 
         <form className="login-signup-form" onSubmit={ this.handleSubmit.bind(this) } >
           <div>
-            Current Target Language: {this.store.learnLanguage}
+            Current Target Language: {AppStore.learnLanguage}
           </div>
           <div>
             Language You'd Like to Learn:&nbsp;

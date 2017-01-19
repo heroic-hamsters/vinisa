@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 import ajax from '../lib/ajax.js';
 
+@observer
 export default class ContributedSentences extends React.Component {
   constructor(props) {
     super(props);
