@@ -21,6 +21,15 @@ var addWord = function(text, cb) {
   });
 };
 
+var unsaveWord = function(word, cb) {
+  $.ajax({
+    url: '/api/words/' + word,
+    method: 'DELETE',
+    success: (data) => cb(data),
+    error: (error) => console.log('Error deleting word', error)
+  });
+};
+
 var getCodes = function(cb) {
   $.ajax({
     method: 'GET',
@@ -66,6 +75,15 @@ var addSentences = function(word, sentence, translation, url) {
     data: JSON.stringify({word: word, sentence: sentence, translation: translation, url: url}),
     success: (data) => console.log('Successfully added sentence'),
     error: (err) => console.log('Error adding sentence')
+  });
+};
+
+var removeSavedSentence = function(url, cb) {
+  $.ajax({
+    url: '/api/sentences/?' + url,
+    method: 'DELETE',
+    success: (data) => cb(data),
+    error: (error) => console.log('Error deleting sentence', error)
   });
 };
 
@@ -154,6 +172,7 @@ var recognizeAudio = function(request, cb) {
 module.exports = {
   getWords: getWords,
   addWord: addWord,
+  unsaveWord: unsaveWord,
   getSentences: getSentences,
   getSavedSentences: getSavedSentences,
   getContributedSentences: getContributedSentences,
@@ -162,6 +181,7 @@ module.exports = {
   signupAjax: signupAjax,
   getLanguages: getLanguages,
   saveSentence: saveSentence,
+  removeSavedSentence: removeSavedSentence,
   getCodes: getCodes,
   addLanguage: addLanguage,
   getLabels: getLabels,

@@ -55,6 +55,27 @@ h1 {
 }
 
 /*
+ Lists
+ */
+
+.gen-list {
+  margin: 10px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  transition: font-size 0.3s ease;
+  display: flex;
+}
+
+.gen-list:last-child {
+  border: none;
+}
+
+.gen-list:hover {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/*
  Title
  */
 
@@ -375,4 +396,8 @@ h1 {
 
 .recorded-audio-box {
   display: flex;
+}
+
+.remove-saved-word-button {
+  margin: 0 0 10px 30px;
 }
