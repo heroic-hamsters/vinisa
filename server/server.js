@@ -34,21 +34,28 @@ app.use(express.static(path.join(__dirname, '../client')));
 
 app.post('/api/signup', handler.createUser);
 app.post('/api/login', handler.verifyUser);
-app.post('/api/sentences', handler.createSentence);
-app.get('/api/sentences/:word', handler.listWordSentences);
-app.get('/api/savedsentences', handler.listSavedSentences);
-app.get('/api/contributedsentences', handler.listCreatedSentences);
-app.post('/api/users/sentences', handler.saveSentence);
-app.post('/api/words', handler.addWord);
-app.get('/api/words', handler.getWords);
-app.post('/api/languages', handler.setDefaultLanguage);
 app.get('/api/languages', handler.getLanguages);
-app.get('/api/codes', handler.getCodes);
-app.post('/api/upload', s3Handler.uploadAudio);
-app.post('/api/vision', handler.getLabels);
-app.post('/api/speech', handler.audioToSpeech);
-app.delete('/api/sentences/:url?', handler.unsaveSentence);
-app.delete('/api/words/:text', handler.unsaveWord);
+
+/*=================== Secured Routes =======================*/
+
+app.post('/api/sentences', checkUser, handler.createSentence);
+app.get('/api/sentences/:word', checkUser, handler.listWordSentences);
+app.get('/api/savedsentences', checkUser, handler.listSavedSentences);
+app.get('/api/contributedsentences', checkUser, handler.listCreatedSentences);
+app.post('/api/users/sentences', checkUser, handler.saveSentence);
+app.post('/api/words', checkUser, handler.addWord);
+app.get('/api/words', checkUser, handler.getWords);
+app.post('/api/languages', checkUser, handler.setDefaultLanguage);
+app.get('/api/codes', checkUser, handler.getCodes);
+app.post('/api/upload', checkUser, s3Handler.uploadAudio);
+app.post('/api/vision', checkUser, handler.getLabels);
+app.post('/api/speech', checkUser, handler.audioToSpeech);
+app.delete('/api/sentences/:url?', checkUser, handler.unsaveSentence);
+app.delete('/api/words/:text', checkUser, handler.unsaveWord);
+
+
+/*========================================================*/
+
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'));
 });

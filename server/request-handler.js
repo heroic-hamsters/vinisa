@@ -38,7 +38,6 @@ exports.getWords = function(req, res) {
 };
 
 exports.addWord = function(req, res) {
-
   var username = req.session.user.username;
   var text = req.body.text;
   console.log(text);
@@ -136,7 +135,6 @@ exports.listWordSentences = function(req, res) {
   var sentenceObj = {};
   new Word({text: word}).fetch()
   .then(function(word) {
-    console.log(word);
     return new Sentence().where({word_id: word.id, language_id: req.session.learnLanguage.id}).fetchAll();
   })
   .then(function(learnSentences) {
@@ -150,6 +148,9 @@ exports.listWordSentences = function(req, res) {
   .then(function(nativeSentences) {
     sentenceObj.nativeSentences = nativeSentences;
     res.send(sentenceObj);
+  })
+  .catch(function(err) {
+    throw err;
   });
 };
 
