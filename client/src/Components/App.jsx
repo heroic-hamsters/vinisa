@@ -12,6 +12,8 @@ export default class App extends React.Component {
     this.loggedIn = auth.isLoggedIn();
   }
 
+
+
   render() {
     return (
       <div>

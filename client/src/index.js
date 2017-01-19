@@ -36,6 +36,7 @@ ReactDOM.render((
       <Route component={ Navbar }>
         <Route onEnter={ requireAuth } path="/home" store={ AppStore } component={ Home } />
         <Route onEnter={ requireAuth } path="/library" component={ Library } store={ AppStore } >
+          <IndexRoute component={ SavedWords } />
           <Route path="/savedwords" component={ SavedWords } />
           <Route path="/savedsentences" component={ SavedSentences} />
           <Route path="/contributedsentences" component={ ContributedSentences } />
