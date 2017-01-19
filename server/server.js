@@ -34,6 +34,10 @@ app.use(express.static(path.join(__dirname, '../client')));
 
 app.post('/api/signup', handler.createUser);
 app.post('/api/login', handler.verifyUser);
+app.get('/api/languages', handler.getLanguages);
+
+/*=================== Secured Routes =======================*/
+
 app.post('/api/sentences', checkUser, handler.createSentence);
 app.get('/api/sentences/:word', checkUser, handler.listWordSentences);
 app.get('/api/savedsentences', checkUser, handler.listSavedSentences);
@@ -42,13 +46,16 @@ app.post('/api/users/sentences', checkUser, handler.saveSentence);
 app.post('/api/words', checkUser, handler.addWord);
 app.get('/api/words', checkUser, handler.getWords);
 app.post('/api/languages', checkUser, handler.setDefaultLanguage);
-app.get('/api/languages', handler.getLanguages);
 app.get('/api/codes', checkUser, handler.getCodes);
 app.post('/api/upload', checkUser, s3Handler.uploadAudio);
 app.post('/api/vision', checkUser, handler.getLabels);
 app.post('/api/speech', checkUser, handler.audioToSpeech);
 app.delete('/api/sentences/:url?', checkUser, handler.unsaveSentence);
 app.delete('/api/words/:text', checkUser, handler.unsaveWord);
+
+
+/*========================================================*/
+
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'));
 });
