@@ -6,6 +6,7 @@ var handler = require('./request-handler');
 var session = require('express-session');
 var s3Handler = require('./s3handler');
 var morgan = require('morgan');
+var ReactDOM = require('react-dom');
 
 const app = express();
 
@@ -17,13 +18,19 @@ app.use(bodyParser.text({defaultCharset: 'utf-8'}));
 app.use(session({
   secret: 'heroic translating hamsters',
   resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: false, //Should be true, but requires https.
-    // maxAge: 200000
-  }
+  saveUninitialized: true
 }));
 
+var checkUser = function(req, res, next) {
+  // Nasty hack for working well with jQuery redirecting
+  // var loginPage = req.headers.origin + '/login'
+  // res.json({notAuthorized:loginPage});
+  if (req.session.user) {
+    return next();
+  } else {
+    res.redirect('/login');
+  }
+};
 app.use(express.static(path.join(__dirname, '../client')));
 
 app.post('/api/signup', handler.createUser);

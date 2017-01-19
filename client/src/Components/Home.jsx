@@ -93,6 +93,7 @@ export default class Home extends React.Component {
 
 
     ajax.addWord(chosenWord, function(data) {
+      // window.location.href = data.notAuthorized;
       this.store.translatedWord = data;
       browserHistory.push('/word');
     }.bind(this));
@@ -105,6 +106,7 @@ export default class Home extends React.Component {
     this.store.word = searchTerm;
 
     ajax.addWord(searchTerm, function(data) {
+      // window.location.href = data.notAuthorized;
       this.store.translatedWord = data;
       browserHistory.push('/word');
     }.bind(this));
