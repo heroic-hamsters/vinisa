@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import axios from 'axios';
 
 var getWords = function(cb) {
   $.ajax({
@@ -79,45 +79,48 @@ var addSentences = function(word, sentence, translation, url) {
 };
 
 var removeSavedSentence = function(url, cb) {
-  $.ajax({
-    url: '/api/sentences/?' + url,
-    method: 'DELETE',
-    success: (data) => cb(data),
-    error: (error) => console.log('Error deleting sentence', error)
+  axios.delete('/api/sentences/?' + url)
+  .then(function(data) {
+    cb(data);
+  })
+  .catch(function(error) {
+    console.log('Error deleting sentence', error);
   });
+
 };
 
 var loginAjax = (username, password, cb) => {
-  $.ajax({
-    url: '/api/login',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({username: username, password: password}),
-    success: (data) => {
-      cb({authenticated: true});
-    },
-    error: (data) => {
-      cb({authenticated: false});
-    }
+  axios.post('/api/login', {username: username, password: password})
+  .then(function(data) {
+    cb({authenticated: true});
+  })
+  .catch(function(error) {
+    cb({authenticated: false});
+    console.log('Error logging in', error);
   });
+
 };
 
 var signupAjax = function(username, password, nativeLanguage, learnLanguage, cb) {
-  $.ajax({
-    url: '/api/signup',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({username: username, password: password, nativeLanguage: nativeLanguage, learnLanguage: learnLanguage}),
-    success: (data) => {
-      cb({authenticated: true});
-    },
-    error: (data) => {
-      cb({authenticated: false});
-    }
+  axios.post('/api/signup', {username: username, password: password, nativeLanguage: nativeLanguage, learnLanguage: learnLanguage})
+  .then(function(data) {
+    cb({authenticated: true});
+  })
+  .catch(function(error) {
+    cb({authenticated: false});
+    console.log('Error signing up', error);
   });
 };
 
 var getLanguages = function(cb) {
+  axios.get('/api/languages')
+  .then(function(data) {
+    cb(data.data);
+  })
+  .catch(function(error) {
+    console.log('Error getting languages from database', error);
+  });
+
   $.ajax({
     url: '/api/languages',
     method: 'GET',
@@ -128,44 +131,46 @@ var getLanguages = function(cb) {
 };
 
 var addLanguage = function(language) {
-  $.ajax({
-    url: '/api/languages',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({language: language}),
-    success: (data) => console.log('Added new language to user'),
-    error: (err) => console.log('Error adding language to user')
+  axios.post('/api/languages', {language: language})
+  .then(function(data) {
+    console.log('Added new language to user');
+  })
+  .catch(function(error) {
+    console.log('Error adding language to user', error);
   });
+
 };
 
 var saveSentence = function(url) {
-  $.ajax({
-    url: '/api/users/sentences',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({url: url}),
-    success: (data) => console.log('Added sentence to user'),
-    error: (err) => console.log('Error adding sentence to user')
+  axios.post('/api/users/sentences', {url: url})
+  .then(function(data) {
+    console.log('Added sentence to user');
+  })
+  .catch(function(err) {
+    console.log('Error adding sentence to user');
   });
 };
 
 var getLabels = function(request, cb) {
-  $.ajax({
-    url: '/api/vision',
-    method: 'POST',
-    data: {request: request},
-    success: (data) => cb(data),
-    error: (error) => console.log('Error in getting labels')
+
+  axios.post('/api/vision', {request: request})
+  .then(function(data) {
+    console.log(data);
+    cb(data.data);
+  })
+  .catch(function(error) {
+    console.log('Error in getting labels', err);
   });
+
 };
 
 var recognizeAudio = function(request, cb) {
-  $.ajax({
-    url: '/api/speech',
-    method: 'POST',
-    data: {request: request},
-    success: (data) => cb(data),
-    error: (error) => console.log('Error in recognizing audio', error)
+  axios.post('/api/speech', {request: request})
+  .then(function(data) {
+    cb(data.data);
+  })
+  .catch(function(error) {
+    console.log('Error in recognizing audio', error);
   });
 };
 

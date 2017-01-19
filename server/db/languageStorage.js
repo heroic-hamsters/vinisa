@@ -225,14 +225,15 @@ var languages = [
 ];
 
 exports.runScript = () => {
-  return Promise.try(function() {
-    languages.forEach(function(language) {
-      new Language({translateCode: language.translateCode, name: language.name, speechCode: language.speechCode}).save();
-    });
-  }).catch(function(error) {
-    console.log('Failed adding all da languages');
-  })
-}
+  Promise.map(languages, function(language) {
+    return new Language({translateCode: language.translateCode, name: language.name, speechCode: language.speechCode}).save();
+  }).catch(function(err) {
+
+    if (err.errno !== 1062) {
+      throw err;
+    }
+  });
+};
 
 // Promise.map(languages, function(language) {
 //   return new Language({translateCode: language.translateCode, name: language.name, speechCode: language.speechCode}).save();
