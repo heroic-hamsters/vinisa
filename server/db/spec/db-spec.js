@@ -39,11 +39,18 @@ describe('Language Learning Database', function() {
     var sentence;
 
     beforeEach(function() {
-      user = new User({username: 'Steve', password: 'Steve'});
+      user = new User({username: 'Steve', password: 'Steve', native_language: 10, learn_language: 10}).save();
 
-      word = new Word({text: 'Testing'});
+      word = new Word({text: 'Testing'}).save();
+
 
     });
+
+    afterEach(function() {
+      new User().where({username: 'Steve'}).destroy();
+
+      new Word().where({text: 'Testing'}).destroy();
+    })
 
     it('Should insert user into the database', function(done) {
       user.save();
