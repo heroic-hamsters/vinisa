@@ -236,28 +236,27 @@ exports.createUser = (req, res) => {
     if (found) {
       throw ('Username already exists');
     } else {
-      bcrypt.hash(req.body.password, null, null, function(err, hash) {
+      var hash = bcrypt.hashSync(req.body.password);
         // Store hash in your password DB.
-        Promise.all([
-          new Language({name: req.body.nativeLanguage}).fetch(),
-          new Language({name: req.body.learnLanguage}).fetch()
-        ])
-        .spread(function(nativeLanguage, newLearnLanguage) {
-          learnLanguage = newLearnLanguage;
-          natLanguage = nativeLanguage;
-          return new User({username: req.body.username, password: hash, native_language: nativeLanguage.id, learn_language: learnLanguage.id}).save();
-        })
-        .then(function(newUser) {
-          user = newUser;
-          return newUser.targetLanguages().attach(learnLanguage);
-        })
-        .then(function() {
-          return req.session.regenerate(function() {
-            req.session.user = user;
-            req.session.learnLanguage = learnLanguage;
-            req.session.nativeLanguage = natLanguage;
-            res.end();
-          });
+      Promise.all([
+        new Language({name: req.body.nativeLanguage}).fetch(),
+        new Language({name: req.body.learnLanguage}).fetch()
+      ])
+      .spread(function(nativeLanguage, newLearnLanguage) {
+        learnLanguage = newLearnLanguage;
+        natLanguage = nativeLanguage;
+        return new User({username: req.body.username, password: hash, native_language: nativeLanguage.id, learn_language: learnLanguage.id}).save();
+      })
+      .then(function(newUser) {
+        user = newUser;
+        return newUser.targetLanguages().attach(learnLanguage);
+      })
+      .then(function() {
+        return req.session.regenerate(function() {
+          req.session.user = user;
+          req.session.learnLanguage = learnLanguage;
+          req.session.nativeLanguage = natLanguage;
+          res.end();
         });
       });
     }
@@ -279,23 +278,22 @@ exports.verifyUser = (req, res) => {
       res.sendStatus(403);
     } else {
       var stored_hash = user.attributes.password;
-      bcrypt.compare(password, stored_hash, function(err, verified) {
-        if (verified) {
-          Promise.all([new Language({id: user.attributes.native_language}).fetch(),
-            new Language({id: user.attributes.learn_language}).fetch()
-          ])
-          .spread((nativeLanguage, learnLanguage) => {
-            req.session.regenerate(() => {
-              req.session.user = user;
-              req.session.nativeLanguage = nativeLanguage;
-              req.session.learnLanguage = learnLanguage;
-              res.redirect('/');
-            });
+      var verified = bcrypt.compareSync(password, stored_hash);
+      if (verified) {
+        Promise.all([new Language({id: user.attributes.native_language}).fetch(),
+          new Language({id: user.attributes.learn_language}).fetch()
+        ])
+        .spread((nativeLanguage, learnLanguage) => {
+          req.session.regenerate(() => {
+            req.session.user = user;
+            req.session.nativeLanguage = nativeLanguage;
+            req.session.learnLanguage = learnLanguage;
+            res.redirect('/');
           });
-        } else {
-          res.status(403).send('Invalid username or password');
-        }
-      });
+        });
+      } else {
+        res.status(403).send('Invalid username or password');
+      }
     }
   });
 };
