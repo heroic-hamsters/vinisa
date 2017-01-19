@@ -385,6 +385,7 @@ exports.audioToSpeech = function(req, res) {
   })
   .catch(function(err) {
     console.log(err);
+    res.send('Error recognizing audio');
   });
 };
 

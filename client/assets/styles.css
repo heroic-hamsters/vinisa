@@ -425,19 +425,20 @@ h1 {
 }
 
 .recorded-sentence {
-  margin-left: 20px;
+  margin-left: 50px;
 }
 
 .related-sentences-box {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  margin: 20px 50px;
 }
 
 .related-sentences-box > h3 {
   margin: 10px 0 5px 0;
   border-bottom: 1px solid #ccc;
+  width: 25%;
 }
 
 .related-sentences-box > ul {
