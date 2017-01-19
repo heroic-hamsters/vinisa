@@ -409,14 +409,15 @@ exports.unsaveWord = function(req, res) {
 
   new Word().where({text: req.params.text}).fetch()
   .then(function(word) {
-    return new TranslatedWord().where({word_id: word.id}).fetch();
+    console.log(word);
+    return new TranslatedWord().where({word_id: word.id, language_id: req.session.learnLanguage.id}).fetch();
   })
   .then(function(translatedWord) {
     word = translatedWord;
     return new User().where({id: req.session.user.id}).fetch();
   })
   .then(function(user) {
-    user.words().detach(word);
+    user.words().detach({translated_word_id: word.id});
     res.send(word);
   })
   .catch(function(err) {

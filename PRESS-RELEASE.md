@@ -20,22 +20,13 @@ Once the project moves into development, the press release can be used as a touc
   > A crowdsource based language learning app that incorporates image and speech recognition.
 
 ## What is Vinisa? ##
-  > 
+  > Vinisa is a language learning app that allows users to upload a picture, see which words are related to that picture, and then choose a word and learn the foreign translation for it. Vinisa then shows users sentences that are uploaded by other users related to that word.
 
-## Problem ##
-  > Describe the problem your product solves.
+## The problem: ##
+  > Online language learning has traditionally been an isolated and largely mudane experience.
 
-## Solution ##
-  > Describe how your product elegantly solves the problem.
-
-## Quote from You ##
-  > A quote from a spokesperson in your company.
+## The solution: ##
+  > Create a fun learning experience by letting users take or upload pictures so they can choose what words they want to learn. Also, make the users feel connected to other users by letting them contribute and listen to sentences related to the words they want to learn.
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
-
-## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
-
-## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Just go to https://vinisa.hr50.site, create an account, and get started!
