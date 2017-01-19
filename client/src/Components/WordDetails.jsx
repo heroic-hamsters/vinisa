@@ -2,7 +2,6 @@ import React from 'react';
 import $ from 'jquery';
 import Dropzone from 'react-dropzone';
 import MediaStreamRecorder from 'msr';
-import helpers from '../helpers.js';
 import ajax from '../lib/ajax.js';
 
 export default class WordDetails extends React.Component {
