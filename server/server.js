@@ -6,7 +6,6 @@ var handler = require('./request-handler');
 var session = require('express-session');
 var s3Handler = require('./s3handler');
 var morgan = require('morgan');
-var ReactDOM = require('react-dom');
 
 const app = express();
 

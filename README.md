@@ -1,4 +1,4 @@
-# Translate Hamsters (in progress)
+# Vinisa
 
 > Language learning app that incorporates image recognition and user generated content.
 
@@ -25,23 +25,25 @@
 ## Requirements
 
 - Node 0.10.x
+- Nodemon
 - mySQL
+- Webpack
 
 ## Development
 
-### Installing Dependencies
+### Installing Dependencies and Starting the App
 
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
+sudo npm install -g webpack nodemon
 npm install
-bower install
+npm start
 ```
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/heroic-hamsters/translate-hamsters/issues)
 
 
 ## Contributing
