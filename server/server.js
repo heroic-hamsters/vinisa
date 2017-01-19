@@ -22,19 +22,14 @@ app.use(session({
 }));
 
 var checkUser = function(req, res, next) {
-  // req.headers.origin
-  // res.json({authenticated: false});
-  // console.log('req.url: ', req.headers.origin);
-  console.log(req.session.user);
-  // res.redirect('/');
-  var loginPage = req.headers.origin + '/login'
-  res.json({notAuthorized:loginPage});
-
-  // if (req.session.user) {
-  //   res.redirect('/');
-  //   // console.log('Looks good');
-  //   // return next();
-  // }
+  // Nasty hack for working well with jQuery redirecting
+  // var loginPage = req.headers.origin + '/login'
+  // res.json({notAuthorized:loginPage});
+  if (req.session.user) {
+    return next();
+  } else {
+    res.redirect('/login');
+  }
 };
 app.use(express.static(path.join(__dirname, '../client')));
 
@@ -45,7 +40,7 @@ app.get('/api/sentences/:word', handler.listWordSentences);
 app.get('/api/savedsentences', handler.listSavedSentences);
 app.get('/api/contributedsentences', handler.listCreatedSentences);
 app.post('/api/users/sentences', handler.saveSentence);
-app.post('/api/words', checkUser, handler.addWord);
+app.post('/api/words', handler.addWord);
 app.get('/api/words', handler.getWords);
 app.post('/api/languages', handler.setDefaultLanguage);
 app.get('/api/languages', handler.getLanguages);
