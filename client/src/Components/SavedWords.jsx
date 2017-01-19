@@ -26,10 +26,6 @@ export default class SavedWords extends React.Component {
       this.setState({
         words: AppStore.savedWords
       });
-      // Object.keys(AppStore.savedWords).forEach( (word) => {
-      //   var listItem = '<li key="' + word + '">' + word + '</li>';
-      //   $('#saved-word-list').append(listItem);
-      // });
     }.bind(this));
   }
 
@@ -40,9 +36,15 @@ export default class SavedWords extends React.Component {
   }
 
   handleRemoveWord(word) {
-    console.log(word);
     ajax.unsaveWord(word, function(data) {
       console.log('deleted: ', data);
+    });
+
+    var wordObj = this.state.words;
+    delete wordObj[word];
+
+    this.setState({
+      words: wordObj
     });
   }
 
@@ -55,7 +57,7 @@ export default class SavedWords extends React.Component {
             Object.keys(this.state.words).map((word, index) => (
               <li className="gen-list" key={index}>
                 <div className="library-word" onClick={this.onWordSelect.bind(this, word)}>{word}</div>
-                <button className="remove-saved-word-button" onClick={this.handleRemoveWord.bind(this, word)}>Remove word from library</button>
+                <button className="remove-saved-word-button" onClick={this.handleRemoveWord.bind(this, word, index)}>Remove word from library</button>
               </li>
             ))
           }
