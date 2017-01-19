@@ -269,6 +269,8 @@ exports.createUser = (req, res) => {
 };
 
 exports.verifyUser = (req, res) => {
+  console.log(req.session);
+
   var username = req.body.username;
   var password = req.body.password;
   new User({username: username}).fetch().then((user) => {
@@ -287,7 +289,7 @@ exports.verifyUser = (req, res) => {
               req.session.user = user;
               req.session.nativeLanguage = nativeLanguage;
               req.session.learnLanguage = learnLanguage;
-              res.json({authenticated: true});
+              res.redirect('/');
             });
           });
         } else {
@@ -299,7 +301,7 @@ exports.verifyUser = (req, res) => {
 };
 
 exports.getLanguages = function(req, res) {
-  // console.log('req.url:', req.protocol);
+  // console.log(req.session.user);
   if (!cookie.load('languagesSaved')) {
     eval(languageData.runScript());
     cookie.save('languagesSaved', true);
