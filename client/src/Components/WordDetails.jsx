@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 import Dropzone from 'react-dropzone';
-// import AudioRecorder from '../lib/audio-recorder';
 import MediaStreamRecorder from 'msr';
 import helpers from '../helpers.js';
 import ajax from '../lib/ajax.js';
@@ -12,15 +11,23 @@ export default class WordDetails extends React.Component {
     this.store = this.props.route.store;
 
     this.state = {
-      sentences: null
+      sentences: null,
+      startedRecording: null,
+      audioSentence: null,
+      audioSentenceTranslation: null,
+      audioFile: null,
+      recognizingAudio: "",
+      sentenceUploaded: null
     };
   }
 
   componentWillMount() {
     window.mediaRecorder = {};
     this.speechText = new SpeechSynthesisUtterance();
-    this.store.audioSentence = '';
-    this.store.audioSentenceTranslation = '';
+    this.setState({
+      audioSentence: null,
+      audioSentenceTranslation: null
+    })
   }
 
   componentDidMount() {
@@ -58,12 +65,6 @@ export default class WordDetails extends React.Component {
     speechSynthesis.speak(this.speechText);
   }
 
-  // play an audio clip
-  // onAudioPlay() {
-  //   var audio = new Audio('https://s3.amazonaws.com/translate-hamster/audio/bottle1.m4a');
-  //   audio.play();
-  // }
-
   onDrop(acceptedFiles, rejectedFiles) {
     // convert file to base64 encoded
     var file = acceptedFiles;
@@ -91,16 +92,17 @@ export default class WordDetails extends React.Component {
     };
 
     ajax.recognizeAudio(body, function(data) {
-      this.store.audioSentence = data.text;
-      this.store.audioSentenceTranslation = data.translatedText;
-      this.forceUpdate();
+      this.setState({
+        audioSentence: data.text,
+        audioSentenceTranslation: data.translatedText,
+        recognizingAudio: null
+      })
     }.bind(this));
   }
 
   // Beginning of audio audio recorder
   captureUserMedia(mediaConstraints, successCallback, errorCallback) {
     navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
-    console.log('captureUserMedia THIS:', this);
   }
 
   mediaConstraints = {
@@ -108,23 +110,28 @@ export default class WordDetails extends React.Component {
   };
 
   startRecording() {
-    // $('#start-recording').disabled = true;
-    // audiosContainer = document.getElementById('audios-container');
-    // console.log('startRecording()');
-    console.log('startRecording THIS:', this);
+    this.setState({
+      startedRecording: true,
+      audioSentence: null,
+      audioSentenceTranslation: null,
+      sentenceUploaded: null
+    });
+
     var that = this;
     this.captureUserMedia(this.mediaConstraints, this.onMediaSuccess.bind(that), this.onMediaError);
   };
 
   stopRecording() {
+    this.setState({
+      startedRecording: null,
+      recognizingAudio: true
+    });
+
     var mediaRecorder = window.mediaRecorder;
-    // $('#stop-recording').disabled = true;
     mediaRecorder.stop();
     mediaRecorder.stream.stop();
-    // $('.start-recording').disabled = false;
   };
 
-  // mediaRecorder = this.store.mediaRecorder;
 
   onMediaSuccess(stream) {
     window.mediaRecorder = new MediaStreamRecorder(stream);
@@ -133,7 +140,6 @@ export default class WordDetails extends React.Component {
     mediaRecorder.mimeType = 'audio/wav';
     mediaRecorder.audioChannels = 1;
     mediaRecorder.sampleRate = 44100;
-    console.log('before mediaRecorder THIS: ', this);
     mediaRecorder.ondataavailable = function(blob) {
       $('#record-audio').html("<audio controls=''><source src=" + URL.createObjectURL(blob) + "></source></audio>");
 
@@ -144,25 +150,19 @@ export default class WordDetails extends React.Component {
       link.href = url;
       link.download = tempFileName;
 
-      // link.download = filename || 'output.wav';
-      // console.log('onMediaSuccess THIS:', this);
-
-      // var file =
-      // url.lastModifiedDate = new Date();
-      // url.name = link.download;
       this.onDrop(blob);
 
       var file = new File([blob], tempFileName);
-      this.store.audioFile = file;
-      console.log('file:', file);
+      this.setState({
+        audioFile: file
+      });
     }.bind(this);
 
     var timeInterval = 360 * 1000;
 
     mediaRecorder.start(timeInterval);
-
-    // $('#stop-recording').disabled = false;
   }
+
   onMediaError(e) {
     console.error('media error', e);
   }
@@ -179,11 +179,11 @@ export default class WordDetails extends React.Component {
     var data = new Date(milliseconds);
     return data.getUTCHours() + " hours, " + data.getUTCMinutes() + " minutes and " + data.getUTCSeconds() + " second(s)";
   }
-  // End of audio audio recorde'acl', 'public-read'r
+  // End of audio audio record
 
   uploadAudioFile() {
     var formData = new FormData();
-    formData.append('audiofile', this.store.audioFile);
+    formData.append('audiofile', this.state.audioFile);
     formData.append('Content-Type', 'multipart/form-data');
     formData.append('acl', 'public-read');
 
@@ -194,13 +194,16 @@ export default class WordDetails extends React.Component {
       processData: false,  // tell jQuery not to convert to form data
       contentType: false,  // tell jQuery not to set contentType
       success: function(response) {
-        this.addSentenceToDb(this.store.word, this.store.audioSentence, this.store.audioSentenceTranslation, response.location);
+        this.addSentenceToDb(this.store.word, this.state.audioSentence, this.state.audioSentenceTranslation, response.location);
       }.bind(this)
     });
   }
 
   addSentenceToDb(word, audioSentence, sentenceTranslation, url) {
     ajax.addSentences(word, audioSentence, sentenceTranslation, url);
+    this.setState({
+      sentenceUploaded: true
+    });
   }
 
   handleSaveSentence(url) {
@@ -237,7 +240,16 @@ export default class WordDetails extends React.Component {
             <button className="general-button" onClick={this.stopRecording.bind(this)}>STOP</button>
             <button className="general-button" onClick={this.uploadAudioFile.bind(this)}>Upload</button>
             <button className="general-button"><a href="#" id="save">Save</a></button>
+            <div>
+              {this.state.startedRecording && 
+                <div className="red-dot"></div>
+              }
+              {this.state.sentenceUploaded &&
+                <div>Uploaded!</div>
+              }
+            </div>
           </div>
+
 
           <div className="recorded-audio-box">
             <div id="record-audio"></div>
@@ -246,14 +258,18 @@ export default class WordDetails extends React.Component {
         </div>
 
         <div className="recorded-sentence">
-          {this.store.audioSentence &&
-            <div>
-              Your recorded sentence:
-              <div>{this.store.audioSentence}</div>
-              <div>{this.store.audioSentenceTranslation}</div>
-            </div>
-          }
+            {this.state.audioSentence &&
+              <div>
+                Your recorded sentence:
+                <div>{this.state.audioSentence}</div>
+                <div>{this.state.audioSentenceTranslation}</div>
+              </div>
+            }
+            {this.state.recognizingAudio &&
+              <div className="recognition-loading">Recognizing audio and getting translation... <img src="http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif" style={{width: '60px'}} /></div>
+            }
         </div>
+
 
         <div className="related-sentences-box">
           <h3>Sentences uploaded by users: </h3>

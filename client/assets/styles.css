@@ -234,17 +234,24 @@ h1 {
  Home Page
  */
 
-.home-box {
+.search-box {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .search-bar {
+  position: absolute;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  position: absolute;
   top: 175px;
+}
+
+.results-box {
+  display: flex;
+  justify-content: center;
 }
 
 .another-button {
@@ -307,6 +314,8 @@ h1 {
   top: 35%;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 /*
@@ -396,10 +405,27 @@ h1 {
 .record-stop-button {
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.red-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: red;
 }
 
 .recorded-audio-box {
   display: flex;
+}
+
+.recognition-loading {
+  display: flex;
+  align-items: center;
+}
+
+.recorded-sentence {
+  margin-left: 20px;
 }
 
 .related-sentences-box {
@@ -419,7 +445,7 @@ h1 {
 }
 
 .related-sentences {
-  margin: 5px;
+  margin: 10px 5px;
 }
 
 /*

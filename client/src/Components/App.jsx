@@ -18,7 +18,7 @@ export default class App extends React.Component {
     return (
       <div>
         <div className="title-bar">
-          <IndexLink to='/' className="website-title">{this.store.sitename}</IndexLink>
+          <IndexLink to='/' className="website-title"><img src="http://i.imgur.com/son72iU.png" style={{height: '80px'}} /></IndexLink>
         </div>
         <br/>
 
