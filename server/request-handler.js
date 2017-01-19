@@ -14,6 +14,7 @@ const axios = require('axios');
 require('dotenv').config();
 var languageData = require('./db/languageStorage');
 var cookie = require('react-cookie');
+var bcrypt = require('bcrypt-nodejs');
 
 exports.getWords = function(req, res) {
   var responseObj = {};
@@ -235,25 +236,28 @@ exports.createUser = (req, res) => {
     if (found) {
       throw ('Username already exists');
     } else {
-      Promise.all([
-        new Language({name: req.body.nativeLanguage}).fetch(),
-        new Language({name: req.body.learnLanguage}).fetch()
-      ])
-      .spread(function(nativeLanguage, newLearnLanguage) {
-        learnLanguage = newLearnLanguage;
-        natLanguage = nativeLanguage;
-        return new User({username: req.body.username, password: req.body.password, native_language: nativeLanguage.id, learn_language: learnLanguage.id}).save();
-      })
-      .then(function(newUser) {
-        user = newUser;
-        return newUser.targetLanguages().attach(learnLanguage);
-      })
-      .then(function() {
-        return req.session.regenerate(function() {
-          req.session.user = user;
-          req.session.learnLanguage = learnLanguage;
-          req.session.nativeLanguage = natLanguage;
-          res.end();
+      bcrypt.hash(req.body.password, null, null, function(err, hash) {
+        // Store hash in your password DB.
+        Promise.all([
+          new Language({name: req.body.nativeLanguage}).fetch(),
+          new Language({name: req.body.learnLanguage}).fetch()
+        ])
+        .spread(function(nativeLanguage, newLearnLanguage) {
+          learnLanguage = newLearnLanguage;
+          natLanguage = nativeLanguage;
+          return new User({username: req.body.username, password: hash, native_language: nativeLanguage.id, learn_language: learnLanguage.id}).save();
+        })
+        .then(function(newUser) {
+          user = newUser;
+          return newUser.targetLanguages().attach(learnLanguage);
+        })
+        .then(function() {
+          return req.session.regenerate(function() {
+            req.session.user = user;
+            req.session.learnLanguage = learnLanguage;
+            req.session.nativeLanguage = natLanguage;
+            res.end();
+          });
         });
       });
     }
@@ -272,23 +276,24 @@ exports.verifyUser = (req, res) => {
       throw ('Invalid username or password');
       res.sendStatus(403);
     } else {
-      if (user.attributes.password === password) {
-        Promise.all([new Language().where({id: user.attributes.native_language}).fetch(),
-          new Language().where({id: user.attributes.learn_language}).fetch()
-        ])
-        .spread((nativeLanguage, learnLanguage) => {
-          req.session.regenerate(() => {
-            req.session.user = user;
-            req.session.nativeLanguage = nativeLanguage;
-            req.session.learnLanguage = learnLanguage;
-            res.json({authenticated: true});
+      var stored_hash = user.attributes.password;
+      bcrypt.compare(password, stored_hash, function(err, verified) {
+        if (verified) {
+          Promise.all([new Language({id: user.attributes.native_language}).fetch(),
+            new Language({id: user.attributes.learn_language}).fetch()
+          ])
+          .spread((nativeLanguage, learnLanguage) => {
+            req.session.regenerate(() => {
+              req.session.user = user;
+              req.session.nativeLanguage = nativeLanguage;
+              req.session.learnLanguage = learnLanguage;
+              res.json({authenticated: true});
+            });
           });
-
-        });
-
-      } else {
-        res.status(403).send('Invalid username or password');
-      }
+        } else {
+          res.status(403).send('Invalid username or password');
+        }
+      });
     }
   });
 };

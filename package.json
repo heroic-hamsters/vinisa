@@ -15,6 +15,7 @@
     "amazon-s3-url-signer": "^0.1.0",
     "aws-sdk": "^2.7.21",
     "axios": "^0.15.3",
+    "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.4.7",
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.2",
