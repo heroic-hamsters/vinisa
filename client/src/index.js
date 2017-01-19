@@ -31,7 +31,7 @@ var requireAuth = function(nextState, replace) {
 
 ReactDOM.render((
   <Router history={browserHistory}>
-    <Route path="/" component={ App } store={ AppStore } >
+    <Route path="/" component={ App }>
       <IndexRoute component={ About } />
       <Route component={ Navbar }>
         <Route onEnter={ requireAuth } path="/home" store={ AppStore } component={ Home } />

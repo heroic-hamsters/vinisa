@@ -416,7 +416,9 @@ exports.audioToSpeech = function(req, res) {
     res.send(speechObj);
   })
   .catch(function(err) {
+
     throw err;
+
   });
 };
 

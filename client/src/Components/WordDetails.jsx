@@ -2,7 +2,6 @@ import React from 'react';
 import $ from 'jquery';
 import Dropzone from 'react-dropzone';
 import MediaStreamRecorder from 'msr';
-import helpers from '../helpers.js';
 import ajax from '../lib/ajax.js';
 
 export default class WordDetails extends React.Component {
@@ -17,7 +16,8 @@ export default class WordDetails extends React.Component {
       audioSentenceTranslation: null,
       audioFile: null,
       recognizingAudio: "",
-      sentenceUploaded: null
+      sentenceUploaded: null,
+      sentencedSaved: null
     };
   }
 
@@ -92,11 +92,18 @@ export default class WordDetails extends React.Component {
     };
 
     ajax.recognizeAudio(body, function(data) {
-      this.setState({
-        audioSentence: data.text,
-        audioSentenceTranslation: data.translatedText,
-        recognizingAudio: null
-      })
+      if (data.text) {
+        this.setState({
+          audioSentence: data.text,
+          audioSentenceTranslation: data.translatedText,
+          recognizingAudio: null
+        })
+      } else {
+        this.setState({
+          audioSentence: data,
+          recognizingAudio: null
+        })
+      }
     }.bind(this));
   }
 
@@ -114,7 +121,8 @@ export default class WordDetails extends React.Component {
       startedRecording: true,
       audioSentence: null,
       audioSentenceTranslation: null,
-      sentenceUploaded: null
+      sentenceUploaded: null,
+      sentenceSaved: null
     });
 
     var that = this;
@@ -207,8 +215,10 @@ export default class WordDetails extends React.Component {
   }
 
   handleSaveSentence(url) {
-    console.log(url);
     ajax.saveSentence(url);
+    this.setState({
+      sentenceSaved: true
+    });
   }
 
   render() {
@@ -239,13 +249,16 @@ export default class WordDetails extends React.Component {
             <button className="general-button" onClick={this.startRecording.bind(this)}>Record</button>
             <button className="general-button" onClick={this.stopRecording.bind(this)}>STOP</button>
             <button className="general-button" onClick={this.uploadAudioFile.bind(this)}>Upload</button>
-            <button className="general-button"><a href="#" id="save">Save</a></button>
+            <button className="general-button"><a href="#" id="save">Download</a></button>
             <div>
               {this.state.startedRecording && 
                 <div className="red-dot"></div>
               }
               {this.state.sentenceUploaded &&
                 <div>Uploaded!</div>
+              }
+              {this.state.sentenceSaved &&
+                <div>Sentence Saved!</div>
               }
             </div>
           </div>
