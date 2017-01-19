@@ -36,8 +36,8 @@ export default class ContributedSentences extends React.Component {
         <h3>Contributed Sentences</h3>
         <ul>
           {this.state.sentences &&
-            this.state.sentences.map( (sentence) => (
-              <li>
+            this.state.sentences.map( (sentence, index) => (
+              <li key={index}>
                 <div>{sentence.text}</div>
                 <div><audio src={sentence.url} controls="controls" /></div>
               </li>

@@ -15,6 +15,10 @@ export default class SavedSentences extends React.Component {
   }
 
   componentDidMount() {
+    this.getSentences();
+  }
+
+  getSentences() {
     ajax.getSavedSentences(function(response) {
       var learnSentences = [];
       var urls = [];
@@ -41,6 +45,28 @@ export default class SavedSentences extends React.Component {
     }.bind(this));
   }
 
+  handleRemoveSentence(index, url) {
+    var urlSearchParam = new URLSearchParams();
+    urlSearchParam.append('url', url);
+    ajax.removeSavedSentence(urlSearchParam.toString(), function() {
+      console.log('sentence removed');
+    });
+
+    this.state.sentences.nativeSentences.splice(index, 1);
+    this.state.sentences.learnSentences.splice(index, 1);
+    this.state.sentences.urls.splice(index, 1);
+
+    var sentenceObj = {
+      nativeSentences: this.state.sentences.nativeSentences,
+      learnSentences: this.state.sentences.learnSentences,
+      urls: this.state.sentences.urls
+    };
+
+    this.setState({
+      sentences: sentenceObj
+    });
+  }
+
   render() {
     return (
       <div>
@@ -48,10 +74,11 @@ export default class SavedSentences extends React.Component {
         <ul>
           {this.state.sentences &&
             this.state.sentences.learnSentences.map( (sentence, index) => (
-              <li>
+              <li key={index}>
                 <div>{this.state.sentences.nativeSentences[index]}</div>
                 <div>{sentence}</div>
                 <div><audio src={this.state.sentences.urls[index]} controls="controls" /></div>
+                <button onClick={this.handleRemoveSentence.bind(this, index, this.state.sentences.urls[index])}>Remove Saved Sentence</button>
               </li>
             ))
           }

@@ -260,7 +260,7 @@ export default class WordDetails extends React.Component {
           <ul id="related-sentences">
             {this.state.sentences &&
               this.state.sentences.learnSentences.map( (sentence, index) => (
-                <li>
+                <li key={index}>
                   <div>{this.state.sentences.nativeSentences[index]}</div>
                   <div>{sentence}</div>
                   <div><audio src={this.state.sentences.urls[index]} controls="controls" /></div>

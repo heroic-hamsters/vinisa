@@ -384,14 +384,15 @@ exports.audioToSpeech = function(req, res) {
 
 exports.unsaveSentence = function(req, res) {
   var sentence;
-  new Sentence().where({url: req.params.url}).fetch()
+  var url = req.query.url;
+  new Sentence().where({url: url}).fetch()
   .then(function(foundSentence) {
     sentence = foundSentence;
-    return new User().where({id: req.session.user.id}).fetch()
+    return new User().where({id: req.session.user.id}).fetch();
   })
   .then(function(user) {
-    user.sentences().detach(sentence);
-    res.send('Unsaved sentence');
+    user.sentences().detach({sentence_id: sentence.id});
+    res.send(sentence);
   })
   .catch(function(err) {
     console.log('Error unsaving sentence ', err);
@@ -408,7 +409,7 @@ exports.unsaveWord = function(req, res) {
   })
   .then(function(user) {
     user.words().detach(word);
-    res.send('Unsaved word');
+    res.send(word);
   })
   .catch(function(err) {
     console.log('Error unsaving word', err);
