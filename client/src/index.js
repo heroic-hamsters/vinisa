@@ -16,6 +16,7 @@ import WordDetails from './Components/WordDetails.jsx';
 import SavedWords from './Components/SavedWords.jsx';
 import SavedSentences from './Components/SavedSens.jsx';
 import ContributedSentences from './Components/ContributedSens.jsx';
+import Help from './Components/Help.jsx';
 import Settings from './Components/Settings.jsx';
 import NotFound from './Components/NotFound.jsx';
 import auth from './auth.js';
@@ -42,6 +43,7 @@ ReactDOM.render((
           <Route path="/contributedsentences" component={ ContributedSentences } />
         </Route>
         <Route path="/settings" component={ Settings } />
+        <Route path="/help" component={ Help } />
         <Route onEnter={ requireAuth } path="/word" component={ WordDetails }/>
       </Route>
       <Route path="/signup" component={ Signup } />
