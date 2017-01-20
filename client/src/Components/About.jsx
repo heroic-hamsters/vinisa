@@ -25,10 +25,42 @@ export default class About extends React.Component {
         <div className="faq">
           <h1>Team Members</h1>
           <ul className="faq-list">
-            <li>Vivian Zhang</li>
-            <li>Nick Tang</li>
-            <li>Samuel He</li>
-            <li>Nicholas Wang</li>
+
+            <li>
+              <div className="profile-img" id="viv-img" />
+              <div className="profile-name-box">
+                Vivian Zhang
+                <a href=""><div className="linkedin-icon" /></a>
+                <a href=""><div className="github-icon" /></a>
+              </div>
+            </li>
+
+            <li>
+              <div className="profile-img" id="nt-img" />
+              <div className="profile-name-box">
+                Nick Tang
+                <a href=""><div className="linkedin-icon" /></a>
+                <a href=""><div className="github-icon" /></a>
+              </div>
+            </li>
+
+            <li>
+              <div className="profile-img" id="sam-img" />
+              <div className="profile-name-box">
+                Samuel He
+                <a href=""><div className="linkedin-icon" /></a>
+                <a href=""><div className="github-icon" /></a>
+              </div>
+            </li>
+
+            <li>
+              <div className="profile-img" id="nw-img" />
+              <div className="profile-name-box">
+                Nicholas Wang
+                <a href=""><div className="linkedin-icon" /></a>
+                <a href=""><div className="github-icon" /></a>
+              </div>
+            </li>
           </ul>
         </div>
         
