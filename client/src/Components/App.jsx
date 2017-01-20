@@ -3,16 +3,12 @@ import { Link, IndexLink } from 'react-router';
 import { observer } from 'mobx-react';
 import auth from '../auth';
 import NavLink from './NavLink.jsx';
-import AppStore from './AppStore.jsx'
 
-@observer
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.loggedIn = auth.isLoggedIn();
   }
-
-
 
   render() {
     return (

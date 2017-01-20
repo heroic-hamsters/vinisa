@@ -6,6 +6,6 @@ export default class NavLink extends React.Component {
     super(props);
   }
   render() {
-    return <Link {...this.props} />
+    return <Link {...this.props} />;
   }
-};
+}

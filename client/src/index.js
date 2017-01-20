@@ -34,17 +34,17 @@ ReactDOM.render((
     <Route path="/" component={ App }>
       <IndexRoute component={ About } />
       <Route component={ Navbar }>
-        <Route onEnter={ requireAuth } path="/home" store={ AppStore } component={ Home } />
-        <Route onEnter={ requireAuth } path="/library" component={ Library } store={ AppStore } >
+        <Route onEnter={ requireAuth } path="/home" component={ Home } />
+        <Route onEnter={ requireAuth } path="/library" component={ Library } >
           <IndexRoute component={ SavedWords } />
           <Route path="/savedwords" component={ SavedWords } />
           <Route path="/savedsentences" component={ SavedSentences} />
           <Route path="/contributedsentences" component={ ContributedSentences } />
         </Route>
-        <Route path="/settings" store = { AppStore } component={ Settings } />
-        <Route onEnter={ requireAuth } path="/word" store = { AppStore } component={ WordDetails }/>
+        <Route path="/settings" component={ Settings } />
+        <Route onEnter={ requireAuth } path="/word" component={ WordDetails }/>
       </Route>
-      <Route path="/signup" store = { AppStore } component={ Signup } />
+      <Route path="/signup" component={ Signup } />
       <Route path="/login" store = { AppStore } component={ Login } />
       <Route path="*" component={ NotFound } />
     </Route>

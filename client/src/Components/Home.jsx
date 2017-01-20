@@ -4,12 +4,12 @@ import { observer } from 'mobx-react';
 import Dropzone from 'react-dropzone';
 import $ from 'jquery';
 import ajax from '../lib/ajax';
+import AppStore from './AppStore.jsx';
 
-// @observer
+@observer
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store;
 
     this.state = {
       imgsrc: '',
@@ -20,13 +20,13 @@ export default class Home extends React.Component {
 
   componentWillMount() {
     ajax.getCodes(function(data) {
-      this.store.nativeLanguage = data[0].name;
-      this.store.learnLanguage = data[1].name;
+      AppStore.nativeLanguage = data[0].name;
+      AppStore.learnLanguage = data[1].name;
 
-      this.store.nativeLanguageCode = data[0].translateCode;
-      this.store.learnLanguageCode = data[1].translateCode;
-      this.store.nativeLanguageSpeechCode = data[0].speechCode;
-      this.store.learnLanguageSpeechCode = data[1].translateCode;
+      AppStore.nativeLanguageCode = data[0].translateCode;
+      AppStore.learnLanguageCode = data[1].translateCode;
+      AppStore.nativeLanguageSpeechCode = data[0].speechCode;
+      AppStore.learnLanguageSpeechCode = data[1].translateCode;
 
     }.bind(this));
   }
@@ -89,11 +89,11 @@ export default class Home extends React.Component {
   handleClick(e) {
     e.preventDefault();
     var chosenWord = e.target.innerHTML;
-    this.store.word = chosenWord;
+    AppStore.word = chosenWord;
 
 
     ajax.addWord(chosenWord, function(data) {
-      this.store.translatedWord = data;
+      AppStore.translatedWord = data;
       browserHistory.push('/word');
     }.bind(this));
   }
@@ -102,10 +102,10 @@ export default class Home extends React.Component {
     e.preventDefault();
     var searchTerm = e.target.query.value;
 
-    this.store.word = searchTerm;
+    AppStore.word = searchTerm;
 
     ajax.addWord(searchTerm, function(data) {
-      this.store.translatedWord = data;
+      AppStore.translatedWord = data;
       browserHistory.push('/word');
     }.bind(this));
   }
