@@ -13,8 +13,9 @@ export default class About extends React.Component {
 
         <div className="information">
           <div className="information-text">
-            <h3>Crowdsourced and image based language learning</h3>
-            <p>The most fun you'll have learning a new language</p>
+            <div className="slogan">Crowdsourced and Image Based Language Learning</div>
+            <br/>
+            <div>The Most Fun You'll Have Learning a New Language</div>
           </div>
           <ul className="login-signup-button">
             <li><NavLink to='/login'>Login</NavLink></li>
