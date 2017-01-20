@@ -79,6 +79,13 @@ h1 {
  Title
  */
 
+.logo {
+  background-image: url('vinisa.png');
+  background-repeat: no-repeat;
+  height: 80px;
+  width: 251px;
+}
+
 .title-bar {
   background-color: lightgray;
   background-image: url('marble.jpg');
