@@ -155,17 +155,24 @@ exports.listWordSentences = function(req, res) {
     return new Sentence().where({word_id: word.id, language_id: req.session.learnLanguage.id}).fetchAll();
   })
   .then(function(learnSentences) {
-    sentenceObj.learnSentences = learnSentences;
+    if (learnSentences) {
+      sentenceObj.learnSentences = learnSentences;
 
-    return Promise.map(learnSentences.toJSON(), function(sentence) {
-      return getTranslatedSentence(sentence.id, req.session.nativeLanguage.id, sentence.text, req.session.nativeLanguage.translateCode);
+      return Promise.map(learnSentences.toJSON(), function(sentence) {
+        return getTranslatedSentence(sentence.id, req.session.nativeLanguage.id, sentence.text, req.session.nativeLanguage.translateCode);
 
-    });
+      });
+    }
+    return;
   })
   .then(function(nativeSentences) {
-    sentenceObj.nativeSentences = nativeSentences;
+    if (nativeSentences) {
+      sentenceObj.nativeSentences = nativeSentences;
+      res.send(sentenceObj);
 
-    res.send(sentenceObj);
+    }
+    res.end();
+
   })
   .catch(function(err) {
     res.status(500).send('Error getting word sentences');
