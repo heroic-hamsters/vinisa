@@ -6,12 +6,12 @@ import auth from '../auth.js';
 import $ from 'jquery';
 import NavLink from './NavLink.jsx';
 import ajax from '../lib/ajax';
+import AppStore from './AppStore.jsx'
 
 @observer
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store;
     this.state = {
       error: false
     };
@@ -19,9 +19,9 @@ export default class Login extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.store.username = e.target.username.value;
-    this.store.password = e.target.password.value;
-    auth.login(this.store.username, this.store.password, (loggedIn) => {
+    AppStore.username = e.target.username.value;
+    AppStore.password = e.target.password.value;
+    auth.login(AppStore.username, AppStore.password, (loggedIn) => {
       if (!loggedIn) {
         return this.setState({error: true});
       }

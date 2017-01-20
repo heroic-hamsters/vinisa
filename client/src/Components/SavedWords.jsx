@@ -6,6 +6,7 @@ import { browserHistory } from 'react-router';
 import AppStore from './AppStore.jsx';
 import ajax from '../lib/ajax.js';
 
+@observer
 export default class SavedWords extends React.Component {
   constructor(props) {
     super(props);
