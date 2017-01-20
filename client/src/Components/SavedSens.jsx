@@ -82,7 +82,7 @@ export default class SavedSentences extends React.Component {
                 <div>{this.state.sentences.nativeSentences[index]}</div>
                 <div>{sentence}</div>
                 <div><audio src={this.state.sentences.urls[index]} controls="controls" /></div>
-                <button onClick={this.handleRemoveSentence.bind(this, index, this.state.sentences.urls[index])}>Remove Saved Sentence</button>
+                <button className="general-button" onClick={this.handleRemoveSentence.bind(this, index, this.state.sentences.urls[index])}>Remove Saved Sentence</button>
               </li>
             ))
           }
