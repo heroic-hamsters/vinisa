@@ -16,13 +16,6 @@ export default class Library extends React.Component {
     };
   }
 
-  onWordSelect(event) {
-    event.persist();
-    event.preventDefault();
-    AppStore.word = event.target.innerText;
-    browserHistory.push('/word');
-  }
-
   render() {
     return (
       <div className="library-container">

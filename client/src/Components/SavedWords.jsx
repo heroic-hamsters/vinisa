@@ -16,6 +16,7 @@ export default class SavedWords extends React.Component {
     };
   }
 
+  // Get the words saved by the user
   componentDidMount() {
     AppStore.savedWords = {};
     ajax.getWords(function(data) {
@@ -30,17 +31,21 @@ export default class SavedWords extends React.Component {
     }.bind(this));
   }
 
+  // When a word is selected, set the store to that word and redirect to
+  // the word details page
   onWordSelect(word) {
     AppStore.word = word;
     AppStore.translatedWord = AppStore.savedWords[word];
     browserHistory.push('/word');
   }
 
+  // When a user removes a word, delete the relation in the database
   handleRemoveWord(word) {
     ajax.unsaveWord(word, function(data) {
       console.log('deleted: ', data);
     });
 
+    // Render the deletion client side
     var wordObj = this.state.words;
     delete wordObj[word];
 

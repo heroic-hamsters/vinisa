@@ -15,6 +15,8 @@ export default class ContributedSentences extends React.Component {
     };
   }
 
+  // When component mounts, get the sentences that the user has contributed,
+  // and set it to the state
   componentDidMount() {
     ajax.getContributedSentences(function(response) {
       var sentenceArr = [];

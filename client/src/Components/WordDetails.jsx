@@ -60,6 +60,7 @@ export default class WordDetails extends React.Component {
     }.bind(this));
   }
 
+  // When a user clicks listen, use speechSynthesis to say the word
   handleListenClick(e) {
     e.preventDefault();
     this.speechText.text = AppStore.translatedWord;
@@ -209,6 +210,7 @@ export default class WordDetails extends React.Component {
     });
   }
 
+  // When user uploads a sentence, add it to the database
   addSentenceToDb(word, audioSentence, sentenceTranslation, url) {
     ajax.addSentences(word, audioSentence, sentenceTranslation, url);
     this.setState({
@@ -216,6 +218,7 @@ export default class WordDetails extends React.Component {
     });
   }
 
+  // When a user saves a sentence, add association to database
   handleSaveSentence(url) {
     ajax.saveSentence(url);
     this.setState({

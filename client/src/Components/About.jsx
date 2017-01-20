@@ -30,8 +30,8 @@ export default class About extends React.Component {
               <div className="profile-img" id="viv-img" />
               <div className="profile-name-box">
                 Vivian Zhang
-                <a href=""><div className="linkedin-icon" /></a>
-                <a href=""><div className="github-icon" /></a>
+                <a href="https://www.linkedin.com/in/vivianzhangmeng"><div className="linkedin-icon" /></a>
+                <a href="https://github.com/vivzhang"><div className="github-icon" /></a>
               </div>
             </li>
 
@@ -57,8 +57,8 @@ export default class About extends React.Component {
               <div className="profile-img" id="nw-img" />
               <div className="profile-name-box">
                 Nicholas Wang
-                <a href=""><div className="linkedin-icon" /></a>
-                <a href=""><div className="github-icon" /></a>
+                <a href="https://www.linkedin.com/in/nickwang55"><div className="linkedin-icon" /></a>
+                <a href="https://github.com/niwang55"><div className="github-icon" /></a>
               </div>
             </li>
           </ul>

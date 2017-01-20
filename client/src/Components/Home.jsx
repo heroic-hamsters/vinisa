@@ -18,6 +18,8 @@ export default class Home extends React.Component {
     };
   }
 
+  // On component mount, get the language codes of the current user for use in speech recognition
+  // and translation. Then, set them to the store.
   componentWillMount() {
     ajax.getCodes(function(data) {
       AppStore.nativeLanguage = data[0].name;
@@ -31,6 +33,7 @@ export default class Home extends React.Component {
     }.bind(this));
   }
 
+  // On photo upload, send picture to the Google API
   onDrop(acceptedFiles, rejectedFiles) {
     var file = acceptedFiles[0];
 
@@ -44,11 +47,6 @@ export default class Home extends React.Component {
       pictureChosen: true,
       wordList: null
     });
-
-    // $('.pic-drop').hide();
-    // $('.search-bar').hide();
-    // $('.image-wordlist').show();
-    // $('.another-button').show();
   }
 
   uploadAnother(e) {
@@ -57,10 +55,6 @@ export default class Home extends React.Component {
       pictureChosen: null,
       wordList: null
     });
-    // $('.pic-drop').show();
-    // $('.search-bar').show();
-    // $('.image-wordlist').hide();
-    // $('.another-button').hide();
   }
 
   // POST base64 picture to Vision API with label detection parameter
@@ -92,18 +86,21 @@ export default class Home extends React.Component {
     AppStore.word = chosenWord;
 
 
+    // add word to the database
     ajax.addWord(chosenWord, function(data) {
       AppStore.translatedWord = data;
       browserHistory.push('/word');
     }.bind(this));
   }
 
+  // set word in the mobx store, redirect to word details page
   handleSearch(e) {
     e.preventDefault();
     var searchTerm = e.target.query.value;
 
     AppStore.word = searchTerm;
 
+    // Add the word to the database
     ajax.addWord(searchTerm, function(data) {
       AppStore.translatedWord = data;
       browserHistory.push('/word');
