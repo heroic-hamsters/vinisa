@@ -63,7 +63,7 @@ export default class SavedWords extends React.Component {
             Object.keys(this.state.words).map((word, index) => (
               <li className="gen-list" key={index}>
                 <div className="library-word" onClick={this.onWordSelect.bind(this, word)}>{word}</div>
-                <button className="remove-saved-word-button" onClick={this.handleRemoveWord.bind(this, word, index)}>Remove word from library</button>
+                <button className="remove-saved-word-button general-button" onClick={this.handleRemoveWord.bind(this, word, index)}>Remove word from library</button>
               </li>
             ))
           }

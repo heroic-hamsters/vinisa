@@ -41,7 +41,7 @@ h1 {
   border:1px solid #dcdcdc;
   display:inline-block;
   cursor:pointer;
-  color:#666666;
+  /*color:#666666;*/
   font-size:12px;
   font-weight:bold;
   padding:6px 18px;
@@ -120,6 +120,7 @@ h1 {
   align-items: center;
   color: white;
   text-align: center;
+  font-family: Copperplate;
   font-size: 24px;
 }
 
@@ -136,6 +137,10 @@ h1 {
   background-color: rgba(0, 0, 0, 0.25);
   padding: 20px;
   border-radius: 1px;
+}
+
+.slogan {
+  font-size: 50px;
 }
 
 .login-signup-button {
@@ -165,6 +170,7 @@ h1 {
   align-items: center;
   width: 100%;
   top: 700px;
+  font-family: Tahoma;
 }
 
 .faq-list {
