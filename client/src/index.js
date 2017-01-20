@@ -21,6 +21,7 @@ import Settings from './Components/Settings.jsx';
 import NotFound from './Components/NotFound.jsx';
 import auth from './auth.js';
 import axios from 'axios';
+import cookie from 'react-cookie';
 
 function requireAuth(nextState, replace) {
   axios.get('/api/authenticate').then(function(response) {
@@ -30,8 +31,11 @@ function requireAuth(nextState, replace) {
         //   pathname: '/login',
         //   state: { nextPathname: nextState.location.pathname }
         // });
-        window.location.replace("http://localhost:8080/login");
-        // window.location.replace("https://vinisa.hr50.site/login");
+        if (cookie.load('hostname') === 'localhost') {
+          window.location.replace("http://localhost:8080/login");
+        } else {
+          window.location.replace("https://vinisa.hr50.site/login");
+        }
     } else {
       console.log('THIS IS GOOD LOGIN')
     }

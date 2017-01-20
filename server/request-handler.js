@@ -363,6 +363,14 @@ exports.getLanguages = function(req, res) {
     eval(languageData.runScript());
     cookie.save('languagesSaved', true);
   }
+
+  new Language().fetchAll()
+  .then(function(languages) {
+    res.send(languages.models);
+  })
+  .catch(function(err) {
+    res.status(500).send('Error getting languages');
+  });
 }
 
 exports.logoutUser = (req, res) => {
@@ -374,7 +382,7 @@ exports.logoutUser = (req, res) => {
 }
 
 exports.authenticateUser = (req, res) => {
-  console.log(req.session);
+  cookie.save('hostname', req.hostname);
   if (req.session.user) {
     // res.json({authenticated: false})
     // res.send(false);
