@@ -15,20 +15,14 @@ const cookie = require('react-cookie');
 const bcrypt = require('bcrypt-nodejs');
 require('dotenv').config();
 
-
+//Handler to get a user's words.
 exports.getWords = function(req, res) {
-  var responseObj = {};
+  const responseObj = {};
   const username = req.session.user.username;
   responseObj.translations = [];
 
-
-  console.log(req.session);
-
-
-
   new User().where({username: username}).fetch({withRelated: 'words'})
   .then(function(results) {
-    // console.log(results);
 
     return Promise.filter(results.toJSON().words, function(word) {
       if (word.language_id === req.session.learnLanguage.id) {
@@ -50,13 +44,13 @@ exports.getWords = function(req, res) {
 
     res.send(responseObj);
   })
-  .catch(function(error) {
-    res.status(400).send('Error getting words');
+  .catch(function(err) {
+    res.status(500).send('Error getting words ', err);
   });
 
 
 };
-
+//Handler to add a word to the database and responds with the translation in the users learn language.
 exports.addWord = function(req, res) {
   const username = req.session.user.username;
   const text = req.body.text;
@@ -70,9 +64,9 @@ exports.addWord = function(req, res) {
   word.fetch()
   .then(function(found) {
     if (!found) {
-
       return word.save();
     }
+
     return found;
   }).then(function(word) {
     foundWord = word;
@@ -120,12 +114,11 @@ exports.addWord = function(req, res) {
     res.send(translation);
   })
   .catch(function(err) {
-    if (err.errno !== 1062) {
-      throw err;
-    }
+    res.status(500).send('Error adding word ', err);
   });
 };
 
+//Helper function for list Word Sentences. Translates a sentence to the users learn language.
 const getTranslatedSentence = function(sentenceId, languageId, text, translateCode) {
   return new Promise(function(resolve, reject) {
 
@@ -152,11 +145,12 @@ const getTranslatedSentence = function(sentenceId, languageId, text, translateCo
   });
 };
 
+//Lists all the sentences for a particular word.
 exports.listWordSentences = function(req, res) {
   const word = decodeURIComponent(req.params.word);
   const sentenceObj = {};
 
-  new Word({text: word}).fetch()
+  new Word().where({text: word}).fetch()
   .then(function(word) {
     return new Sentence().where({word_id: word.id, language_id: req.session.learnLanguage.id}).fetchAll();
   })
@@ -174,10 +168,11 @@ exports.listWordSentences = function(req, res) {
     res.send(sentenceObj);
   })
   .catch(function(err) {
-    throw err;
+    res.status(500).send('Error getting word sentences ', err);
   });
 };
 
+//Lists all sentences created by a particular user.
 exports.listCreatedSentences = function(req, res) {
   const user = req.session.user;
 
@@ -185,9 +180,13 @@ exports.listCreatedSentences = function(req, res) {
   .then(function(sentences) {
 
     res.send(sentences);
+  })
+  .catch(function(err) {
+    res.status(500).send('Error getting created sentences ', err);
   });
 };
 
+//Lists all sentences saved by a user.
 exports.listSavedSentences = function(req, res) {
   const sentenceObj = {};
 
@@ -202,9 +201,13 @@ exports.listSavedSentences = function(req, res) {
   .then(function(nativeSentences) {
     sentenceObj.nativeSentences = nativeSentences;
     res.send(sentenceObj);
+  })
+  .catch(function(err) {
+    res.status(500).send('Error getting saved sentences ', err);
   });
 };
 
+//Creates a new sentence and stores it into the database.
 exports.createSentence = function(req, res) {
   const creator = req.session.user.username;
   const word = req.body.word;
@@ -215,7 +218,7 @@ exports.createSentence = function(req, res) {
   var wordId;
   var creatorId;
 
-  new Word({text: word}).fetch()
+  new Word().where({text: word}).fetch()
   .then(function(word) {
     wordId = word.id;
 
@@ -230,11 +233,12 @@ exports.createSentence = function(req, res) {
 
     res.send('Created sentence');
   })
-  .catch(function(error) {
-    res.status(400).send('Error creating sentence');
+  .catch(function(err) {
+    res.status(500).send('Error creating sentence ', err);
   });
 };
 
+//Saves a sentence to a user.
 exports.saveSentence = function(req, res) {
   var saveSentence;
 
@@ -252,15 +256,19 @@ exports.saveSentence = function(req, res) {
       res.send('Saved sentence');
 
     }
+  })
+  .catch(function(err) {
+    res.status(500).send('Error saving sentence ', err);
   });
 };
 
+//Creates a new user.
 exports.createUser = (req, res) => {
   var learnLanguage;
   var natLanguage;
   var user;
 
-  new User({username: req.body.username}).fetch().then((found) => {
+  new User().where({username: req.body.username}).fetch().then((found) => {
     if (found) {
       throw ('Username already exists');
     } else {
@@ -269,8 +277,8 @@ exports.createUser = (req, res) => {
       var hash = bcrypt.hashSync(req.body.password);
 
       Promise.all([
-        new Language({name: req.body.nativeLanguage}).fetch(),
-        new Language({name: req.body.learnLanguage}).fetch()
+        new Language().where({name: req.body.nativeLanguage}).fetch(),
+        new Language().where({name: req.body.learnLanguage}).fetch()
       ])
       .spread(function(nativeLanguage, newLearnLanguage) {
         learnLanguage = newLearnLanguage;
@@ -295,19 +303,19 @@ exports.createUser = (req, res) => {
     }
   }).catch(function(err) {
     if (err === 'Username already exists') {
-      res.status(403).send('Username already exists');
+      res.status(403).send('Username already exists ', err);
     } else {
-      throw err;
+      res.status(500).send('Error creating user ', err);
     }
   });
 };
 
+//Verifies a user's username and password.
 exports.verifyUser = (req, res) => {
-
   var username = req.body.username;
   var password = req.body.password;
 
-  new User({username: username}).fetch().then(function(user) {
+  new User().where({username: username}).fetch().then(function(user) {
     if (!user) {
       throw ('Invalid username or password');
     } else {
@@ -315,8 +323,8 @@ exports.verifyUser = (req, res) => {
       var verified = bcrypt.compareSync(password, stored_hash);
 
       if (verified) {
-        Promise.all([new Language({id: user.attributes.native_language}).fetch(),
-          new Language({id: user.attributes.learn_language}).fetch()
+        Promise.all([new Language().where({id: user.attributes.native_language}).fetch(),
+          new Language().where({id: user.attributes.learn_language}).fetch()
         ])
         .spread(function(nativeLanguage, learnLanguage) {
 
@@ -335,11 +343,15 @@ exports.verifyUser = (req, res) => {
   .catch(function(err) {
     if (err === 'Invalid username or password') {
       res.status(403).send('Invalid username or password');
+    } else {
+      res.status(500).send('Error verifying user', err);
     }
   });
 };
 
+//Gets all supported languages.
 exports.getLanguages = function(req, res) {
+  //Runs a script that populates the languages table with support languages.
   if (!cookie.load('languagesSaved')) {
     eval(languageData.runScript());
     cookie.save('languagesSaved', true);
@@ -349,41 +361,46 @@ exports.getLanguages = function(req, res) {
   new Language().fetchAll()
   .then(function(languages) {
     res.send(languages.models);
+  })
+  .catch(function(error) {
+    res.status(500).send('Error getting languages ', error);
   });
 };
 
+//Get's both speech and translate codes for a user.
 exports.getCodes = function(req, res) {
-  new User({username: req.session.user.username}).fetch()
+  new User().where({username: req.session.user.username}).fetch()
   .then(function(user) {
 
     return Promise.all([
-      new Language({id: user.attributes.native_language}).fetch(),
-      new Language({id: user.attributes.learn_language}).fetch()
+      new Language().where({id: user.attributes.native_language}).fetch(),
+      new Language().where({id: user.attributes.learn_language}).fetch()
     ]);
   })
   .then(function(results) {
     res.send(results);
   })
   .catch(function(error) {
-    throw err;
+    res.status(500).send('Error getting language codes ', error);
   });
 };
 
+//Changes a user's default language and adds it to the user's languages.
 exports.setDefaultLanguage = function(req, res) {
   var currentUser;
   var newLanguage;
 
-  new User({username: req.session.user.username}).fetch()
+  new User().where({username: req.session.user.username}).fetch()
   .then(function(user) {
     currentUser = user;
 
-    return new Language({name: req.body.language}).fetch();
+    return new Language().where({name: req.body.language}).fetch();
   })
   .then(function(language) {
     newLanguage = language;
     currentUser.save({learn_language: newLanguage.id}, {method: 'update'});
     req.session.learnLanguage = newLanguage;
-    // console.log(req.session);
+
     return db.knex('user_languages').where({user_id: currentUser.id, language_id: newLanguage.id});
   })
   .then(function(queryResults) {
@@ -398,11 +415,12 @@ exports.setDefaultLanguage = function(req, res) {
 
   })
   .catch(function(err) {
-    throw err;
+    res.status(500).send('Error changing language ', err);
 
   });
 };
 
+//Gets the labels for a picture using the Google Vision API.
 exports.getLabels = function(req, res) {
   axios.post(`https://vision.googleapis.com/v1/images:annotate?key=${process.env.CLOUD_API}`, req.body.request)
   .then(function(response) {
@@ -422,10 +440,11 @@ exports.getLabels = function(req, res) {
     res.send(translatedLabels);
   })
   .catch(function(err) {
-    throw err;
+    res.status(500).send('Error getting labels for picture ', err);
   });
 };
 
+//Converts audio to speech using Google Speech API.
 exports.audioToSpeech = function(req, res) {
   const speechObj = {};
 
@@ -441,13 +460,12 @@ exports.audioToSpeech = function(req, res) {
     res.send(speechObj);
   })
   .catch(function(err) {
-    console.log(err);
-    res.status(400).send();
-    throw err;
 
+    res.status(500).send('Error converting audio to speech ', err);
   });
 };
 
+//Remove a saved sentence from a user.
 exports.unsaveSentence = function(req, res) {
   const url = req.query.url;
   var sentence;
@@ -463,10 +481,11 @@ exports.unsaveSentence = function(req, res) {
     res.send(sentence);
   })
   .catch(function(err) {
-    throw err;
+    res.status(500).send('Error unsaving sentence ', err);
   });
 };
 
+//Removes a saved word from a user.
 exports.unsaveWord = function(req, res) {
   var word;
 
@@ -486,6 +505,6 @@ exports.unsaveWord = function(req, res) {
     res.send(word);
   })
   .catch(function(err) {
-    throw err;
+    res.status(500).send('Error unsaving word ', err);
   });
 };
