@@ -36,6 +36,8 @@ var checkUser = function(req, res, next) {
 
 app.post('/api/signup', handler.createUser);
 app.post('/api/login', handler.verifyUser);
+app.get('/api/authenticate', handler.authenticateUser);
+app.post('/api/logout', handler.logoutUser);
 app.get('/api/languages', handler.getLanguages);
 
 /*=================== Secured Routes =======================*/

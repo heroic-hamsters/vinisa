@@ -5,6 +5,8 @@ import Dropzone from 'react-dropzone';
 import $ from 'jquery';
 import ajax from '../lib/ajax';
 import AppStore from './AppStore.jsx';
+import axios from 'axios';
+import auth from '../auth';
 
 @observer
 export default class Home extends React.Component {
@@ -33,7 +35,7 @@ export default class Home extends React.Component {
     }.bind(this));
   }
 
-  // On photo upload, send picture to the Google API
+// On photo upload, send picture to the Google API
   onDrop(acceptedFiles, rejectedFiles) {
     var file = acceptedFiles[0];
 
@@ -124,7 +126,7 @@ export default class Home extends React.Component {
               <Dropzone className="pic-drop" onDrop={this.onDrop.bind(this)}>
                 <div className="pic-drop-text">Drag and drop a photo here or click to upload.</div>
               </Dropzone>
-            </div> 
+            </div>
           </div>
         }
 
