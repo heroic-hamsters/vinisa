@@ -16,9 +16,12 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
 app.use(bodyParser.text({defaultCharset: 'utf-8'}));
 app.use(session({
   secret: 'heroic translating hamsters',
-  resave: false,
-  saveUninitialized: true
+  resave: true,
+  rolling: true,
+  saveUninitialized: false
 }));
+
+app.use(express.static(path.join(__dirname, '../client')));
 
 var checkUser = function(req, res, next) {
   // Nasty hack for working well with jQuery redirecting
@@ -30,7 +33,6 @@ var checkUser = function(req, res, next) {
     res.redirect('/login');
   }
 };
-app.use(express.static(path.join(__dirname, '../client')));
 
 app.post('/api/signup', handler.createUser);
 app.post('/api/login', handler.verifyUser);

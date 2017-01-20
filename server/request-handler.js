@@ -17,26 +17,42 @@ require('dotenv').config();
 
 
 exports.getWords = function(req, res) {
-  const responseObj = {};
+  var responseObj = {};
   const username = req.session.user.username;
   responseObj.translations = [];
 
+
+  console.log(req.session);
+
+
+
   new User().where({username: username}).fetch({withRelated: 'words'})
-   .then(function(results) {
+  .then(function(results) {
+    // console.log(results);
 
-     return Promise.map(results.toJSON().words, function(word) {
-       if (word.language_id === req.session.learnLanguage.id) {
-         responseObj.translations.push(word);
+    return Promise.filter(results.toJSON().words, function(word) {
+      if (word.language_id === req.session.learnLanguage.id) {
+        responseObj.translations.push(word);
 
-         return new Word({id: word.word_id}).fetch();
-       }
-     });
-   })
-   .then(function(words) {
-     responseObj.words = words;
+        return word;
+      }
+    });
+  })
+  .then(function(words) {
 
-     res.send(responseObj);
-   });
+    return Promise.map(words, function(word) {
+      return new Word().where({id: word.word_id}).fetch();
+    });
+
+  })
+  .then(function(words) {
+    responseObj.words = words;
+
+    res.send(responseObj);
+  })
+  .catch(function(error) {
+    res.status(400).send('Error getting words');
+  });
 
 
 };
@@ -64,7 +80,6 @@ exports.addWord = function(req, res) {
     return new TranslatedWord().where({word_id: foundWord.id, language_id: req.session.learnLanguage.id}).fetch();
   })
   .then(function(translatedWord) {
-    console.log(translatedWord);
     if (!translatedWord) {
 
       return axios.get(`https://www.googleapis.com/language/translate/v2?key=${process.env.CLOUD_API}&q=${encodeURIComponent(text)}&target=${req.session.learnLanguage.translateCode}`);
@@ -214,6 +229,9 @@ exports.createSentence = function(req, res) {
     sentence.languages().attach({language_id: req.session.learnLanguage.id, translation: req.body.translation});
 
     res.send('Created sentence');
+  })
+  .catch(function(error) {
+    res.status(400).send('Error creating sentence');
   });
 };
 
@@ -365,16 +383,23 @@ exports.setDefaultLanguage = function(req, res) {
     newLanguage = language;
     currentUser.save({learn_language: newLanguage.id}, {method: 'update'});
     req.session.learnLanguage = newLanguage;
+    // console.log(req.session);
+    return db.knex('user_languages').where({user_id: currentUser.id, language_id: newLanguage.id});
+  })
+  .then(function(queryResults) {
+    if (queryResults.length === 0) {
+      return currentUser.targetLanguages().attach(newLanguage);
 
-    return currentUser.targetLanguages().attach(newLanguage);
+    }
+    return;
   })
   .then(function() {
-    res.send(currentUser);
+    res.send('Changed language');
+
   })
   .catch(function(err) {
-    if (err.errno !== 1062) {
-      throw err;
-    }
+    throw err;
+
   });
 };
 

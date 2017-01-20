@@ -92,7 +92,7 @@ var removeSavedSentence = function(url, cb) {
 
 };
 
-var loginAjax = (username, password, cb) => {
+var loginAjax = function(username, password, cb) {
   axios.post('/api/login', {username: username, password: password})
   .then(function(data) {
     cb({authenticated: true});
@@ -124,13 +124,6 @@ var getLanguages = function(cb) {
     console.log('Error getting languages from database', error);
   });
 
-  $.ajax({
-    url: '/api/languages',
-    method: 'GET',
-    contentType: 'application/json',
-    success: (data) => cb(data),
-    error: (err) => console.log('Error getting languages from database', err)
-  });
 };
 
 var addLanguage = function(language) {
