@@ -48,8 +48,8 @@ export default class About extends React.Component {
               <div className="profile-img" id="sam-img" />
               <div className="profile-name-box">
                 Samuel He
-                <a href=""><div className="linkedin-icon" /></a>
-                <a href=""><div className="github-icon" /></a>
+                <a href="https://www.linkedin.com/in/samuel-he-3b792b86"><div className="linkedin-icon" /></a>
+                <a href="https://github.com/samuelhe83"><div className="github-icon" /></a>
               </div>
             </li>
 
