@@ -13,7 +13,10 @@ var knex = require('knex')({
 });
 
 var db = require('bookshelf')(knex);
+
+//https://github.com/tgriesser/bookshelf/wiki/Plugin:-Model-Registry
 db.plugin('registry');
+
 // https://github.com/tgriesser/bookshelf/wiki/Plugin:-Visibility
 db.plugin('visibility');
 
