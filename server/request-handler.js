@@ -45,7 +45,7 @@ exports.getWords = function(req, res) {
     res.send(responseObj);
   })
   .catch(function(err) {
-    res.status(500).send('Error getting words ', err);
+    res.status(500).send('Error getting words');
   });
 
 
@@ -114,7 +114,7 @@ exports.addWord = function(req, res) {
     res.send(translation);
   })
   .catch(function(err) {
-    res.status(500).send('Error adding word ', err);
+    res.status(500).send('Error adding word');
   });
 };
 
@@ -168,7 +168,7 @@ exports.listWordSentences = function(req, res) {
     res.send(sentenceObj);
   })
   .catch(function(err) {
-    res.status(500).send('Error getting word sentences ', err);
+    res.status(500).send('Error getting word sentences');
   });
 };
 
@@ -182,7 +182,7 @@ exports.listCreatedSentences = function(req, res) {
     res.send(sentences);
   })
   .catch(function(err) {
-    res.status(500).send('Error getting created sentences ', err);
+    res.status(500).send('Error getting created sentences');
   });
 };
 
@@ -203,7 +203,7 @@ exports.listSavedSentences = function(req, res) {
     res.send(sentenceObj);
   })
   .catch(function(err) {
-    res.status(500).send('Error getting saved sentences ', err);
+    res.status(500).send('Error getting saved sentences');
   });
 };
 
@@ -234,7 +234,7 @@ exports.createSentence = function(req, res) {
     res.send('Created sentence');
   })
   .catch(function(err) {
-    res.status(500).send('Error creating sentence ', err);
+    res.status(500).send('Error creating sentence');
   });
 };
 
@@ -258,7 +258,7 @@ exports.saveSentence = function(req, res) {
     }
   })
   .catch(function(err) {
-    res.status(500).send('Error saving sentence ', err);
+    res.status(500).send('Error saving sentence');
   });
 };
 
@@ -303,9 +303,9 @@ exports.createUser = (req, res) => {
     }
   }).catch(function(err) {
     if (err === 'Username already exists') {
-      res.status(403).send('Username already exists ', err);
+      res.status(403).send('Username already exists');
     } else {
-      res.status(500).send('Error creating user ', err);
+      res.status(500).send('Error creating user');
     }
   });
 };
@@ -344,7 +344,7 @@ exports.verifyUser = (req, res) => {
     if (err === 'Invalid username or password') {
       res.status(403).send('Invalid username or password');
     } else {
-      res.status(500).send('Error verifying user', err);
+      res.status(500).send('Error verifying user');
     }
   });
 };
@@ -362,8 +362,8 @@ exports.getLanguages = function(req, res) {
   .then(function(languages) {
     res.send(languages.models);
   })
-  .catch(function(error) {
-    res.status(500).send('Error getting languages ', error);
+  .catch(function(err) {
+    res.status(500).send('Error getting languages');
   });
 };
 
@@ -380,8 +380,8 @@ exports.getCodes = function(req, res) {
   .then(function(results) {
     res.send(results);
   })
-  .catch(function(error) {
-    res.status(500).send('Error getting language codes ', error);
+  .catch(function(err) {
+    res.status(500).send('Error getting language codes');
   });
 };
 
@@ -415,7 +415,7 @@ exports.setDefaultLanguage = function(req, res) {
 
   })
   .catch(function(err) {
-    res.status(500).send('Error changing language ', err);
+    res.status(500).send('Error changing language');
 
   });
 };
@@ -440,7 +440,7 @@ exports.getLabels = function(req, res) {
     res.send(translatedLabels);
   })
   .catch(function(err) {
-    res.status(500).send('Error getting labels for picture ', err);
+    res.status(500).send('Error getting labels for picture');
   });
 };
 
@@ -461,7 +461,7 @@ exports.audioToSpeech = function(req, res) {
   })
   .catch(function(err) {
 
-    res.status(500).send('Error converting audio to speech ', err);
+    res.status(500).send('Error converting audio to speech');
   });
 };
 
@@ -481,7 +481,7 @@ exports.unsaveSentence = function(req, res) {
     res.send(sentence);
   })
   .catch(function(err) {
-    res.status(500).send('Error unsaving sentence ', err);
+    res.status(500).send('Error unsaving sentence');
   });
 };
 
@@ -505,6 +505,6 @@ exports.unsaveWord = function(req, res) {
     res.send(word);
   })
   .catch(function(err) {
-    res.status(500).send('Error unsaving word ', err);
+    res.status(500).send('Error unsaving word');
   });
 };
