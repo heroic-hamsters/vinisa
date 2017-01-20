@@ -4,13 +4,12 @@ import { browserHistory } from 'react-router';
 import $ from 'jquery';
 import auth from '../auth.js';
 import ajax from '../lib/ajax';
+import AppStore from './AppStore.jsx';
 
 @observer
 export default class Signup extends React.Component {
   constructor(props) {
     super(props);
-
-    this.store = this.props.route.store;
 
     this.state = {
       error: false
@@ -37,15 +36,15 @@ export default class Signup extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.store.username = e.target.username.value;
-    this.store.password = e.target.password.value;
+    AppStore.username = e.target.username.value;
+    AppStore.password = e.target.password.value;
 
     var nativeLanguageIndex = e.target.nativeLanguage.selectedIndex;
     var learnLanguageIndex = e.target.learnLanguage.selectedIndex;
     var nativeLanguage = e.target.nativeLanguage[nativeLanguageIndex].textContent;
     var learnLanguage = e.target.learnLanguage[learnLanguageIndex].textContent;
 
-    auth.signup(this.store.username, this.store.password, nativeLanguage, learnLanguage, (loggedIn) => {
+    auth.signup(AppStore.username, AppStore.password, nativeLanguage, learnLanguage, (loggedIn) => {
       if (!loggedIn) {
         return this.setState({error: true});
       }

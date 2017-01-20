@@ -5,22 +5,15 @@ import { Link, IndexLink } from 'react-router';
 import { browserHistory } from 'react-router';
 import ajax from '../lib/ajax';
 import Navbar from './Navbar.jsx';
+import AppStore from './AppStore.jsx'
 
 @observer
 export default class Library extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store;
     this.state = {
       words: []
     };
-  }
-
-  onWordSelect(event) {
-    event.persist();
-    event.preventDefault();
-    this.store.word = event.target.innerText;
-    browserHistory.push('/word');
   }
 
   render() {

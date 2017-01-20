@@ -416,7 +416,8 @@ exports.audioToSpeech = function(req, res) {
     res.send(speechObj);
   })
   .catch(function(err) {
-
+    console.log(err);
+    res.status(400).send();
     throw err;
 
   });

@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 import ajax from '../lib/ajax.js';
 
+@observer
 export default class ContributedSentences extends React.Component {
   constructor(props) {
     super(props);
@@ -14,6 +15,8 @@ export default class ContributedSentences extends React.Component {
     };
   }
 
+  // When component mounts, get the sentences that the user has contributed,
+  // and set it to the state
   componentDidMount() {
     ajax.getContributedSentences(function(response) {
       var sentenceArr = [];

@@ -14,10 +14,12 @@ export default class SavedSentences extends React.Component {
     };
   }
 
+  // Get the sentences that were saved by the user
   componentDidMount() {
     this.getSentences();
   }
 
+  // This function formats the response from the server and sets it to the state
   getSentences() {
     ajax.getSavedSentences(function(response) {
       var learnSentences = [];
@@ -45,6 +47,7 @@ export default class SavedSentences extends React.Component {
     }.bind(this));
   }
 
+  // This removes a saved sentence based on its url
   handleRemoveSentence(index, url) {
     var urlSearchParam = new URLSearchParams();
     urlSearchParam.append('url', url);
@@ -52,6 +55,7 @@ export default class SavedSentences extends React.Component {
       console.log('sentence removed');
     });
 
+    // Render the removal client side
     this.state.sentences.nativeSentences.splice(index, 1);
     this.state.sentences.learnSentences.splice(index, 1);
     this.state.sentences.urls.splice(index, 1);

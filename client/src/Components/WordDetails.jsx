@@ -3,11 +3,13 @@ import $ from 'jquery';
 import Dropzone from 'react-dropzone';
 import MediaStreamRecorder from 'msr';
 import ajax from '../lib/ajax.js';
+import { observer } from 'mobx-react';
+import AppStore from './AppStore.jsx';
 
+@observer
 export default class WordDetails extends React.Component {
   constructor(props) {
     super(props);
-    this.store = this.props.route.store;
 
     this.state = {
       sentences: null,
@@ -32,7 +34,7 @@ export default class WordDetails extends React.Component {
 
   componentDidMount() {
     // Get all sentences related to a word
-    ajax.getSentences(this.store.translatedWord, function(sentences) {
+    ajax.getSentences(AppStore.translatedWord, function(sentences) {
       var learnSentences = [];
       var urls = [];
       var nativeSentences = [];
@@ -58,10 +60,11 @@ export default class WordDetails extends React.Component {
     }.bind(this));
   }
 
+  // When a user clicks listen, use speechSynthesis to say the word
   handleListenClick(e) {
     e.preventDefault();
-    this.speechText.text = this.store.translatedWord;
-    this.speechText.lang = this.store.learnLanguageSpeechCode;
+    this.speechText.text = AppStore.translatedWord;
+    this.speechText.lang = AppStore.learnLanguageSpeechCode;
     speechSynthesis.speak(this.speechText);
   }
 
@@ -84,7 +87,7 @@ export default class WordDetails extends React.Component {
       "config": {
           "encoding":"linear16",
           "sampleRate": 44100,
-          "languageCode": this.store.nativeLanguageSpeechCode
+          "languageCode": AppStore.nativeLanguageSpeechCode
       },
       "audio": {
         "content": e.target.result.replace('data:audio/wav;base64,', '')
@@ -202,11 +205,12 @@ export default class WordDetails extends React.Component {
       processData: false,  // tell jQuery not to convert to form data
       contentType: false,  // tell jQuery not to set contentType
       success: function(response) {
-        this.addSentenceToDb(this.store.word, this.state.audioSentence, this.state.audioSentenceTranslation, response.location);
+        this.addSentenceToDb(AppStore.word, this.state.audioSentence, this.state.audioSentenceTranslation, response.location);
       }.bind(this)
     });
   }
 
+  // When user uploads a sentence, add it to the database
   addSentenceToDb(word, audioSentence, sentenceTranslation, url) {
     ajax.addSentences(word, audioSentence, sentenceTranslation, url);
     this.setState({
@@ -214,6 +218,7 @@ export default class WordDetails extends React.Component {
     });
   }
 
+  // When a user saves a sentence, add association to database
   handleSaveSentence(url) {
     ajax.saveSentence(url);
     this.setState({
@@ -229,8 +234,8 @@ export default class WordDetails extends React.Component {
 
           <div className="translated-box">
 
-            <div className="original-word">{this.store.word}</div>
-            <div className="translated-word">{this.store.translatedWord}</div>
+            <div className="original-word">{AppStore.word}</div>
+            <div className="translated-word">{AppStore.translatedWord}</div>
 
           </div>
 

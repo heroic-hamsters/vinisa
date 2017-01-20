@@ -173,7 +173,8 @@ var recognizeAudio = function(request, cb) {
     cb(data.data);
   })
   .catch(function(error) {
-    console.log('Error in recognizing audio', error);
+    cb('Error in recognizing audio');
+    console.log(error);
   });
 };
 
