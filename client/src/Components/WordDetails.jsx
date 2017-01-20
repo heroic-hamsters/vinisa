@@ -298,7 +298,7 @@ export default class WordDetails extends React.Component {
                   <div>{this.state.sentences.nativeSentences[index]}</div>
                   <div>{sentence}</div>
                   <div><audio src={this.state.sentences.urls[index]} controls="controls" /></div>
-                  <button onClick={this.handleSaveSentence.bind(this, this.state.sentences.urls[index])}>Save Sentence</button>
+                  <button className="general-button" onClick={this.handleSaveSentence.bind(this, this.state.sentences.urls[index])}>Save Sentence</button>
                 </li>
               ))
             }
