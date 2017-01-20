@@ -123,7 +123,6 @@ var getLanguages = function(cb) {
   .catch(function(error) {
     console.log('Error getting languages from database', error);
   });
-
 };
 
 var addLanguage = function(language) {

@@ -20,14 +20,24 @@ import Help from './Components/Help.jsx';
 import Settings from './Components/Settings.jsx';
 import NotFound from './Components/NotFound.jsx';
 import auth from './auth.js';
+import axios from 'axios';
 
-var requireAuth = function(nextState, replace) {
-  if (!auth.isLoggedIn()) {
-    replace({
-      pathname: '/login',
-      state: { nextPathname: nextState.location.pathname }
-    });
-  }
+function requireAuth(nextState, replace) {
+  axios.get('/api/authenticate').then(function(response) {
+    if (!response.data.authenticated) {
+        console.log('THIS IS BAD LOGIN');
+        // replace({
+        //   pathname: '/login',
+        //   state: { nextPathname: nextState.location.pathname }
+        // });
+        window.location.replace("http://localhost:8080/login");
+        // window.location.replace("https://vinisa.hr50.site/login");
+    } else {
+      console.log('THIS IS GOOD LOGIN')
+    }
+  }).catch(function(error) {
+    console.error('err:', error);
+  });
 };
 
 ReactDOM.render((
@@ -42,9 +52,9 @@ ReactDOM.render((
           <Route path="/savedsentences" component={ SavedSentences} />
           <Route path="/contributedsentences" component={ ContributedSentences } />
         </Route>
-        <Route path="/settings" component={ Settings } />
         <Route path="/help" component={ Help } />
         <Route onEnter={ requireAuth } path="/word" component={ WordDetails }/>
+        <Route onEnter={ requireAuth } path="/settings" component={ Settings } />
       </Route>
       <Route path="/signup" component={ Signup } />
       <Route path="/login" store = { AppStore } component={ Login } />

@@ -363,15 +363,27 @@ exports.getLanguages = function(req, res) {
     eval(languageData.runScript());
     cookie.save('languagesSaved', true);
   }
+}
 
+exports.logoutUser = (req, res) => {
+  console.log('req.session.user:', req.session.user);
 
-  new Language().fetchAll()
-  .then(function(languages) {
-    res.send(languages.models);
-  })
-  .catch(function(err) {
-    res.status(500).send('Error getting languages');
-  });
+  req.session.destroy();
+  res.redirect('/login');
+  console.log('user should be gone:', req.session.user);
+}
+
+exports.authenticateUser = (req, res) => {
+  console.log(req.session);
+  if (req.session.user) {
+    // res.json({authenticated: false})
+    // res.send(false);
+    res.json({authenticated: true});
+  } else {
+    res.json({authenticated: false});
+    // res.redirect('/login');
+    // res.json({authenticated: false});
+  }
 };
 
 //Get's both speech and translate codes for a user.
