@@ -88,8 +88,8 @@ h1 {
 
 .title-bar {
   background-color: lightgray;
-  background-image: url('marble.jpg');
-  background-size: cover;
+  background-image: url('bg.jpg');
+  /*background-size: cover;*/
   height: 100px;
   display: flex;
   flex-direction: column;
@@ -168,6 +168,23 @@ h1 {
 
 .login-signup-button li:hover {
   background-color: gray;
+}
+
+.instruction {
+  margin: 0 100px 0 100px;
+}
+
+.instruction-img {
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 50%;
+  height: 300px;
+}
+
+.smileyface {
+  margin: 10px 0 0 5px;
+  width: 20px;
+  height: 20px;
 }
 
 .faq {
@@ -275,7 +292,8 @@ h1 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #021e4c;
+  /*background-color: #021e4c;*/
+  background-color: #414647;
   height: 50px;
   position: absolute;
   top: 100px;

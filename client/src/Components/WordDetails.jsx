@@ -279,6 +279,8 @@ export default class WordDetails extends React.Component {
             {this.state.audioSentence &&
               <div>
                 Your recorded sentence:
+                <br/>
+                <br/>
                 <div>{this.state.audioSentence}</div>
                 <div>{this.state.audioSentenceTranslation}</div>
               </div>
