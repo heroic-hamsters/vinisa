@@ -16,7 +16,7 @@ export default class Navbar extends React.Component {
         <ul className="navbar">
           <li><NavLink to='/home'>Home</NavLink></li>
           <li><NavLink to='/library'>Library</NavLink></li>
-          <li><NavLink to='/help'>Help</NavLink></li>
+          <li><NavLink to='/about'>About</NavLink></li>
           <li><NavLink to='/settings'>Settings</NavLink></li>
           <li><NavLink onClick={this.handleLogout.bind(this)}>Logout</NavLink></li>
         </ul>

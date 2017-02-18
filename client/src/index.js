@@ -56,7 +56,7 @@ ReactDOM.render((
           <Route path="/savedsentences" component={ SavedSentences} />
           <Route path="/contributedsentences" component={ ContributedSentences } />
         </Route>
-        <Route path="/help" component={ Help } />
+        <Route path="/about" component={ Help } />
         <Route onEnter={ requireAuth } path="/word" component={ WordDetails }/>
         <Route onEnter={ requireAuth } path="/settings" component={ Settings } />
       </Route>

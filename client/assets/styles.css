@@ -170,9 +170,27 @@ h1 {
   background-color: gray;
 }
 
+
+/*
+ Help
+ */
+.help-faq {
+  position: absolute;
+  top: 200px;
+}
+
+.help-title {
+  text-align: center;
+}
+
+.team-members {
+  margin-top: 50px;
+}
+
 .instruction {
   margin: 0 100px 0 100px;
 }
+
 
 .instruction-img {
   border: 2px solid black;
@@ -256,31 +274,6 @@ h1 {
   height: 20px;
   width: 20px;
   background-size: cover;
-}
-
-/*
- Help
- */
-.help-box {
-  margin: 10% auto;
-  padding: 15px;
-  background-color: white;
-  width: 40%;
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.help-text {
-  text-align: center;
-  margin: 5px;
-  border-bottom: 1px solid #ccc;
-}
-
-.help-text:last-child {
-  border: none;
 }
 
 /*
